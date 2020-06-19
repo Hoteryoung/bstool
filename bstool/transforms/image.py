@@ -75,6 +75,8 @@ def drop_subimage(subimages,
     if np.mean(subimages[subimage_coordinate]) == 0:
         return True
 
+    subimage_polygons = bstool.clean_polygon(subimage_polygons)
+
     # no object
     if len(subimage_polygons) == 0:
         return True
