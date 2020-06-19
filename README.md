@@ -24,6 +24,7 @@ python setup.py develop
 
 ### Future works
 - [ ] Parsing function for shp file
+- [ ] Merge separate polygon in shp file
 
 
 ### Structure
