@@ -6,22 +6,25 @@ import matplotlib.pyplot as plt
 import bstool
 
 
-def show_masks_on_image(masks, 
-                        img, 
-                        alpha=0.4, 
+def show_masks_on_image(img,
+                        masks,
+                        alpha=0.4,
+                        show=True,
                         output_file=None):
     """show masks on image
 
     Args:
-        masks (list): list of masks, mask = [x1, y1, x2, y2, ....]
         img (np.array): original image
+        masks (list): list of masks, mask = [x1, y1, x2, y2, ....]
         alpha (int): compress
+        show (bool): show flag
         output_file (str): save path
     """
-    color_list = list(bstool.COLORS.keys())
     if isinstance(img, str):
         img = cv2.imread(img)
     img_h, img_w, _ = img.shape
+
+    color_list = list(bstool.COLORS.keys())
 
     foreground = bstool.generate_image(img_h, img_w, (0, 0, 0))
     for idx, mask in enumerate(masks):
@@ -32,10 +35,8 @@ def show_masks_on_image(masks,
     beta = (1.0 - alpha)
     fusion = cv2.addWeighted(heatmap, alpha, img, beta, 0.0)
 
-    if output_file is not None:
-        cv2.imwrite(output_file, fusion)
-    else:
-        bstool.show_image(fusion)
+    if show:
+        bstool.show_image(fusion, output_file=output_file)
 
     return fusion
 

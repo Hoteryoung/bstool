@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+import bstool
+
 
 def show_grayscale_as_heatmap(grayscale_image, 
                               show=True,
@@ -34,10 +36,10 @@ def show_grayscale_as_heatmap(grayscale_image,
         return heatmap_image
 
 def show_image(img, 
+               output_file=None,
                win_name='',
                win_size=800,
-               wait_time=0,
-               output_file=None):
+               wait_time=0):
     """show image
 
     Args:
@@ -53,4 +55,7 @@ def show_image(img,
     cv2.imshow(win_name, img)
     cv2.waitKey(wait_time)
     if output_file != None:
+        dir_name = bstool.get_dir_name(output_file)
+        bstool.mkdir_or_exist(dir_name)
+
         cv2.imwrite(output_file, img)

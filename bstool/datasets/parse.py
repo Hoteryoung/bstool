@@ -46,7 +46,7 @@ class ShpParse():
 
             object_struct['mask'] = bstool.polygon2mask(dst_polygon)
             xmin, ymin, xmax, ymax = dst_polygon.bounds
-            object_struct['bbox'] = [xmin, ymin, xmax - xmin + 1, ymax - ymin + 1]
+            object_struct['bbox'] = [xmin, ymin, xmax, ymax]
             object_struct['polygon'] = dst_polygon
             object_struct['property'] = dst_property
 
