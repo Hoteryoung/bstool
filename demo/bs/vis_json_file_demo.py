@@ -1,12 +1,21 @@
+import os
+
 import bstool
 
 
 if __name__ == '__main__':
-    rgb_file = '/home/jwwangchn/Documents/100-Work/190-Intern/2020-Sensetime/codes/bstool/data/buildchange/v2/shanghai/arg/images/L18_106968_219320__0_0.png'
-    json_file = '/home/jwwangchn/Documents/100-Work/190-Intern/2020-Sensetime/codes/bstool/data/buildchange/v2/shanghai/arg/labels/L18_106968_219320__0_0.json'
+    image_dir = './data/buildchange/v1/shanghai/arg/images'
+    label_dir = './data/buildchange/v1/shanghai/arg/labels'
 
-    objects = bstool.bs_json_parse(json_file)
+    for image_name in os.listdir(image_dir):
+        file_name = bstool.get_basename(image_name)
+        rgb_file = os.path.join(image_dir, image_name)
+        json_file = os.path.join(label_dir, file_name + '.json')
 
-    masks = [obj['footprint_mask'] for obj in objects]
+        objects = bstool.bs_json_parse(json_file)
 
-    bstool.show_masks_on_image(rgb_file, masks)
+        masks = [obj['footprint_mask'] for obj in objects]
+        bstool.show_masks_on_image(rgb_file, masks, win_name='footprint mask')
+
+        masks = [obj['roof_mask'] for obj in objects]
+        bstool.show_masks_on_image(rgb_file, masks, win_name='roof mask')

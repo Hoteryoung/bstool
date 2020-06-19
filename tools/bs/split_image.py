@@ -32,6 +32,9 @@ class SplitImage():
         self.geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/geo_info'
         self.ignore_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/pixel_anno_v2'
 
+        wrong_file = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/wrongShpFile.txt'
+        self.skip_filenames = self.read_wrong_file(wrong_file)
+
         self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/{sub_fold}/images'
         bstool.mkdir_or_exist(self.image_save_dir)
         self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/{sub_fold}/labels'
@@ -39,9 +42,22 @@ class SplitImage():
 
         self.multi_processing = multi_processing
         self.pool = Pool(num_processor)
+    
+    def read_wrong_file(self, wrong_file):
+        skip_filenames = []
+        with open(wrong_file, 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                skip_filename = bstool.get_basename(line.strip('\n'))
+                skip_filenames.append(skip_filename)
+        
+        return skip_filenames
 
     def split_image(self, shapefile):
         file_name = bstool.get_basename(shapefile)
+        if file_name in self.skip_filenames:
+            return
+
         image_file = os.path.join(self.image_dir, file_name + '.jpg')
         geo_file = os.path.join(self.geo_info_dir, file_name + '.png')
         ignore_file = os.path.join(self.ignore_info_dir, file_name + '.png')
@@ -132,15 +148,15 @@ if __name__ == '__main__':
     src_version = 'v0'
     dst_version = 'v1'
 
-    # cities = ['shanghai']
-    # sub_folds = {'shanghai': ['arg']}
+    cities = ['shanghai']
+    sub_folds = {'shanghai': ['arg']}
 
-    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    sub_folds = {'beijing': ['arg', 'google', 'ms', 'tdt'],
-                         'chengdu': ['arg', 'google', 'ms', 'tdt'],
-                         'haerbin': ['arg', 'google', 'ms'],
-                         'jinan': ['arg', 'google', 'ms', 'tdt'],
-                         'shanghai': ['google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
+    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    # sub_folds = {'beijing': ['arg', 'google', 'ms', 'tdt'],
+    #                      'chengdu': ['arg', 'google', 'ms', 'tdt'],
+    #                      'haerbin': ['arg', 'google', 'ms'],
+    #                      'jinan': ['arg', 'google', 'ms', 'tdt'],
+    #                      'shanghai': ['google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
     
     subimage_size = 1024
     gap = subimage_size // 2

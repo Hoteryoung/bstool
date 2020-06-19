@@ -10,7 +10,8 @@ def show_masks_on_image(img,
                         masks,
                         alpha=0.4,
                         show=True,
-                        output_file=None):
+                        output_file=None,
+                        win_name=''):
     """show masks on image
 
     Args:
@@ -36,7 +37,7 @@ def show_masks_on_image(img,
     fusion = cv2.addWeighted(heatmap, alpha, img, beta, 0.0)
 
     if show:
-        bstool.show_image(fusion, output_file=output_file)
+        bstool.show_image(fusion, output_file=output_file, win_name=win_name)
 
     return fusion
 
