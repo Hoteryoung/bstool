@@ -7,9 +7,7 @@ if __name__ == '__main__':
     geo_file = './data/buildchange/v0/shanghai/geo_info/L18_106968_219320.png'
     rgb_file = './data/buildchange/v0/shanghai/images/L18_106968_219320.jpg'
 
-    mask_parser = bstool.MaskParse()
-
-    objects = mask_parser(ignore_file, subclasses=255)
+    objects = bstool.mask_parse(ignore_file, subclasses=255)
 
     polygons = [obj['polygon'] for obj in objects]
     masks = [obj['mask'] for obj in objects]

@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import geopandas
+import cv2
 
 import bstool
 
@@ -19,16 +20,14 @@ if __name__ == '__main__':
     bstool.mkdir_or_exist(json_save_dir)
     bstool.mkdir_or_exist(image_save_dir)
 
-    shp_parser = bstool.ShpParse()
-    objects = shp_parser(shp_file=shp_file,
-                        geo_file=geo_file,
-                        src_coord='4326',
-                        dst_coord='pixel')
+    objects = bstool.shp_parse(shp_file=shp_file,
+                                geo_file=geo_file,
+                                src_coord='4326',
+                                dst_coord='pixel')
     origin_polygons = [obj['polygon'] for obj in objects]
     origin_properties = [obj['property'] for obj in objects]
 
-    mask_parser = bstool.MaskParse()
-    objects = mask_parser(ignore_file, subclasses=255)
+    objects = bstool.mask_parse(ignore_file, subclasses=255)
     ignore_polygons = [obj['polygon'] for obj in objects]
 
     ignored_polygon_indexes = bstool.get_ignored_polygon_idx(origin_polygons, ignore_polygons)
@@ -72,3 +71,4 @@ if __name__ == '__main__':
                     "coordinate": [int(_) for _ in subimage_coordinate]}
 
         bstool.bs_json_dump(subimage_polygons.tolist(), subimage_properties.tolist(), image_info, json_file)
+        cv2.imwrite(subimage_file, subimages[subimage_coordinate])

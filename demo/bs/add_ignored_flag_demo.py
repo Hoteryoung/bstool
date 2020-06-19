@@ -10,16 +10,14 @@ if __name__ == '__main__':
     geo_file = './data/buildchange/v0/shanghai/geo_info/L18_106968_219320.png'
     rgb_file = './data/buildchange/v0/shanghai/images/L18_106968_219320.jpg'
 
-    shp_parser = bstool.ShpParse()
-    objects = shp_parser(shp_file=shp_file,
-                        geo_file=geo_file,
-                        src_coord='4326',
-                        dst_coord='pixel')
+    objects = bstool.shp_parse(shp_file=shp_file,
+                                geo_file=geo_file,
+                                src_coord='4326',
+                                dst_coord='pixel')
     origin_polygons = [obj['polygon'] for obj in objects]
     origin_properties = [obj['property'] for obj in objects]
 
-    mask_parser = bstool.MaskParse()
-    objects = mask_parser(ignore_file, subclasses=255)
+    objects = bstool.mask_parse(ignore_file, subclasses=255)
     ignore_polygons = [obj['polygon'] for obj in objects]
 
     ignored_polygon_indexes = bstool.get_ignored_polygon_idx(origin_polygons, ignore_polygons)

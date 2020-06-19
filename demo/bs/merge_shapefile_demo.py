@@ -11,12 +11,10 @@ if __name__ == '__main__':
 
     merged_shp_file = '/data/buildchange/demo/L18_106968_219320.shp'
 
-    shp_parser = bstool.ShpParse()
-
-    objects = shp_parser(shp_file=shp_file,
-               geo_file=geo_file,
-               src_coord='4326',
-               dst_coord='4326')
+    objects = bstool.shp_parse(shp_file=shp_file,
+                                geo_file=geo_file,
+                                src_coord='4326',
+                                dst_coord='4326')
 
     polygons = [obj['polygon'] for obj in objects]
     properties = [obj['property'] for obj in objects]

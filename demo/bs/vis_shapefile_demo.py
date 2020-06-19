@@ -7,12 +7,10 @@ if __name__ == '__main__':
     geo_file = '/data/buildchange/v0/shanghai/geo_info/L18_106968_219320.png'
     rgb_file = '/data/buildchange/v0/shanghai/images/L18_106968_219320.jpg'
 
-    shp_parser = bstool.ShpParse()
-
-    objects = shp_parser(shp_file=shp_file,
-                        geo_file=geo_file,
-                        src_coord='4326',
-                        dst_coord='pixel')
+    objects = bstool.shp_parse(shp_file=shp_file,
+                                geo_file=geo_file,
+                                src_coord='4326',
+                                dst_coord='pixel')
 
     polygons = [obj['polygon'] for obj in objects]
     masks = [obj['mask'] for obj in objects]

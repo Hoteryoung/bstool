@@ -29,7 +29,6 @@ class MergeShapefile():
         self.core_dataset_name = core_dataset_name
         self.src_version = src_version
         self.city = city
-        self.shp_parser = bstool.ShpParse()
         self.multi_processing = multi_processing
         self.pool = Pool(num_processor)
 
@@ -44,10 +43,10 @@ class MergeShapefile():
             
         geo_file = os.path.join(self.geo_path, file_name + '.png')
 
-        objects = self.shp_parser(shp_file, 
-                                geo_file,
-                                src_coord='4326',
-                                dst_coord='4326')
+        objects = bstool.shp_parse(shp_file, 
+                                    geo_file,
+                                    src_coord='4326',
+                                    dst_coord='4326')
         if objects == []:
             with open(self.bad_shapefile, 'a') as f:
                 f.write("{} {}\n".format(self.city, file_name + '.shp'))
