@@ -265,7 +265,7 @@ def clean_polygon(polygons):
         elif type(polygon) == Polygon:
             if len(list(polygon.exterior.coords)) < 3:
                 continue
-            if single_polygon.area < 5:
+            if polygon.area < 5:
                 continue
             polygons_.append(polygon)
         else:
