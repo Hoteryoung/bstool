@@ -5,6 +5,7 @@ import geojson
 import networkx as nx
 import rasterio as rio
 import geopandas
+from shapely import affinity
 
 
 def polygon2mask(polygon):
@@ -16,8 +17,22 @@ def polygon2mask(polygon):
     Returns:
         list -- converted mask ([x1, y1, x2, y2, ...])
     """
-    mask = np.array(polygon.exterior.coords, dtype=np.int64)[:-1].ravel().tolist()
+    mask = np.array(polygon.exterior.coords, dtype=int)[:-1].ravel().tolist()
     return mask
+
+def mask2polygon(mask):
+    """convert mask to polygon
+
+    Arguments:
+        mask {list} -- contains coordinates of mask boundary ([x1, y1, x2, y2, ...])
+    """
+    mask_x = mask[0::2]
+    mask_y = mask[1::2]
+    mask_coord = [(x, y) for x, y in zip(mask_x, mask_y)]
+
+    polygon = Polygon(mask_coord)
+
+    return polygon
 
 def polygon_coordinate_convert(polygon, 
                                geo_img, 
@@ -56,7 +71,17 @@ def merge_polygons(polygons,
                    properties=None, 
                    connection_mode='floor',
                    merge_boundary=False):
+        """merge polygons by floor
 
+        Args:
+            polygons (list): list of polygons
+            properties (list, optional): list of properties. Defaults to None.
+            connection_mode (str, optional): merge by which item. Defaults to 'floor'.
+            merge_boundary (bool, optional): whether to merge boundary. Defaults to False.
+
+        Returns:
+            list: merged polygons
+        """
         floors = []
         for single_property in properties:
             if 'Floor' in single_property.keys():
@@ -128,6 +153,15 @@ def merge_polygons(polygons,
 
 
 def get_ignored_polygon_idx(origin_polygons, ignore_polygons):
+    """get index which should be ignored
+
+    Args:
+        origin_polygons (list): list of polygons
+        ignore_polygons (list): list of polygons
+
+    Returns:
+        list: list of indexes
+    """
     origin_polygons = geopandas.GeoSeries(origin_polygons)
     ignore_polygons = geopandas.GeoSeries(ignore_polygons)
 
@@ -142,6 +176,15 @@ def get_ignored_polygon_idx(origin_polygons, ignore_polygons):
     return ignore_indexes
 
 def add_ignore_flag_in_property(properties, ignore_indexes):
+    """add ignore flags to properties
+
+    Args:
+        properties (list): list of property
+        ignore_indexes (list): list of index
+
+    Returns:
+        list: list of new properties
+    """
     ret_properties = []
     for idx, single_property in enumerate(properties):
         if idx in ignore_indexes:
@@ -150,3 +193,51 @@ def add_ignore_flag_in_property(properties, ignore_indexes):
             single_property['ignore'] = 0
         ret_properties.append(single_property)
     return ret_properties
+
+def get_polygon_centroid(polygons):
+    """calculate the centroids of polygons
+
+    Args:
+        polygons (list): list of polygons
+
+    Returns:
+        list: list of centroids
+    """
+    centroids = []
+    for polygon in polygons:
+        coordinate = list(polygon.centroid.coords)[0]
+        centroids.append(coordinate)
+
+    return centroids
+
+def select_polygons_in_range(polygons, coordinate, image_size=(1024, 1024)):
+    origin_centroids = get_polygon_centroid(polygons)
+    origin_centroids = np.array(origin_centroids)
+    converted_centroids = origin_centroids.copy()
+
+    converted_centroids[:, 0] = origin_centroids[:, 0] - coordinate[0]
+    converted_centroids[:, 1] = origin_centroids[:, 1] - coordinate[1]
+
+    cx_bool = np.logical_and(converted_centroids[:, 0] >= 0, converted_centroids[:, 0] < image_size[0])
+    cy_bool = np.logical_and(converted_centroids[:, 1] >= 0, converted_centroids[:, 1] < image_size[1])
+
+    return np.logical_and(cx_bool, cy_bool)
+
+def chang_polygon_coordinate(polygons, coordinate):
+    transform_matrix = [1, 0, 0, 1, -coordinate[0], -coordinate[1]]
+    converted_polygons = []
+    for polygon in polygons:
+        transformed_polygon = affinity.affine_transform(polygon, transform_matrix)
+        converted_polygons.append(transformed_polygon)
+    
+    return converted_polygons
+
+def clip_boundary_polygon(polygons, image_size=(1024, 1024)):
+    h, w = image_size
+    image_boundary = Polygon([(0, 0), (w-1, 0), (w-1, h-1), (0, h-1), (0, 0)])
+
+    polygons = geopandas.GeoDataFrame({'geometry': polygons, 'polygon_df':range(len(polygons))})
+
+    clipped_polygons = geopandas.clip(polygons, image_boundary).to_dict()
+    clipped_polygons = list(clipped_polygons['geometry'].values())
+    return clipped_polygons

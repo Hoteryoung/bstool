@@ -26,7 +26,9 @@ python setup.py develop
 - [x] Parse shapefile
 - [x] Show polygons or show polygons on corresponding image
 - [x] Merge separate polygon in original shapefile
-- [ ] Parse ignore file (png)
+- [x] Parse ignore file (png)
+- [x] Add ignore flag to properties
+- [x] Show ignored polygons
 - [ ] Split large image and corresponding polygons
 
 
