@@ -23,8 +23,8 @@ python setup.py develop
 ```
 
 ### Future works
-- [ ] Parsing function for shp file
-- [ ] Merge separate polygon in shp file
+- [x] Parsing function for shapefile
+- [x] Merge separate polygon in original shapefile
 
 
 ### Structure
@@ -32,20 +32,13 @@ python setup.py develop
 - tests
 - tools
 - bstool
-    - structures:       structures for object detection
-    - cnn:              CNN Modules by PyTorch
-    - models:           Models for detection, classification and segmentation
     - datasets:         Create and read data from dataset
     - transforms:       bbox and image transformation
         - image
         - bbox
-    - fileio:           file operation
-        - image
-        - file
-        - label
     - visualization:    code for visualization
         - image
+        - mask
+        - bbox
     - utils:            tools for other tasks
         - path
-        - config
-        - progressbar
