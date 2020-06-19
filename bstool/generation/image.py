@@ -15,3 +15,18 @@ def generate_image(height=512,
         img = gray
 
     return img
+
+def generate_subclass_mask(mask_image,
+                           subclasses=(1, 3)):
+    height, width, _ = mask_image.shape
+    sub_mask = generate_image(height, width, color=0)
+    gray_mask_image = mask_image[:, :, 0]
+    
+    if isinstance(subclasses, (list, tuple)):
+        keep_bool = np.logical_or(gray_mask_image == subclasses[0], gray_mask_image == subclasses[1])
+    else:
+        keep_bool = (gray_mask_image == subclasses)
+
+    sub_mask[keep_bool] = 1
+
+    return sub_mask                      

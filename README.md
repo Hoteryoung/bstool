@@ -23,8 +23,11 @@ python setup.py develop
 ```
 
 ### Future works
-- [x] Parsing function for shapefile
+- [x] Parse shapefile
+- [x] Show polygons or show polygons on corresponding image
 - [x] Merge separate polygon in original shapefile
+- [ ] Parse ignore file (png)
+- [ ] Split large image and corresponding polygons
 
 
 ### Structure

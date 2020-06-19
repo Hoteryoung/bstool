@@ -1,8 +1,10 @@
+import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
 from shapely.ops import unary_union
 import geojson
 import networkx as nx
 import rasterio as rio
+import geopandas
 
 
 def polygon2mask(polygon):
@@ -14,17 +16,7 @@ def polygon2mask(polygon):
     Returns:
         list -- converted mask ([x1, y1, x2, y2, ...])
     """
-    geo = geojson.Feature(geometry=polygon, properties={})
-    if geo.geometry == None:
-        return []
-    coordinate = geo.geometry["coordinates"][0]     # drop the polygon of hole
-    mask = []
-    for idx, point in enumerate(coordinate):
-        if idx == len(coordinate) - 1:
-            break
-        x, y = point
-        mask.append(int(abs(x)))
-        mask.append(int(abs(y)))
+    mask = np.array(polygon.exterior.coords, dtype=np.int64)[:-1].ravel().tolist()
     return mask
 
 def polygon_coordinate_convert(polygon, 
@@ -133,3 +125,28 @@ def merge_polygons(polygons,
                     merged_properties.append(properties[nodeSet[0]])
         
         return merged_polygons, merged_properties
+
+
+def get_ignored_polygon_idx(origin_polygons, ignore_polygons):
+    origin_polygons = geopandas.GeoSeries(origin_polygons)
+    ignore_polygons = geopandas.GeoSeries(ignore_polygons)
+
+    origin_df = geopandas.GeoDataFrame({'geometry': origin_polygons, 'foot_df':range(len(origin_polygons))})
+    ignore_df = geopandas.GeoDataFrame({'geometry': ignore_polygons, 'ignore_df':range(len(ignore_polygons))})
+
+    res_intersection = geopandas.overlay(origin_df, ignore_df, how='intersection')
+    inter_dict = res_intersection.to_dict()
+    ignore_indexes = list(set(inter_dict['foot_df'].values()))
+    ignore_indexes.sort()
+
+    return ignore_indexes
+
+def add_ignore_flag_in_property(properties, ignore_indexes):
+    ret_properties = []
+    for idx, single_property in enumerate(properties):
+        if idx in ignore_indexes:
+            single_property['ignore'] = 1
+        else:
+            single_property['ignore'] = 0
+        ret_properties.append(single_property)
+    return ret_properties

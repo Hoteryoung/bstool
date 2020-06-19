@@ -1,3 +1,3 @@
-from .parse import ShpParse
+from .parse import ShpParse, MaskParse
 
-__all__ = ['ShpParse']
+__all__ = ['ShpParse', 'MaskParse']

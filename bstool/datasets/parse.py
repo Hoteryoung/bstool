@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 import geopandas
 import rasterio as rio
 import shapely
@@ -15,6 +16,17 @@ class ShpParse():
                 geo_file,
                 src_coord='4326',
                 dst_coord='pixel'):
+        """parse shapefile
+
+        Args:
+            shp_file (str): shapefile
+            geo_file (str or rio class): geometry information
+            src_coord (str, optional): source coordinate system. Defaults to '4326'.
+            dst_coord (str, optional): destination coordinate system. Defaults to 'pixel'.
+
+        Returns:
+            list: parsed objects
+        """
         try:
             shp = geopandas.read_file(shp_file, encoding='utf-8')
         except:
@@ -53,3 +65,33 @@ class ShpParse():
             objects.append(object_struct)
 
         return objects
+
+class MaskParse():
+    def __call__(self,
+                 mask_file,
+                 subclasses=(1, 3)):
+        if isinstance(mask_file, str):
+            mask_image = cv2.imread(mask_file)
+
+        if mask_image is None:
+            if isinstance(mask_file, str):
+                print("Can not open this mask (ignore) file: {}".format(mask_file))
+            else:
+                print("Can not handle mask image (np.array), it is empty")
+            return []
+
+        sub_mask = bstool.generate_subclass_mask(mask_image, subclasses=subclasses)
+        polygons = bstool.generate_polygon(sub_mask)
+
+        objects = []
+        for polygon in polygons:
+            object_struct = dict()
+
+            xmin, ymin, xmax, ymax = polygon.bounds
+
+            object_struct['mask'] = bstool.polygon2mask(polygon)
+            object_struct['polygon'] = polygon
+            objects.append(object_struct)
+
+        return objects
+        
