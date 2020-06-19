@@ -94,9 +94,11 @@ class SplitImage():
         transformed_polygons = origin_polygons.copy()
         for subimage_coordinate in subimage_coordinates:
             keep = bstool.select_polygons_in_range(origin_polygons, subimage_coordinate, image_size=(self.subimage_size, self.subimage_size))
-
+            keep_num = len(np.extract(keep == True, keep))
+            if keep_num < 2:
+                continue
             transformed_polygons[keep] = np.array(bstool.chang_polygon_coordinate(origin_polygons[keep].copy(), subimage_coordinate))
-
+            
             transformed_polygons[keep] = np.array(bstool.clip_boundary_polygon(transformed_polygons[keep], image_size=(self.subimage_size, self.subimage_size)))
 
             drop = bstool.drop_subimage(subimages, subimage_coordinate, transformed_polygons[keep])
@@ -172,6 +174,6 @@ if __name__ == '__main__':
                                     subimage_size=subimage_size,
                                     gap=gap,
                                     multi_processing=True,
-                                    num_processor=8)
+                                    num_processor=16)
             split_image.core()
             print("Finish processing {} {} set.".format(city, sub_fold))
