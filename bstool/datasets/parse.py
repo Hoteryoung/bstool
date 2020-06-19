@@ -44,7 +44,7 @@ class ShpParse():
         for idx, (dst_polygon, dst_property) in enumerate(zip(dst_polygons, dst_properties)):
             object_struct = dict()
 
-            object_struct['segmentation'] = bstool.polygon2mask(dst_polygon)
+            object_struct['mask'] = bstool.polygon2mask(dst_polygon)
             xmin, ymin, xmax, ymax = dst_polygon.bounds
             object_struct['bbox'] = [xmin, ymin, xmax - xmin + 1, ymax - ymin + 1]
             object_struct['polygon'] = dst_polygon

@@ -14,5 +14,7 @@ if __name__ == '__main__':
                dst_coord='pixel')
 
     polygons = [obj['polygon'] for obj in objects]
+    masks = [obj['mask'] for obj in objects]
 
     bstool.show_polygon(polygons)
+    bstool.show_masks_on_image(masks, rgb_file)

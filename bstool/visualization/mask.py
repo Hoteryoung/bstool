@@ -1,4 +1,3 @@
-import PIL
 import numpy as np
 import cv2
 import shapely
@@ -7,19 +6,21 @@ import matplotlib.pyplot as plt
 import bstool
 
 
-def show_polygons_on_image(masks, 
-                           img, 
-                           alpha=0.4, 
-                           output_file=None):
+def show_masks_on_image(masks, 
+                        img, 
+                        alpha=0.4, 
+                        output_file=None):
     """show masks on image
 
     Args:
-        masks (list): list of coordinate
+        masks (list): list of masks, mask = [x1, y1, x2, y2, ....]
         img (np.array): original image
         alpha (int): compress
         output_file (str): save path
     """
     color_list = list(bstool.COLORS.keys())
+    if isinstance(img, str):
+        img = cv2.imread(img)
     img_h, img_w, _ = img.shape
 
     foreground = bstool.generate_image(img_h, img_w, (0, 0, 0))
@@ -39,6 +40,12 @@ def show_polygons_on_image(masks,
     return fusion
 
 def show_polygon(polygons, size=[2048, 2048]):
+    """show polygons
+
+    Args:
+        polygons (list): list of polygon
+        size (list, optional): image size . Defaults to [2048, 2048].
+    """
     basic_size = 8
     plt.figure(figsize=(basic_size, basic_size * size[1] / float(size[0])))
     for polygon in polygons:
