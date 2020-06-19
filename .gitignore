@@ -104,7 +104,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# wwtool
+# bstool
 data/
 *.xlsx
-tools/utils/base64_passwd.passwd
