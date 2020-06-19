@@ -12,7 +12,8 @@ import bstool
 def shp_parse(shp_file,
               geo_file,
               src_coord='4326',
-              dst_coord='pixel'):
+              dst_coord='pixel',
+              clean_polygon_flag=False):
     """parse shapefile
 
     Args:
@@ -53,6 +54,10 @@ def shp_parse(shp_file,
     for idx, (dst_polygon, dst_property) in enumerate(zip(dst_polygons, dst_properties)):
         object_struct = dict()
 
+        if clean_polygon_flag:
+            if not dst_polygon.is_valid:
+                continue
+
         object_struct['mask'] = bstool.polygon2mask(dst_polygon)
         xmin, ymin, xmax, ymax = dst_polygon.bounds
         object_struct['bbox'] = [xmin, ymin, xmax, ymax]
@@ -64,7 +69,8 @@ def shp_parse(shp_file,
     return objects
 
 def mask_parse(mask_file,
-               subclasses=(1, 3)):
+               subclasses=(1, 3),
+               clean_polygon_flag=False):
     """parse mask image
 
     Args:
@@ -90,6 +96,9 @@ def mask_parse(mask_file,
     objects = []
     for polygon in polygons:
         object_struct = dict()
+        if clean_polygon_flag:
+            if not polygon.is_valid:
+                continue
         object_struct['mask'] = bstool.polygon2mask(polygon)
         object_struct['polygon'] = polygon
         objects.append(object_struct)
@@ -97,6 +106,14 @@ def mask_parse(mask_file,
     return objects
         
 def bs_json_parse(json_file):
+    """parse json file
+
+    Args:
+        json_file (str): json file
+
+    Returns:
+        list: list of objects
+    """
     annotations = mmcv.load(json_file)['annotations']
     objects = []
     for annotation in annotations:

@@ -28,11 +28,12 @@ if __name__ == '__main__':
     origin_properties = [obj['property'] for obj in objects]
 
     objects = bstool.mask_parse(ignore_file, subclasses=255)
-    ignore_polygons = [obj['polygon'] for obj in objects]
+    if len(objects) > 0:
+        ignore_polygons = [obj['polygon'] for obj in objects]
 
-    ignored_polygon_indexes = bstool.get_ignored_polygon_idx(origin_polygons, ignore_polygons)
+        ignored_polygon_indexes = bstool.get_ignored_polygon_idx(origin_polygons, ignore_polygons)
 
-    origin_properties = bstool.add_ignore_flag_in_property(origin_properties, ignored_polygon_indexes)
+        origin_properties = bstool.add_ignore_flag_in_property(origin_properties, ignored_polygon_indexes)
 
     subsize = 1024
     subimages = bstool.split_image(rgb_file, subsize=subsize, gap=512)

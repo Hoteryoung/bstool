@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     origin_properties = bstool.add_ignore_flag_in_property(origin_properties, ignored_polygon_indexes)
 
-    # show
+    # codes for visualization
     converted_polygons = []
     for origin_polygon, origin_property in zip(origin_polygons, origin_properties):
         if origin_property['ignore'] == 1:

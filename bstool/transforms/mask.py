@@ -241,3 +241,4 @@ def clip_boundary_polygon(polygons, image_size=(1024, 1024)):
     clipped_polygons = geopandas.clip(polygons, image_boundary).to_dict()
     clipped_polygons = list(clipped_polygons['geometry'].values())
     return clipped_polygons
+
