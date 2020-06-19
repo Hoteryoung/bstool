@@ -35,9 +35,9 @@ class SplitImage():
         wrong_file = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/wrongShpFile.txt'
         self.skip_filenames = self.read_wrong_file(wrong_file)
 
-        self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/{sub_fold}/images'
+        self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/images'
         bstool.mkdir_or_exist(self.image_save_dir)
-        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/{sub_fold}/labels'
+        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/labels'
         bstool.mkdir_or_exist(self.label_save_dir)
 
         self.multi_processing = multi_processing
@@ -111,11 +111,11 @@ class SplitImage():
 
             # bstool.show_polygons_on_image(subimages[subimage_coordinate], subimage_polygons)
 
-            subimage_file = os.path.join(self.image_save_dir, '{}__{}_{}.png'.format(file_name, subimage_coordinate[0], subimage_coordinate[1]))
-            json_file = os.path.join(self.label_save_dir, '{}__{}_{}.json'.format(file_name, subimage_coordinate[0], subimage_coordinate[1]))
+            subimage_file = os.path.join(self.image_save_dir, f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png')
+            json_file = os.path.join(self.label_save_dir, f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.json')
             
             image_info = {"ori_filename": f"{file_name}.jpg",
-                        "subimage_filename": '{}__{}_{}.png'.format(file_name, subimage_coordinate[0], subimage_coordinate[1]),
+                        "subimage_filename": f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png',
                         "width": self.subimage_size,
                         "height": self.subimage_size,
                         "city": self.city,
@@ -131,6 +131,8 @@ class SplitImage():
         if self.multi_processing:
             worker = partial(self.split_image)
             ret = list(tqdm.tqdm(self.pool.imap(worker, shp_file_list), total=num_image))
+            self.pool.close()
+            self.pool.join()
         else:
             shp_file_list = glob.glob("{}/*.shp".format(self.roof_shp_dir))
             for shp_file in shp_file_list:
