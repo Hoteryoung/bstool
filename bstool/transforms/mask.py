@@ -242,3 +242,33 @@ def clip_boundary_polygon(polygons, image_size=(1024, 1024)):
     clipped_polygons = list(clipped_polygons['geometry'].values())
     return clipped_polygons
 
+def clean_polygon(polygons):
+    """convert polygon to valid polygon
+
+    Arguments:
+        polygons {list} -- list of polygon
+
+    Returns:
+        list -- cleaned polygons
+    """
+    polygons_ = []
+    for polygon in polygons:
+        if not polygon.is_valid:
+            continue
+        if type(polygon) == MultiPolygon:
+            for single_polygon in polygon:
+                if len(list(single_polygon.exterior.coords)) < 3:
+                    continue
+                if single_polygon.area < 5:
+                    continue
+                polygons_.append(single_polygon)
+        elif type(polygon) == Polygon:
+            if len(list(polygon.exterior.coords)) < 3:
+                continue
+            if single_polygon.area < 5:
+                continue
+            polygons_.append(polygon)
+        else:
+            continue
+
+    return polygons_
