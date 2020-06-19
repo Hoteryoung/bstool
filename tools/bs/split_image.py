@@ -130,16 +130,18 @@ class SplitImage():
 if __name__ == '__main__':
     core_dataset_name = 'buildchange'
     src_version = 'v0'
-    dst_version = 'v2'
-    cities = ['shanghai']
-    sub_folds = {'shanghai': ['arg']}
+    dst_version = 'v1'
 
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    # sub_folds = {'beijing': ['arg', 'google', 'ms', 'tdt'],
-    #                      'chengdu': ['arg', 'google', 'ms', 'tdt'],
-    #                      'haerbin': ['arg', 'google', 'ms'],
-    #                      'jinan': ['arg', 'google', 'ms', 'tdt'],
-    #                      'shanghai': ['google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
+    # cities = ['shanghai']
+    # sub_folds = {'shanghai': ['arg']}
+
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    sub_folds = {'beijing': ['arg', 'google', 'ms', 'tdt'],
+                         'chengdu': ['arg', 'google', 'ms', 'tdt'],
+                         'haerbin': ['arg', 'google', 'ms'],
+                         'jinan': ['arg', 'google', 'ms', 'tdt'],
+                         'shanghai': ['google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
+    
     subimage_size = 1024
     gap = subimage_size // 2
 
@@ -153,7 +155,7 @@ if __name__ == '__main__':
                                     sub_fold=sub_fold,
                                     subimage_size=subimage_size,
                                     gap=gap,
-                                    multi_processing=False,
+                                    multi_processing=True,
                                     num_processor=8)
             split_image.core()
             print("Finish processing {} {} set.".format(city, sub_fold))

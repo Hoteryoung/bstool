@@ -29,7 +29,7 @@ python setup.py develop
 - [x] Parse ignore file (png)
 - [x] Add ignore flag to properties
 - [x] Show ignored polygons
-- [ ] Split large image and corresponding polygons
+- [x] Split large image and corresponding polygons
 
 
 ### Structure
