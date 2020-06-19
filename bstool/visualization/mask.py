@@ -39,7 +39,7 @@ def show_masks_on_image(masks,
 
     return fusion
 
-def show_polygon(polygons, size=[2048, 2048]):
+def show_polygon(polygons, size=[2048, 2048], output_file=None):
     """show polygons
 
     Args:
@@ -57,4 +57,6 @@ def show_polygon(polygons, size=[2048, 2048]):
     plt.xlim(0, size[0])
     plt.ylim(0, size[1])
     plt.gca().invert_yaxis()
+    if output_file is not None:
+        plt.savefig(output_file, bbox_inches='tight', dpi=600, pad_inches=0.0)
     plt.show()
