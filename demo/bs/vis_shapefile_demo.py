@@ -2,9 +2,9 @@ import bstool
 
 
 if __name__ == '__main__':
-    shp_file = '/data/buildchange/v0/shanghai/shp_4326/L18_106968_219344.shp'
-    geo_file = '/data/buildchange/v0/shanghai/geo_info/L18_106968_219344.png'
-    rgb_file = '/data/buildchange/v0/shanghai/images/L18_106968_219344.jpg'
+    shp_file = '/data/buildchange/v0/shanghai/shp_4326/L18_106968_219320.shp'
+    geo_file = '/data/buildchange/v0/shanghai/geo_info/L18_106968_219320.png'
+    rgb_file = '/data/buildchange/v0/shanghai/images/L18_106968_219320.jpg'
 
     shp_parser = bstool.ShpParse()
 

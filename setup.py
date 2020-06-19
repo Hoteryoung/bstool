@@ -128,7 +128,7 @@ if __name__ == '__main__':
         # tests_require=['pytest'],
         install_requires=[
             'mmcv>0.2.6', 'numpy', 'matplotlib', 'six', 'terminaltables',
-            'pycocotools', 'shapely', 'geojson', 'scikit-image', 'geopandas', 'rasterio'
+            'pycocotools', 'shapely', 'geojson', 'scikit-image', 'geopandas', 'rasterio', 'networkx'
         ],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
