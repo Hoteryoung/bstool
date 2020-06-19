@@ -9,7 +9,7 @@ if __name__ == '__main__':
     geo_file = '/data/buildchange/v0/shanghai/geo_info/L18_106968_219320.png'
     rgb_file = '/data/buildchange/v0/shanghai/images/L18_106968_219320.jpg'
 
-    merged_shp_file = '/data/buildchange/v0/shanghai/L18_106968_219320.shp'
+    merged_shp_file = '/data/buildchange/demo/L18_106968_219320.shp'
 
     shp_parser = bstool.ShpParse()
 
