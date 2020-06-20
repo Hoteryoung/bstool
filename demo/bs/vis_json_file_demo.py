@@ -4,8 +4,8 @@ import bstool
 
 
 if __name__ == '__main__':
-    image_dir = './data/buildchange/v1/xian_fine/images'
-    label_dir = './data/buildchange/v1/xian_fine/labels'
+    image_dir = './data/buildchange/v1/shanghai/images'
+    label_dir = './data/buildchange/v1/shanghai/labels'
 
     for image_name in os.listdir(image_dir):
         file_name = bstool.get_basename(image_name)
@@ -15,6 +15,9 @@ if __name__ == '__main__':
         objects = bstool.bs_json_parse(json_file)
 
         masks = [obj['footprint_mask'] for obj in objects]
+        bboxes = [obj['footprint_bbox'] for obj in objects]
+        bboxes = [bstool.xywh2xyxy(bbox) for bbox in bboxes]
+        bstool.show_bboxs_on_image(rgb_file, bboxes, win_name='footprint bbox')
         bstool.show_masks_on_image(rgb_file, masks, win_name='footprint mask')
 
         masks = [obj['roof_mask'] for obj in objects]
