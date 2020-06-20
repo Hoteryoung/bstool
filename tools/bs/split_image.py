@@ -84,7 +84,7 @@ class SplitImage():
             origin_properties = bstool.add_ignore_flag_in_property(origin_properties, ignored_polygon_indexes)
         else:
             ret_properties = []
-            for idx, single_property in enumerate(origin_properties):
+            for single_property in origin_properties:
                 single_property['ignore'] = 0
                 ret_properties.append(single_property)
 
