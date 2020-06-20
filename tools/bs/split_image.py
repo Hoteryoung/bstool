@@ -99,8 +99,9 @@ class SplitImage():
                 continue
             transformed_polygons[keep] = np.array(bstool.chang_polygon_coordinate(origin_polygons[keep].copy(), subimage_coordinate))
             polygons_ = transformed_polygons[keep]
-            polygons_ = np.array(bstool.clip_boundary_polygon(polygons_, image_size=(self.subimage_size, self.subimage_size)))
-            transformed_polygons[keep] = polygons_
+            polygons_ = bstool.clip_boundary_polygon(polygons_, image_size=(self.subimage_size, self.subimage_size))
+            print(type(polygons_))
+            transformed_polygons[keep] = np.array(polygons_)
             drop = bstool.drop_subimage(subimages, subimage_coordinate, transformed_polygons[keep])
 
             if drop:
