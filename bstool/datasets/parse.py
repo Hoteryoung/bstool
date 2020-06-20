@@ -57,6 +57,8 @@ def shp_parse(shp_file,
         if clean_polygon_flag:
             if not dst_polygon.is_valid:
                 continue
+            if dst_polygon.geom_type not in ['Polygon', 'MultiPolygon']:
+                continue
 
         object_struct['mask'] = bstool.polygon2mask(dst_polygon)
         xmin, ymin, xmax, ymax = dst_polygon.bounds
@@ -98,6 +100,8 @@ def mask_parse(mask_file,
         object_struct = dict()
         if clean_polygon_flag:
             if not polygon.is_valid:
+                continue
+            if polygon.geom_type not in ['Polygon', 'MultiPolygon']:
                 continue
         object_struct['mask'] = bstool.polygon2mask(polygon)
         object_struct['polygon'] = polygon
