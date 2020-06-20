@@ -98,10 +98,10 @@ class SplitImage():
             if keep_num < 2:
                 continue
             transformed_polygons[keep] = np.array(bstool.chang_polygon_coordinate(origin_polygons[keep].copy(), subimage_coordinate))
-            polygons_ = transformed_polygons[keep]
-            polygons_ = bstool.clip_boundary_polygon(polygons_, image_size=(self.subimage_size, self.subimage_size))
-            print(type(polygons_))
-            transformed_polygons[keep] = np.array(polygons_)
+
+            # clip the polygon on boundary (has some bugs)
+            # transformed_polygons[keep] = np.array(bstool.clip_boundary_polygon(transformed_polygons[keep], image_size=(self.subimage_size, self.subimage_size)))
+
             drop = bstool.drop_subimage(subimages, subimage_coordinate, transformed_polygons[keep])
 
             if drop:
@@ -176,7 +176,7 @@ if __name__ == '__main__':
                                     sub_fold=sub_fold,
                                     subimage_size=subimage_size,
                                     gap=gap,
-                                    multi_processing=True,
-                                    num_processor=8)
+                                    multi_processing=False,
+                                    num_processor=16)
             split_image.core()
             print("Finish processing {} {} set.".format(city, sub_fold))
