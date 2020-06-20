@@ -28,9 +28,8 @@ class SplitImage():
         self.gap = gap
 
         self.image_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/images'
-        self.roof_shp_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/roof_shp_4326'
-        self.geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/geo_info'
-        self.ignore_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/pixel_anno_v2'
+        self.roof_shp_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/merged_shp'
+        self.geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/images'
 
         self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/images'
         bstool.mkdir_or_exist(self.image_save_dir)
@@ -42,17 +41,15 @@ class SplitImage():
 
     def split_image(self, shapefile):
         file_name = bstool.get_basename(shapefile)
-        if file_name in self.skip_filenames:
-            return
 
         image_file = os.path.join(self.image_dir, file_name + '.jpg')
-        geo_file = os.path.join(self.geo_info_dir, file_name + '.png')
-        ignore_file = os.path.join(self.ignore_info_dir, file_name + '.png')
+        geo_file = os.path.join(self.geo_info_dir, file_name + '.jpg')
         
         objects = bstool.shp_parse(shapefile, 
                                    geo_file, 
-                                   src_coord='4326',
+                                   src_coord='pixel',
                                    dst_coord='pixel',
+                                   keep_polarity=False,
                                    clean_polygon_flag=True)
         if len(objects) == 0:
             return
@@ -60,20 +57,17 @@ class SplitImage():
         origin_polygons = [obj['polygon'] for obj in objects]
         origin_properties = [obj['property'] for obj in objects]
 
-        objects = bstool.mask_parse(ignore_file, 
-                                    subclasses=255,
-                                    clean_polygon_flag=True)
-        
-        if len(objects) > 0:
-            ignore_polygons = [obj['polygon'] for obj in objects]
-            ignored_polygon_indexes = bstool.get_ignored_polygon_idx(origin_polygons, ignore_polygons)
-            origin_properties = bstool.add_ignore_flag_in_property(origin_properties, ignored_polygon_indexes)
-        else:
-            ret_properties = []
-            for single_property in origin_properties:
+        convert_properties = []
+        for single_property in origin_properties:
+            if ('xoffset' not in single_property) or ('yoffset' not in single_property):
+                raise(RuntimeError("don't have xoffset and yoffset properties"))
+
+            if "ignore" not in single_property:
                 single_property['ignore'] = 0
-                ret_properties.append(single_property)
-            origin_properties = ret_properties
+
+            convert_properties.append(single_property)
+
+        origin_properties = convert_properties
 
         subimages = bstool.split_image(image_file, 
                                         subsize=self.subimage_size, 

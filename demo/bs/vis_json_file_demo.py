@@ -4,8 +4,8 @@ import bstool
 
 
 if __name__ == '__main__':
-    image_dir = './data/buildchange/v1/shanghai/arg/images'
-    label_dir = './data/buildchange/v1/shanghai/arg/labels'
+    image_dir = './data/buildchange/v1/xian_fine/images'
+    label_dir = './data/buildchange/v1/xian_fine/labels'
 
     for image_name in os.listdir(image_dir):
         file_name = bstool.get_basename(image_name)
