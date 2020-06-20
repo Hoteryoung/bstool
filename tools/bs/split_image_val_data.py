@@ -16,7 +16,7 @@ class SplitImage():
                  core_dataset_name='buildchange',
                  src_version='v0',
                  dst_version='v1',
-                 city='shanghai',
+                 city='xian_fine',
                  sub_fold=None,
                  subimage_size=1024,
                  gap=512,
@@ -32,9 +32,6 @@ class SplitImage():
         self.geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/geo_info'
         self.ignore_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/pixel_anno_v2'
 
-        wrong_file = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/wrongShpFile.txt'
-        self.skip_filenames = self.read_wrong_file(wrong_file)
-
         self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/images'
         bstool.mkdir_or_exist(self.image_save_dir)
         self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/labels'
@@ -42,16 +39,6 @@ class SplitImage():
 
         self.multi_processing = multi_processing
         self.pool = Pool(num_processor)
-    
-    def read_wrong_file(self, wrong_file):
-        skip_filenames = []
-        with open(wrong_file, 'r') as f:
-            lines = f.readlines()
-            for line in lines:
-                skip_filename = bstool.get_basename(line.strip('\n'))
-                skip_filenames.append(skip_filename)
-        
-        return skip_filenames
 
     def split_image(self, shapefile):
         file_name = bstool.get_basename(shapefile)
@@ -159,7 +146,7 @@ if __name__ == '__main__':
     dst_version = 'v1'
     
     cities = ['xian_fine']
-    sub_folds = {'xian_fine':  ['arg', 'google', 'ms']]}
+    sub_folds = {'xian_fine':  ['arg', 'google', 'ms']}
     
     subimage_size = 1024
     gap = subimage_size // 2

@@ -14,6 +14,7 @@ def shp_parse(shp_file,
               geo_file,
               src_coord='4326',
               dst_coord='pixel',
+              keep_polarity=True,
               clean_polygon_flag=False):
     """parse shapefile
 
@@ -42,11 +43,11 @@ def shp_parse(shp_file,
         src_property = row_data[:-1]
 
         if src_polygon.geom_type == 'Polygon':
-            dst_polygons.append(bstool.polygon_coordinate_convert(src_polygon, geo_img, src_coord, dst_coord))
+            dst_polygons.append(bstool.polygon_coordinate_convert(src_polygon, geo_img, src_coord, dst_coord, keep_polarity))
             dst_properties.append(src_property.to_dict())
         elif src_polygon.geom_type == 'MultiPolygon':
             for sub_polygon in src_polygon:
-                dst_polygons.append(bstool.polygon_coordinate_convert(sub_polygon, geo_img, src_coord, dst_coord))
+                dst_polygons.append(bstool.polygon_coordinate_convert(sub_polygon, geo_img, src_coord, dst_coord, keep_polarity))
                 dst_properties.append(src_property.to_dict())
         else:
             raise(RuntimeError("type(src_polygon) = {}".format(type(src_polygon))))

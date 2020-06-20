@@ -52,7 +52,8 @@ def mask2bbox(mask):
 def polygon_coordinate_convert(polygon, 
                                geo_img, 
                                src_coord='4326', 
-                               dst_coord='pixel'):
+                               dst_coord='pixel',
+                               keep_polarity=True):
         """convert polygon of source coordinate to destination coordinate
 
         Args:
@@ -76,7 +77,11 @@ def polygon_coordinate_convert(polygon,
             else:
                 raise(RuntimeError("Not support dst_coord = {}".format(dst_coord)))
         elif src_coord == 'pixel':
-            converted_polygon = polygon
+            if keep_polarity:
+                converted_polygon = polygon
+            else:
+                converted_polygon = [(abs(geo_img.index(c[0], c[1])[1]), abs(geo_img.index(c[0], c[1])[0])) for c in polygon.exterior.coords]
+                converted_polygon = Polygon(converted_polygon)
         else:
             raise(RuntimeError("Not support src_coord = {}".format(src_coord)))
 
