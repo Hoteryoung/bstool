@@ -30,6 +30,14 @@ python setup.py develop
 - [x] Add ignore flag to properties
 - [x] Show ignored polygons
 - [x] Split large image and corresponding polygons
+- [ ] Convert Json to COCO format
+- [ ] COCO format visualization codes
+- [ ] Merge detection results on small image to original image
+- [ ] Generate CSV file for evaluation (xian fine)
+- [ ] Evaluation codes for semantic segmentation
+- [ ] Evaluation codes for instance segmentation
+- [ ] Evaluation codes for offset
+- [ ] Visualization code for ground truth CSV file and prediction CSV file
 
 
 ### Structure
