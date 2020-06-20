@@ -31,7 +31,8 @@ def bs_json_dump(polygons, properties, image_info, json_file):
             object_struct['ignore'] = single_property['ignore']
             annos.append(object_struct)
         else:
-            print("Runtime Warming: This processing do not support {}".format(type(roof_polygon)))
+            continue
+            # print("Runtime Warming: This processing do not support {}".format(type(roof_polygon)))
 
     json_data = {"image": image_info,
                 "annotations": annos
