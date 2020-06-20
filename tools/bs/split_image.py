@@ -153,15 +153,15 @@ if __name__ == '__main__':
     src_version = 'v0'
     dst_version = 'v1'
 
-    cities = ['shanghai']
-    sub_folds = {'shanghai': ['PHR2017']}
+    # cities = ['shanghai']
+    # sub_folds = {'shanghai': ['arg']}
 
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    # sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
-    #              'chengdu':  ['arg', 'google', 'ms', 'tdt'],
-    #              'haerbin':  ['arg', 'google', 'ms'],
-    #              'jinan':    ['arg', 'google', 'ms', 'tdt'],
-    #              'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
+                 'chengdu':  ['arg', 'google', 'ms', 'tdt'],
+                 'haerbin':  ['arg', 'google', 'ms'],
+                 'jinan':    ['arg', 'google', 'ms', 'tdt'],
+                 'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
     
     subimage_size = 1024
     gap = subimage_size // 2
