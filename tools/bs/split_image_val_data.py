@@ -80,18 +80,7 @@ class SplitImage():
         transformed_polygons = origin_polygons.copy()
         for subimage_coordinate in subimage_coordinates:
             keep = bstool.select_polygons_in_range(origin_polygons, subimage_coordinate, image_size=(self.subimage_size, self.subimage_size))
-            keep_num = len(np.extract(keep == True, keep))
-            if keep_num < 2:
-                continue
             transformed_polygons[keep] = np.array(bstool.chang_polygon_coordinate(origin_polygons[keep].copy(), subimage_coordinate))
-
-            # clip the polygon on boundary (has some bugs)
-            # transformed_polygons[keep] = np.array(bstool.clip_boundary_polygon(transformed_polygons[keep], image_size=(self.subimage_size, self.subimage_size)))
-
-            drop = bstool.drop_subimage(subimages, subimage_coordinate, transformed_polygons[keep])
-
-            if drop:
-                continue
 
             subimage_properties = origin_properties[keep]
             subimage_polygons = transformed_polygons[keep]
