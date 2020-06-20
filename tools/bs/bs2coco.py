@@ -39,6 +39,11 @@ class BS2COCO(bstool.Convert2COCO):
             height = bbox[3]
             area = height * width
 
+            footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
+            if footprint_bbox_width * footprint_bbox_height <= self.small_object_area:
+                self.small_object_idx += 1
+                continue
+
             if area <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
                 continue
