@@ -4,6 +4,7 @@ import geopandas
 import rasterio as rio
 import shapely
 from shapely.geometry import Polygon, MultiPolygon
+from pycocotools.coco import COCO
 
 import mmcv
 import bstool
@@ -157,3 +158,21 @@ def bs_json_parse(json_file):
         objects.append(object_struct)
     
     return objects
+
+
+class COCOParse():
+    def __init__(self, anno_file, classes=['']):
+        self.anno_info = dict()
+        self.coco =  COCO(anno_file)
+        catIds = self.coco.getCatIds(catNms=classes)
+        imgIds = self.coco.getImgIds(catIds=catIds)
+
+        for idx, imgId in enumerate(imgIds):
+            img = self.coco.loadImgs(imgIds[idx])[0]
+            annIds = self.coco.getAnnIds(imgIds=img['id'], catIds=catIds, iscrowd=None)
+            anns = self.coco.loadAnns(annIds)
+
+            self.anno_info[img['file_name']] = anns
+
+    def __call__(self, image_fn):
+        return self.anno_info[image_fn]

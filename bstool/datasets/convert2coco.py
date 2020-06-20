@@ -2,6 +2,7 @@ import os
 import cv2
 import mmcv
 
+
 class Convert2COCO():
     def __init__(self, 
                 imgpath=None,
