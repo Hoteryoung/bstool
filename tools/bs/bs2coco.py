@@ -101,7 +101,7 @@ if __name__ == "__main__":
         if 'xian' in city:
             anno_name = [core_dataset_name, release_version, 'val', city]
         else:
-            anno_name = [core_dataset_name, release_version, 'trainval', city]
+            anno_name = [core_dataset_name, release_version, 'train', city]
         
         imgpath = f'./data/{core_dataset_name}/{release_version}/{city}/images'
         annopath = f'./data/{core_dataset_name}/{release_version}/{city}/labels'
@@ -118,7 +118,8 @@ if __name__ == "__main__":
                                 data_licenses=licenses,
                                 data_type="instances",
                                 groundtruth=groundtruth,
-                                small_object_area=10)
+                                small_object_area=10,
+                                image_size=(1024, 1024))
 
         images, annotations = bs2coco.get_image_annotation_pairs()
 

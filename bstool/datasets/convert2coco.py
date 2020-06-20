@@ -16,7 +16,8 @@ class Convert2COCO():
                 data_type="instances",
                 groundtruth=True,
                 small_object_area=0,
-                sub_anno_fold=False):
+                sub_anno_fold=False,
+                image_size=None):
         super(Convert2COCO, self).__init__()
 
         self.imgpath = imgpath
@@ -34,6 +35,7 @@ class Convert2COCO():
         self.max_object_num_per_image = 0
         self.sub_anno_fold = sub_anno_fold
         self.imageset_file = imageset_file
+        self.image_size = image_size
 
         self.imlist = []
         if self.imageset_file:
@@ -68,8 +70,15 @@ class Convert2COCO():
 
             # if annotation is empty, skip this annotation
             if annotations_coco != [] or self.groundtruth == False:
-                img = cv2.imread(imgpath)
-                height, width, channels = img.shape
+                if self.image_size is None:
+                    img = cv2.imread(imgpath)
+                    height, width, _ = img.shape
+                else:
+                    if isinstance(self.image_size, int):
+                        height = self.image_size
+                        width = self.image_size
+                    else:
+                        height, width = self.image_size
                 images.append({"date_captured": "2019",
                                 "file_name": name + self.image_format,
                                 "id": imId + 1,
@@ -80,7 +89,8 @@ class Convert2COCO():
 
                 for annotation in annotations_coco:
                     index = index + 1
-                    annotation["iscrowd"] = 0
+                    if 'iscrowd' not in annotation:
+                        annotation["iscrowd"] = 0
                     annotation["image_id"] = imId + 1
                     annotation["id"] = index
                     annotations.append(annotation)

@@ -31,7 +31,7 @@ python setup.py develop
 - [x] Show ignored polygons
 - [x] Split large image and corresponding polygons
 - [x] Convert Json to COCO format
-- [ ] COCO format visualization codes
+- [x] COCO format visualization codes
 - [ ] Merge detection results on small image to original image
 - [ ] Generate CSV file for evaluation (xian fine)
 - [ ] Evaluation codes for semantic segmentation

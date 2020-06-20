@@ -34,6 +34,21 @@ def mask2polygon(mask):
 
     return polygon
 
+def mask2bbox(mask):
+    """
+    docstring here
+        :param self: 
+        :param pointobb: list, [x1, y1, x2, y2, ...]
+        return [xmin, ymin, xmax, ymax]
+    """
+    xmin = min(pointobb[0::2])
+    ymin = min(pointobb[1::2])
+    xmax = max(pointobb[0::2])
+    ymax = max(pointobb[1::2])
+    bbox = [xmin, ymin, xmax, ymax]
+    
+    return bbox
+
 def polygon_coordinate_convert(polygon, 
                                geo_img, 
                                src_coord='4326', 

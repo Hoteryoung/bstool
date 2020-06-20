@@ -161,8 +161,8 @@ if __name__ == '__main__':
     # cities = ['shanghai']
     # sub_folds = {'shanghai': ['arg']}
 
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    cities = ['beijing', 'jinan', 'haerbin', 'chengdu']                 # debug
+    # cities = ['beijing', 'jinan', 'haerbin', 'chengdu']                 # debug
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
                  'chengdu':  ['arg', 'google', 'ms', 'tdt'],
                  'haerbin':  ['arg', 'google', 'ms'],
