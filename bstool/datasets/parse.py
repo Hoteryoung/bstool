@@ -141,6 +141,10 @@ def bs_json_parse(json_file):
         bbox_h = ymax - ymin
         object_struct['bbox'] = [xmin, ymin, bbox_w, bbox_h]
         object_struct['roof_bbox'] = object_struct['bbox']
+        xmin, ymin, xmax, ymax = list(footprint_bound)
+        bbox_w = xmax - xmin
+        bbox_h = ymax - ymin
+        object_struct['footprint_bbox'] = [xmin, ymin, bbox_w, bbox_h]
         xmin, ymin, xmax, ymax = list(building_bound)
         bbox_w = xmax - xmin
         bbox_h = ymax - ymin

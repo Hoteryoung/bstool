@@ -29,6 +29,7 @@ class BS2COCO(bstool.Convert2COCO):
             roof_bbox = object_struct['roof_bbox']
             building_bbox = object_struct['building_bbox']
             roof_mask = object_struct['roof_mask']
+            footprint_bbox = object_struct['footprint_bbox']
             footprint_mask = object_struct['footprint_mask']
             ignore_flag = object_struct['ignore_flag']
             offset = object_struct['offset']
@@ -51,6 +52,7 @@ class BS2COCO(bstool.Convert2COCO):
             coco_annotation['roof_bbox'] = roof_bbox
             coco_annotation['building_bbox'] = building_bbox
             coco_annotation['roof_mask'] = roof_mask
+            coco_annotation['footprint_bbox'] = footprint_bbox
             coco_annotation['footprint_mask'] = footprint_mask
             coco_annotation['ignore_flag'] = ignore_flag
             coco_annotation['offset'] = offset
