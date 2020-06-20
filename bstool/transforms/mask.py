@@ -41,10 +41,10 @@ def mask2bbox(mask):
         :param pointobb: list, [x1, y1, x2, y2, ...]
         return [xmin, ymin, xmax, ymax]
     """
-    xmin = min(pointobb[0::2])
-    ymin = min(pointobb[1::2])
-    xmax = max(pointobb[0::2])
-    ymax = max(pointobb[1::2])
+    xmin = min(mask[0::2])
+    ymin = min(mask[1::2])
+    xmax = max(mask[0::2])
+    ymax = max(mask[1::2])
     bbox = [xmin, ymin, xmax, ymax]
     
     return bbox
