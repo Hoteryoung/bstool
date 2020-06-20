@@ -211,6 +211,16 @@ def get_polygon_centroid(polygons):
     return centroids
 
 def select_polygons_in_range(polygons, coordinate, image_size=(1024, 1024)):
+    """select polygons in specific range
+
+    Args:
+        polygons (list): list of polygon
+        coordinate (list of tuple): given coordinate
+        image_size (tuple, optional): image size. Defaults to (1024, 1024).
+
+    Returns:
+        np.array, bool: bool value for keeping which polygons
+    """
     origin_centroids = get_polygon_centroid(polygons)
     origin_centroids = np.array(origin_centroids)
     converted_centroids = origin_centroids.copy()
@@ -224,6 +234,15 @@ def select_polygons_in_range(polygons, coordinate, image_size=(1024, 1024)):
     return np.logical_and(cx_bool, cy_bool)
 
 def chang_polygon_coordinate(polygons, coordinate):
+    """change the coordinate of polygon
+
+    Args:
+        polygons (list): list of polygon
+        coordinate (list or tuple): distance of moving
+
+    Returns:
+        list: list of polygons
+    """
     transform_matrix = [1, 0, 0, 1, -coordinate[0], -coordinate[1]]
     converted_polygons = []
     for polygon in polygons:

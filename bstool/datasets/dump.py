@@ -5,6 +5,14 @@ import bstool
 
 
 def bs_json_dump(polygons, properties, image_info, json_file):
+    """dump json file designed for building segmentation
+
+    Args:
+        polygons (list): list of polygons
+        properties (list): list of property
+        image_info (dict): image information
+        json_file (str): json file name
+    """
     annos = []
     for idx, (roof_polygon, single_property) in enumerate(zip(polygons, properties)):
         object_struct = dict()
@@ -20,6 +28,7 @@ def bs_json_dump(polygons, properties, image_info, json_file):
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
                     object_struct['offset'] = [xoffset, yoffset]
                     object_struct['ignore'] = single_property['ignore']
+        
                     annos.append(object_struct)
         elif roof_polygon.geom_type == 'Polygon':
             object_struct['roof'] = bstool.polygon2mask(roof_polygon)
@@ -29,6 +38,7 @@ def bs_json_dump(polygons, properties, image_info, json_file):
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
             object_struct['offset'] = [xoffset, yoffset]
             object_struct['ignore'] = single_property['ignore']
+        
             annos.append(object_struct)
         else:
             continue

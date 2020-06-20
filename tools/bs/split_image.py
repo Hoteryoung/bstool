@@ -76,18 +76,16 @@ class SplitImage():
         objects = bstool.mask_parse(ignore_file, 
                                     subclasses=255,
                                     clean_polygon_flag=True)
+        
         if len(objects) > 0:
             ignore_polygons = [obj['polygon'] for obj in objects]
-
             ignored_polygon_indexes = bstool.get_ignored_polygon_idx(origin_polygons, ignore_polygons)
-
             origin_properties = bstool.add_ignore_flag_in_property(origin_properties, ignored_polygon_indexes)
         else:
             ret_properties = []
             for single_property in origin_properties:
                 single_property['ignore'] = 0
                 ret_properties.append(single_property)
-
             origin_properties = ret_properties
 
         subimages = bstool.split_image(image_file, 
@@ -164,7 +162,7 @@ if __name__ == '__main__':
     # sub_folds = {'shanghai': ['arg']}
 
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    cities = ['beijing', 'jinan', 'haerbin', 'chengdu']
+    cities = ['beijing', 'jinan', 'haerbin', 'chengdu']                 # debug
     sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
                  'chengdu':  ['arg', 'google', 'ms', 'tdt'],
                  'haerbin':  ['arg', 'google', 'ms'],

@@ -8,6 +8,15 @@ import bstool
 
 class BS2COCO(bstool.Convert2COCO):
     def __generate_coco_annotation__(self, annotpath, imgpath):
+        """generation coco annotation for COCO dataset
+
+        Args:
+            annotpath (str): annotation file
+            imgpath (str): image file
+
+        Returns:
+            dict: annotation information
+        """
         objects = self.__json_parse__(annotpath, imgpath)
         
         coco_annotations = []
