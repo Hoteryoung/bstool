@@ -54,7 +54,7 @@ def drop_subimage(subimages,
                   subimage_coordinate, 
                   subimage_polygons,
                   center_area=2, 
-                  small_object=96,
+                  small_object=64,
                   image_size=(1024, 1024),
                   show=False):
     """judge whether to drop the overlap image
@@ -132,15 +132,7 @@ def drop_subimage(subimages,
     for ignore_index in ignore_indexes:
         inter_areas.append(subimage_polygons[ignore_index].area)
 
-    if len(inter_areas) == 0:
-        return True
-    elif len(inter_areas) < 5:
-        if max(inter_areas) < small_object * small_object:
+    if len(inter_areas) == 0 or max(inter_areas) < small_object * small_object:
             return True
-        else:
-            return False
     else:
-        if max(inter_areas) < small_object * small_object / 4:
-            return True
-        else:
-            return False
+        return False
