@@ -7,6 +7,8 @@ import rasterio as rio
 import geopandas
 from shapely import affinity
 
+import bstool
+
 
 def polygon2mask(polygon):
     """convet polygon to mask
@@ -271,6 +273,27 @@ def chang_polygon_coordinate(polygons, coordinate):
     
     return converted_polygons
 
+def chang_mask_coordinate(masks, coordinate):
+    """change the coordinate of mask
+
+    Args:
+        masks (list): list of mask
+        coordinate (list or tuple): distance of moving
+
+    Returns:
+        list: list of masks
+    """
+    converted_masks = []
+    for idx, value in enumerate(masks):
+        if idx % 2 == 0:
+            value = value + coordinate[0]
+        else:
+            value = value + coordinate[1]
+
+        converted_masks.append(value)
+
+    return converted_masks
+
 def clip_boundary_polygon(polygons, image_size=(1024, 1024)):
     h, w = image_size
     image_boundary = Polygon([(0, 0), (w-1, 0), (w-1, h-1), (0, h-1), (0, 0)])
@@ -311,3 +334,20 @@ def clean_polygon(polygons):
             continue
 
     return polygons_
+
+def merge_mask_results_on_subimage(masks_with_coordinate, scores_with_coordinate, iou_threshold=0.5):
+    subimage_coordinates = list(masks_with_coordinate.keys())
+
+    masks_merged = []
+    scores_merged = []
+    for subimage_coordinate in subimage_coordinates:
+        masks_single = masks_with_coordinate[subimage_coordinate]
+        scores_single = scores_with_coordinate[subimage_coordinate]
+
+        masks_single = chang_mask_coordinate(masks_single, subimage_coordinate)
+        masks_merged.append(masks_single)
+        scores_merged.append(scores_single)
+
+    keep = bstool.mask_nms(masks_merged, scores_merged, iou_threshold=iou_threshold)
+
+    return np.array(masks_merged)[keep].tolist()
