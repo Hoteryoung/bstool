@@ -6,6 +6,7 @@ import networkx as nx
 import rasterio as rio
 import geopandas
 from shapely import affinity
+import itertools
 
 import bstool
 
@@ -335,19 +336,28 @@ def clean_polygon(polygons):
 
     return polygons_
 
-def merge_mask_results_on_subimage(masks_with_coordinate, scores_with_coordinate, iou_threshold=0.5):
-    subimage_coordinates = list(masks_with_coordinate.keys())
+def mask2line(masks):
+    ret_junctions = []              # N * 2
+    ret_edges_positive = []         # M * 4
+    ret_edges_negative = []         # K * 4
 
-    masks_merged = []
-    scores_merged = []
-    for subimage_coordinate in subimage_coordinates:
-        masks_single = masks_with_coordinate[subimage_coordinate]
-        scores_single = scores_with_coordinate[subimage_coordinate]
+    point_number_count = 0
+    for mask in masks:
+        mask_point_num = len(mask) // 2
+        mask_junctions = [mask[i:i + 2] for i in range(0, len(mask), 2)]
+        point_combinnations = list(itertools.combinations(range(point_number_count, point_number_count + mask_point_num, 1), 2))
+        
+        edges_positive_coms, edges_negative_coms = [], []
+        for combination in point_combinnations:
+            if abs(combination[0] - combination[1]) == 1 or abs(combination[0] - combination[1]) == mask_point_num - 1:
+                edges_positive_coms.append(combination)
+            else:
+                edges_negative_coms.append(combination)
 
-        masks_single = chang_mask_coordinate(masks_single, subimage_coordinate)
-        masks_merged.append(masks_single)
-        scores_merged.append(scores_single)
+        ret_junctions += mask_junctions
+        ret_edges_positive += edges_positive_coms
+        ret_edges_negative += edges_negative_coms
 
-    keep = bstool.mask_nms(masks_merged, scores_merged, iou_threshold=iou_threshold)
+        point_number_count += mask_point_num
 
-    return np.array(masks_merged)[keep].tolist()
+    return ret_junctions, ret_edges_positive, ret_edges_negative

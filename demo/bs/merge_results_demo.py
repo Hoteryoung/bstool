@@ -102,7 +102,9 @@ if __name__ == '__main__':
         ori_image_bboxes = merged_bboxes[ori_image_fn]
         ori_image_scores = merged_scores[ori_image_fn]
 
-        nmsed_bboxes = bstool.merge_bbox_results_on_subimage(ori_image_bboxes, ori_image_scores)
+        nmsed_bboxes = bstool.merge_bbox_results_on_subimage(ori_image_bboxes, 
+                                                             ori_image_scores, 
+                                                             iou_threshold=0.1)
 
         bstool.show_bboxs_on_image(img, nmsed_bboxes, show=True)
 

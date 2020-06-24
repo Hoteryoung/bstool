@@ -82,7 +82,7 @@ def chang_bbox_coordinate(bboxes, coordinate):
 
     return bboxes
 
-def merge_bbox_results_on_subimage(bboxes_with_coordinate, scores_with_coordinate, iou_threshold=0.1):
+def merge_bbox_results_on_subimage(bboxes_with_coordinate, scores_with_coordinate, iou_threshold=0.5):
     subimage_coordinates = list(bboxes_with_coordinate.keys())
 
     bboxes_merged = []
