@@ -11,7 +11,7 @@ if __name__ == '__main__':
     label_dir = './data/buildchange/v1/jinan/labels'
     json_file = './data/buildchange/v1/jinan/wireframe/train.json'
 
-    bstool.mkdir_or_exist('/data/buildchange/v1/jinan/wireframe/')
+    bstool.mkdir_or_exist('./data/buildchange/v1/jinan/wireframe/')
 
     height, width = 1024, 1024
 

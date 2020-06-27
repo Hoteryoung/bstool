@@ -54,7 +54,7 @@ def drop_subimage(subimages,
                   subimage_coordinate, 
                   subimage_polygons,
                   center_area=2, 
-                  small_object=16,
+                  small_object=96,
                   image_size=(1024, 1024),
                   show=False):
     """judge whether to drop the overlap image
@@ -107,7 +107,7 @@ def drop_subimage(subimages,
     subimage_polygon_df = geopandas.GeoDataFrame({'geometry': subimage_polygons, 'submask_df':range(len(subimage_polygons))})
     center_line_df = geopandas.GeoDataFrame({'geometry': center_lines, 'center_df':range(len(center_lines))})
 
-    image_boundary = [Polygon([(0, 0), (1024-1, 0), (1024-1, 1024-1), (0, 1024-1), (0, 0)])]
+    image_boundary = [Polygon([(0, 0), (1024 - 1, 0), (1024 - 1, 1024 - 1), (0, 1024 - 1), (0, 0)])]
     border_line_df = geopandas.GeoDataFrame({'geometry': image_boundary, 'border_df':range(len(image_boundary))})
 
     if show:
@@ -132,7 +132,15 @@ def drop_subimage(subimages,
     for ignore_index in ignore_indexes:
         inter_areas.append(subimage_polygons[ignore_index].area)
 
-    if len(inter_areas) == 0 or max(inter_areas) < small_object * small_object:
+    if len(inter_areas) == 0:
+        return True
+    elif len(inter_areas) < 5:
+        if max(inter_areas) < small_object * small_object:
             return True
+        else:
+            return False
     else:
-        return False
+        if max(inter_areas) < small_object * small_object / 4:
+            return True
+        else:
+            return False
