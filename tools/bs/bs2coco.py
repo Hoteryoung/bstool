@@ -108,7 +108,7 @@ if __name__ == "__main__":
         if 'xian' in city:
             anno_name = [core_dataset_name, release_version, 'val', city]
         else:
-            anno_name = [core_dataset_name, release_version, 'train', city, 'more_data_20200622']
+            anno_name = [core_dataset_name, release_version, 'train', city]
         
         imgpath = f'./data/{core_dataset_name}/{release_version}/{city}/images'
         annopath = f'./data/{core_dataset_name}/{release_version}/{city}/labels'

@@ -75,26 +75,9 @@ def chang_bbox_coordinate(bboxes, coordinate):
         coordinate (list or tuple): distance of moving
 
     Returns:
-        list: list of bboxes
+        np.array: converted bboxes
     """
     bboxes[:, 0::2] = bboxes[:, 0::2] + coordinate[0]
     bboxes[:, 1::2] = bboxes[:, 1::2] + coordinate[1]
 
     return bboxes
-
-def merge_bbox_results_on_subimage(bboxes_with_coordinate, scores_with_coordinate, iou_threshold=0.5):
-    subimage_coordinates = list(bboxes_with_coordinate.keys())
-
-    bboxes_merged = []
-    scores_merged = []
-    for subimage_coordinate in subimage_coordinates:
-        bboxes_single = bboxes_with_coordinate[subimage_coordinate]
-        scores_single = scores_with_coordinate[subimage_coordinate]
-
-        bboxes_single = chang_bbox_coordinate(bboxes_single, subimage_coordinate)
-        bboxes_merged += bboxes_single.tolist()
-        scores_merged += scores_single.tolist()
-
-    keep = bstool.bbox_nms(np.array(bboxes_merged), np.array(scores_merged), iou_threshold=iou_threshold)
-
-    return np.array(bboxes_merged)[keep].tolist()

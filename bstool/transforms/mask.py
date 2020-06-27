@@ -278,20 +278,23 @@ def chang_mask_coordinate(masks, coordinate):
     """change the coordinate of mask
 
     Args:
-        masks (list): list of mask
+        masks (np.array): (N, *) list of masks, np.array(list, list, list)
         coordinate (list or tuple): distance of moving
 
     Returns:
         list: list of masks
     """
     converted_masks = []
-    for idx, value in enumerate(masks):
-        if idx % 2 == 0:
-            value = value + coordinate[0]
-        else:
-            value = value + coordinate[1]
-
-        converted_masks.append(value)
+    for mask in masks:
+        converted_mask = []
+        for idx, value in enumerate(mask):
+            if idx % 2 == 0:
+                value = value + coordinate[0]
+            else:
+                value = value + coordinate[1]
+            
+            converted_mask.append(value)
+        converted_masks.append(converted_mask)
 
     return converted_masks
 

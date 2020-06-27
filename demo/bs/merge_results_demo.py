@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     # merged_results = defaultdict(list)
     merged_bboxes = defaultdict(dict)
+    merged_masks = defaultdict(dict)
     merged_scores = defaultdict(dict)
     subfolds = {}
 
@@ -36,8 +37,6 @@ if __name__ == '__main__':
         ori_image_fn = "_".join(base_name.split("__")[0].split('_')[1:])
         coord_x, coord_y = base_name.split("__")[1].split('_')    # top left corner
         coord_x, coord_y = int(coord_x), int(coord_y)
-
-        
 
         single_image_results = {}
         det, seg, offset = results[idx]
@@ -55,6 +54,7 @@ if __name__ == '__main__':
                 offsets = offset
             
             single_image_bbox = []
+            single_image_mask = []
             single_image_score = []
             for i in range(bboxes.shape[0]):
                 score = bboxes[i][4]
@@ -83,7 +83,9 @@ if __name__ == '__main__':
                 bbox = bboxes[i][0:4]
                 score = bboxes[i][-1]
 
+
                 single_image_bbox.append(bbox.tolist())
+                single_image_mask.append(mask)
                 single_image_score.append(score.tolist())
 
         # single_image_results[(coord_x, coord_y)] = single_image_bbox
@@ -92,6 +94,7 @@ if __name__ == '__main__':
         
         # merged_results[ori_image_fn].append(single_image_results)
         merged_bboxes[ori_image_fn][(coord_x, coord_y)] = np.array(single_image_bbox)
+        merged_masks[ori_image_fn][(coord_x, coord_y)] = np.array(single_image_mask)
         merged_scores[ori_image_fn][(coord_x, coord_y)] = np.array(single_image_score)
 
     for ori_image_fn, sub_fold in subfolds.items():
@@ -100,12 +103,13 @@ if __name__ == '__main__':
         img = cv2.imread(ori_image_file)
 
         ori_image_bboxes = merged_bboxes[ori_image_fn]
+        ori_image_masks = merged_masks[ori_image_fn]
         ori_image_scores = merged_scores[ori_image_fn]
 
-        nmsed_bboxes = bstool.merge_bbox_results_on_subimage(ori_image_bboxes, 
-                                                             ori_image_scores, 
-                                                             iou_threshold=0.1)
+        nmsed_bboxes, nmsed_masks = bstool.merge_results_on_subimage((ori_image_bboxes, ori_image_masks, ori_image_scores), 
+                                                                     iou_threshold=0.1)
 
         bstool.show_bboxs_on_image(img, nmsed_bboxes, show=True)
+        bstool.show_masks_on_image(img, nmsed_masks, show=True)
 
         
