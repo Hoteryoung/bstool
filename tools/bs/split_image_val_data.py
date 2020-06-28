@@ -31,9 +31,9 @@ class SplitImage():
         self.roof_shp_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/merged_shp'
         self.geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/images'
 
-        self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/images'
+        self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}_origin/images'
         bstool.mkdir_or_exist(self.image_save_dir)
-        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/labels'
+        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}_origin/labels'
         bstool.mkdir_or_exist(self.label_save_dir)
 
         self.multi_processing = multi_processing
@@ -131,8 +131,8 @@ if __name__ == '__main__':
     cities = ['xian_fine']
     sub_folds = {'xian_fine':  ['arg', 'google', 'ms']}
     
-    subimage_size = 1024
-    gap = subimage_size // 2
+    subimage_size = 2048
+    gap = 0
 
     for city in cities:
         for sub_fold in sub_folds[city]:
