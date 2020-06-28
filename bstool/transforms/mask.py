@@ -376,13 +376,16 @@ def roof2footprint(roof_polygons, properties):
                 else:
                     xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
                     transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
-                    footprint_polygon = affinity.affine_transform(roof_polygon_, transform_matrix)    
+                    footprint_polygon = affinity.affine_transform(roof_polygon_, transform_matrix)
+                    footprint_polygon = bstool.mask2polygon(bstool.polygon2mask(footprint_polygon))
                     
                     footprint_polygons.append(footprint_polygon)
         elif roof_polygon.geom_type == 'Polygon':
             xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
             transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
-            footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)    
+            footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
+            footprint_polygon = bstool.mask2polygon(bstool.polygon2mask(footprint_polygon))
+             
             footprint_polygons.append(footprint_polygon)
         else:
             continue

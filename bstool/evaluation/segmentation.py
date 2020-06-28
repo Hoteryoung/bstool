@@ -56,6 +56,7 @@ class SemanticEval():
         csv_dataset.to_csv(self.csv_pred_file, index=False)
 
     def evaluation(self):
+        print("Begin to convert results to csv files")
         self.results2csv()
         print("Begin to evaluate csv files")
         eval_results = solaris.eval.challenges.spacenet_buildings_2(self.csv_pred_file, self.csv_gt_file)
