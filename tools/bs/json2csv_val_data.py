@@ -35,6 +35,9 @@ if __name__ == '__main__':
             if not (foot_valid_flag and footprint_valid_flag):
                 continue
 
+            roof_gt_polygons.append(roof_gt_polygon)
+            footprint_gt_polygons.append(footprint_gt_polygon)
+
         roof_csv_image = pandas.DataFrame({'ImageId': base_name,
                                         'BuildingId': range(len(roof_gt_polygons)),
                                         'PolygonWKT_Pix': roof_gt_polygons,
