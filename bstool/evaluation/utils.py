@@ -52,17 +52,16 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5):
 
 def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.3):
     coco = COCO(anno_file)
-    catIds = coco.getCatIds(catNms=[''])
-    imgIds = coco.getImgIds(catIds=catIds)
+    img_ids = coco.get_img_ids()
 
     merged_bboxes = defaultdict(dict)
     merged_masks = defaultdict(dict)
     merged_scores = defaultdict(dict)
     subfolds = {}
 
-    for idx, imgId in tqdm(enumerate(imgIds)):
-        img = coco.loadImgs(imgIds[idx])[0]
-        img_name = img['file_name']
+    for idx, img_id in tqdm(enumerate(img_ids)):
+        info = coco.load_imgs([img_id])[0]
+        img_name = info['file_name']
 
         base_name = bstool.get_basename(img_name)
         sub_fold = base_name.split("__")[0].split('_')[1]
@@ -72,45 +71,41 @@ def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.3):
 
         det, seg = results[idx]
 
-        for label in range(len(det)):
-            bboxes = det[label]
-            if isinstance(seg, tuple):
-                segms = seg[0][label]
-            else:
-                segms = seg[label]
+        bboxes = np.vstack(det)
+        segms = mmcv.concat_list(seg)
+        
+        single_image_bbox = []
+        single_image_mask = []
+        single_image_score = []
+        for i in range(bboxes.shape[0]):
+            score = bboxes[i][4]
+            if score < score_threshold:
+                continue
+
+            if isinstance(segms[i]['counts'], bytes):
+                segms[i]['counts'] = segms[i]['counts'].decode()
+            mask = maskUtils.decode(segms[i]).astype(np.bool)
+            gray = np.array(mask*255, dtype=np.uint8)
+
+            contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = contours[0] if len(contours) == 2 else contours[1]
             
-            single_image_bbox = []
-            single_image_mask = []
-            single_image_score = []
-            for i in range(bboxes.shape[0]):
-                score = bboxes[i][4]
-                if score < score_threshold:
+            if contours != []:
+                cnt = max(contours, key = cv2.contourArea)
+                if cv2.contourArea(cnt) < 5:
                     continue
-
-                if isinstance(segms[i]['counts'], bytes):
-                    segms[i]['counts'] = segms[i]['counts'].decode()
-                mask = maskUtils.decode(segms[i]).astype(np.bool)
-                gray = np.array(mask*255, dtype=np.uint8)
-
-                contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                contours = contours[0] if len(contours) == 2 else contours[1]
-                
-                if contours != []:
-                    cnt = max(contours, key = cv2.contourArea)
-                    if cv2.contourArea(cnt) < 5:
-                        continue
-                    mask = np.array(cnt).reshape(1, -1).tolist()[0]
-                    if len(mask) < 8:
-                        continue
-                else:
+                mask = np.array(cnt).reshape(1, -1).tolist()[0]
+                if len(mask) < 8:
                     continue
-                
-                bbox = bboxes[i][0:4]
-                score = bboxes[i][-1]
+            else:
+                continue
+            
+            bbox = bboxes[i][0:4]
+            score = bboxes[i][-1]
 
-                single_image_bbox.append(bbox.tolist())
-                single_image_mask.append(mask)
-                single_image_score.append(score.tolist())
+            single_image_bbox.append(bbox.tolist())
+            single_image_mask.append(mask)
+            single_image_score.append(score.tolist())
 
         subfolds[ori_image_fn] = sub_fold
         

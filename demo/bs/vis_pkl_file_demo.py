@@ -11,8 +11,8 @@ import pycocotools.mask as maskUtils
 if __name__ == '__main__':
     # pkl_file = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/buildchange/bc_v001_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_roof_bbox/bc_v001_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_roof_bbox_coco_results.pkl'
     pkl_file = '/data/buildchange/bc_v001_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_roof_bbox_coco_results.pkl'
-    # ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine.json'
-    ann_file = '/data/buildchange/buildchange_v1_val_xian_fine.json'
+    ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine.json'
+    # ann_file = '/data/buildchange/buildchange_v1_val_xian_fine.json'
     image_dir = '/data/buildchange/v1/xian_fine/images'
 
     results = mmcv.load(pkl_file)

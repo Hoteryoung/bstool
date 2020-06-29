@@ -35,9 +35,8 @@ class DetEval():
         for idx in range(len(self.img_ids)):
             img_id = self.img_ids[idx]
             info = self.coco.load_imgs([img_id])[0]
-            image_name = info['file_name']
-            ori_image_name = image_name.split("__")[1]
-            bboxes, masks, scores = results[ori_image_name]
+            image_name = bstool.get_basename(info['file_name'])
+            bboxes, masks, scores = results[image_name]
 
             for i in range(len(bboxes)):
                 data = dict()
