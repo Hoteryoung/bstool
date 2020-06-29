@@ -63,7 +63,7 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5, nms='b
 
     return np.array(bboxes_merged)[keep].tolist(), np.array(masks_merged)[keep], np.array(scores_merged)[keep].tolist()
 
-def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms', opencv_flag=True):
+def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms', opencv_flag=False):
     coco = COCO(anno_file)
     img_ids = coco.get_img_ids()
 
@@ -115,6 +115,8 @@ def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, n
                     continue
             else:
                 polygons = bstool.generate_polygon(gray)
+                if len(polygons) == 0:
+                    continue
                 areas = [polygon.area for polygon in polygons]
                 idx = areas.index(max(areas))
                 mask = bstool.polygon2mask(polygons[idx])

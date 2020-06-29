@@ -1,5 +1,6 @@
 from shapely.geometry import Polygon, MultiPolygon
 from skimage import measure
+import bstool
 
 
 def generate_polygon(mask_image, 
@@ -21,10 +22,18 @@ def generate_polygon(mask_image,
         poly = poly.simplify(1.0, preserve_topology=False)
         if poly.geom_type == 'MultiPolygon':
             for poly_ in poly:
-                if poly.area < min_area:
+                if poly_.area < min_area:
+                    continue
+                valid_flag = bstool.single_valid_polygon(poly_)
+                if not valid_flag:
                     continue
                 polygons.append(poly_)
-        else:
+        elif poly.geom_type == 'Polygon':
+            valid_flag = bstool.single_valid_polygon(poly)
+            if not valid_flag:
+                continue
             polygons.append(poly)
+        else:
+            continue
 
     return polygons
