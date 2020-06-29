@@ -19,7 +19,7 @@ import tqdm
 class SemanticEval():
     def __init__(self, 
                  results,
-                 csv_gt_file='./data/buildchange/v0/xian_fine/xian_fine_2048_gt.csv',
+                 csv_gt_file='./data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv',
                  csv_pred_prefix=None,
                  score_threshold=0.3):
         self.csv_gt_file = csv_gt_file
@@ -56,5 +56,5 @@ class SemanticEval():
         print("Begin to convert results to csv files")
         self.results2csv()
         print("Begin to evaluate csv files")
-        solaris_semantic_evaluation(self.csv_pred_file, self.csv_gt_file)
+        bstool.solaris_semantic_evaluation(self.csv_pred_file, self.csv_gt_file)
         

@@ -15,7 +15,7 @@ except:
     print("Please install solaris")
 
 
-def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5):
+def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5, nms='bbox_nms'):
     """designed for bboxes and masks
 
     Args:
@@ -44,6 +44,9 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5):
         masks_single_image = masks_with_coordinate[subimage_coordinate]
         scores_single_image = scores_with_coordinate[subimage_coordinate]
 
+        if len(bboxes_single_image) == 0:
+            continue
+
         bboxes_single_image = bstool.chang_bbox_coordinate(bboxes_single_image, subimage_coordinate)
         masks_single_image = bstool.chang_mask_coordinate(masks_single_image, subimage_coordinate)
 
@@ -51,11 +54,16 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5):
         masks_merged += masks_single_image
         scores_merged += scores_single_image.tolist()
 
-    keep = bstool.bbox_nms(np.array(bboxes_merged), np.array(scores_merged), iou_threshold=iou_threshold)
+    if nms == 'bbox_nms':
+        keep = bstool.bbox_nms(np.array(bboxes_merged), np.array(scores_merged), iou_threshold=iou_threshold)
+    elif nms == 'mask_nms':
+        keep = bstool.mask_nms(masks_merged, np.array(scores_merged), iou_threshold=iou_threshold)
+    else:
+        keep = range(len(bboxes_merged))
 
     return np.array(bboxes_merged)[keep].tolist(), np.array(masks_merged)[keep], np.array(scores_merged)[keep].tolist()
 
-def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.05):
+def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms'):
     coco = COCO(anno_file)
     img_ids = coco.get_img_ids()
 
@@ -90,7 +98,7 @@ def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.05):
             if isinstance(segms[i]['counts'], bytes):
                 segms[i]['counts'] = segms[i]['counts'].decode()
             mask = maskUtils.decode(segms[i]).astype(np.bool)
-            gray = np.array(mask*255, dtype=np.uint8)
+            gray = np.array(mask * 255, dtype=np.uint8)
 
             contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             contours = contours[0] if len(contours) == 2 else contours[1]
@@ -104,6 +112,8 @@ def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.05):
                     continue
             else:
                 continue
+
+            # polygons = bstool.generate_polygon(sub_mask)
             
             bbox = bboxes[i][0:4]
             score = bboxes[i][-1]
@@ -125,7 +135,7 @@ def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.05):
         ori_image_scores = merged_scores[ori_image_fn]
 
         nmsed_bboxes, nmsed_masks, nmsed_scores = bstool.merge_results_on_subimage((ori_image_bboxes, ori_image_masks, ori_image_scores), 
-                                                                     iou_threshold=iou_threshold)
+                                                                     iou_threshold=iou_threshold, nms='bbox_nms')
         ret[ori_image_fn] = (nmsed_bboxes, nmsed_masks, nmsed_scores)
 
     return ret

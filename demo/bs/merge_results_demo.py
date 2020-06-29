@@ -16,7 +16,7 @@ if __name__ == '__main__':
     pkl_file = '/data/buildchange/bc_v001_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_roof_bbox_coco_results.pkl'
     
     results = mmcv.load(pkl_file)
-    ret = bstool.merge_results(results, anno_file, iou_threshold=0.1)
+    ret = bstool.merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.3, nms='mask_nms')
 
     for image_file_name in os.listdir(large_image_dir):
         image_file = os.path.join(large_image_dir, image_file_name)
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
         nmsed_bboxes, nmsed_masks, nmsed_scores = ret[bstool.get_basename(image_file)]
 
-        bstool.show_bboxs_on_image(img, nmsed_bboxes, show=True)
+        bstool.show_bboxs_on_image(img, nmsed_bboxes, scores=nmsed_scores, show=True)
         bstool.show_masks_on_image(img, nmsed_masks, show=True)
 
         

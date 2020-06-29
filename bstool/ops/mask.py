@@ -12,33 +12,29 @@ def mask_nms(masks, scores, iou_threshold=0.5):
         scores {np.array} -- [N * 1]
         iou_threshold {float} -- threshold for IoU
     """
-    boxes = np.array([bstool.mask2bbox(_) for _ in masks])
-    
-    x1 = boxes[:, 0]
-    y1 = boxes[:, 1]
-    x2 = boxes[:, 2]
-    y2 = boxes[:, 3]
+    polygons = [bstool.mask2polygon(mask) for mask in masks]
+
+    areas = [polygon.area for polygon in polygons]
 
     order = scores.argsort()[::-1]
-
-    areas = (x2 - x1 + 1) * (y2 - y1 + 1)
     
     keep = []
     while order.size > 0:
-        best_box = order[0]
-        keep.append(best_box)
+        best_mask_idx = order[0]
+        keep.append(best_mask_idx)
 
-        inter_x1 = np.maximum(x1[order[1:]], x1[best_box])
-        inter_y1 = np.maximum(y1[order[1:]], y1[best_box])
-        inter_x2 = np.minimum(x2[order[1:]], x2[best_box])
-        inter_y2 = np.minimum(y2[order[1:]], y2[best_box])
+        best_mask = polygons[best_mask_idx]
+        remain_masks = polygons[order[1:]]
 
-        inter_w = np.maximum(inter_x2 - inter_x1 + 1, 0.0)
-        inter_h = np.maximum(inter_y2 - inter_y1 + 1, 0.0)
+        inters = []
+        for remain_mask in remain_masks:
+            mask1 = best_mask
+            mask2 = remain_mask
+            inter = mask1.intersection(mask2)
+            inters.append(inter)
 
-        inter = inter_w * inter_h
-
-        iou = inter / (areas[best_box] + areas[order[1:]] - inter)
+        inters = np.array(inters)
+        iou = inters / (areas[best_mask_idx] + areas[order[1:]] - inters)
 
         inds = np.where(iou <= iou_threshold)[0]
         
