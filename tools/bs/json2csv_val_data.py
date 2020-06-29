@@ -6,6 +6,7 @@ import cv2
 import pandas
 import glob
 from shapely import affinity
+import tqdm
 
 
 if __name__ == '__main__':
@@ -17,7 +18,7 @@ if __name__ == '__main__':
     json_dir = './data/buildchange/v1/xian_fine/labels'
 
     json_file_list = glob.glob("{}/*.json".format(json_dir))
-    for json_file in json_file_list:
+    for json_file in tqdm.tqdm(json_file_list):
         base_name = bstool.get_basename(json_file)
 
         objects = bstool.bs_json_parse(json_file)
