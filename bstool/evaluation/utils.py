@@ -63,7 +63,7 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5, nms='b
 
     return np.array(bboxes_merged)[keep].tolist(), np.array(masks_merged)[keep], np.array(scores_merged)[keep].tolist()
 
-def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms', opencv_flag=False):
+def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms', opencv_flag=True):
     coco = COCO(anno_file)
     img_ids = coco.get_img_ids()
 
