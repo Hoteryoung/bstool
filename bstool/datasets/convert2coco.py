@@ -59,6 +59,7 @@ class Convert2COCO():
         index = 0
         progress_bar = mmcv.ProgressBar(len(self.imlist))
         imId = 0
+        self.imlist.sort()
         for name in self.imlist:
             imgpath = os.path.join(self.imgpath, name + self.image_format)
             if self.sub_anno_fold:
