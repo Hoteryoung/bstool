@@ -32,9 +32,7 @@ if __name__ == '__main__':
             foot_valid_flag = bstool.single_valid_polygon(roof_gt_polygon)
             footprint_valid_flag = bstool.single_valid_polygon(footprint_gt_polygon)
 
-            if foot_valid_flag and footprint_valid_flag:
-                pass
-            else:
+            if not (foot_valid_flag and footprint_valid_flag):
                 continue
 
         roof_csv_image = pandas.DataFrame({'ImageId': base_name,
