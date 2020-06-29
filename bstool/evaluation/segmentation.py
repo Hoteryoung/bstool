@@ -13,10 +13,7 @@ import pycocotools.mask as maskUtils
 from terminaltables import AsciiTable
 import tqdm
 
-try:
-    import solaris
-except:
-    print("Please install solaris")
+
 
 
 class SemanticEval():
@@ -59,10 +56,5 @@ class SemanticEval():
         print("Begin to convert results to csv files")
         self.results2csv()
         print("Begin to evaluate csv files")
-        eval_results = solaris.eval.challenges.spacenet_buildings_2(self.csv_pred_file, self.csv_gt_file)
-        print("F1 Score: {}\nPrecision: {}\nRecall: {}\nTruePos: {}\nFalsePos: {}\nFalseNeg: {}".format(eval_results[1]['F1Score'].mean()*100, 
-                                                                                                             eval_results[1]['Precision'].mean()*100, 
-                                                                                                             eval_results[1]['Recall'].mean()*100, 
-                                                                                                             eval_results[1]['TruePos'].sum(), 
-                                                                                                             eval_results[1]['FalsePos'].sum(), 
-                                                                                                             eval_results[1]['FalseNeg'].sum()))
+        solaris_semantic_evaluation(self.csv_pred_file, self.csv_gt_file)
+        
