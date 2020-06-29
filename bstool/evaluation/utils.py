@@ -50,7 +50,7 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5):
 
     return np.array(bboxes_merged)[keep].tolist(), np.array(masks_merged)[keep], np.array(scores_merged)[keep].tolist()
 
-def merge_results(results, anno_file, iou_threshold=0.5):
+def merge_results(results, anno_file, iou_threshold=0.5, score_threshold=0.3):
     coco = COCO(anno_file)
     catIds = coco.getCatIds(catNms=[''])
     imgIds = coco.getImgIds(catIds=catIds)
@@ -84,7 +84,7 @@ def merge_results(results, anno_file, iou_threshold=0.5):
             single_image_score = []
             for i in range(bboxes.shape[0]):
                 score = bboxes[i][4]
-                if score < 0.3:
+                if score < score_threshold:
                     continue
 
                 if isinstance(segms[i]['counts'], bytes):

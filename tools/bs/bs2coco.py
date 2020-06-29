@@ -98,8 +98,7 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'buildchange'
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine']
-    cities = ['xian_fine_origin']
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine']
     release_version = 'v1'
 
     groundtruth = True
@@ -127,7 +126,7 @@ if __name__ == "__main__":
                                 data_type="instances",
                                 groundtruth=groundtruth,
                                 small_object_area=10,
-                                image_size=(2048, 2048))
+                                image_size=(1024, 1024))
 
         images, annotations = bs2coco.get_image_annotation_pairs()
 

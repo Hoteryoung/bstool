@@ -63,6 +63,6 @@ class SemanticEval():
         print("F1 Score: {}\nPrecision: {}\nRecall: {}\nTruePos: {}\nFalsePos: {}\nFalseNeg: {}".format(eval_results[1]['F1Score'].mean()*100, 
                                                                                                              eval_results[1]['Precision'].mean()*100, 
                                                                                                              eval_results[1]['Recall'].mean()*100, 
-                                                                                                             eval_results[1]['TruePos'].mean(), 
-                                                                                                             eval_results[1]['FalsePos'].mean(), 
-                                                                                                             eval_results[1]['FalseNeg'].mean()))
+                                                                                                             eval_results[1]['TruePos'].sum(), 
+                                                                                                             eval_results[1]['FalsePos'].sum(), 
+                                                                                                             eval_results[1]['FalseNeg'].sum()))
