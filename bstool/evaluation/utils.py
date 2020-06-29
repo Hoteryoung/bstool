@@ -63,7 +63,7 @@ def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5, nms='b
 
     return np.array(bboxes_merged)[keep].tolist(), np.array(masks_merged)[keep], np.array(scores_merged)[keep].tolist()
 
-def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms'):
+def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, nms='bbox_nms', opencv_flag=False):
     coco = COCO(anno_file)
     img_ids = coco.get_img_ids()
 
@@ -100,21 +100,25 @@ def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, n
             mask = maskUtils.decode(segms[i]).astype(np.bool)
             gray = np.array(mask * 255, dtype=np.uint8)
 
-            contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            contours = contours[0] if len(contours) == 2 else contours[1]
-            
-            if contours != []:
-                cnt = max(contours, key = cv2.contourArea)
-                if cv2.contourArea(cnt) < 5:
-                    continue
-                mask = np.array(cnt).reshape(1, -1).tolist()[0]
-                if len(mask) < 8:
+            if opencv_flag:
+                contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                contours = contours[0] if len(contours) == 2 else contours[1]
+                
+                if contours != []:
+                    cnt = max(contours, key = cv2.contourArea)
+                    if cv2.contourArea(cnt) < 5:
+                        continue
+                    mask = np.array(cnt).reshape(1, -1).tolist()[0]
+                    if len(mask) < 8:
+                        continue
+                else:
                     continue
             else:
-                continue
-
-            # polygons = bstool.generate_polygon(sub_mask)
-            
+                polygons = bstool.generate_polygon(gray)
+                areas = [polygon.area for polygon in polygons]
+                idx = areas.index(max(areas))
+                mask = bstool.polygon2mask(polygons[idx])
+                
             bbox = bboxes[i][0:4]
             score = bboxes[i][-1]
 
