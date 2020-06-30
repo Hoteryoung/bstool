@@ -40,15 +40,16 @@ class SemanticEval():
                 if score < self.score_threshold:
                     continue
                 polygons.append(bstool.mask2polygon(mask))
-                csv_image = pandas.DataFrame({'ImageId': image_name,
-                                              'BuildingId': range(len(polygons)),
-                                              'PolygonWKT_Pix': polygons,
-                                              'Confidence': 1})
-                if first_in:
-                    csv_dataset = csv_image
-                    first_in = False
-                else:
-                    csv_dataset = csv_dataset.append(csv_image)
+
+            csv_image = pandas.DataFrame({'ImageId': image_name,
+                                          'BuildingId': range(len(polygons)),
+                                          'PolygonWKT_Pix': polygons,
+                                          'Confidence': 1})
+            if first_in:
+                csv_dataset = csv_image
+                first_in = False
+            else:
+                csv_dataset = csv_dataset.append(csv_image)
 
         csv_dataset.to_csv(self.csv_pred_file, index=False)
 
