@@ -111,6 +111,10 @@ def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, n
                     mask = np.array(cnt).reshape(1, -1).tolist()[0]
                     if len(mask) < 8:
                         continue
+
+                    valid_flag = bstool.single_valid_polygon(bstool.mask2polygon(mask))
+                    if not valid_flag:
+                        continue
                 else:
                     continue
             else:
