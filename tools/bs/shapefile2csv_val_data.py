@@ -32,8 +32,14 @@ if __name__ == '__main__':
                                         dst_coord='pixel',
                                         keep_polarity=False)
 
-            roof_gt_polygons = [obj['polygon'] for obj in objects]
-            gt_properties = [obj['property'] for obj in objects]
+            roof_gt_polygons, gt_properties = [], []
+            for obj in objects:
+                roof_gt_polygon = obj['polygon']
+                valid_flag = bstool.single_valid_polygon(roof_gt_polygon)
+                if not valid_flag:
+                    continue
+                roof_gt_polygons.append(obj['polygon'])
+                gt_properties.append(obj['property'])
 
             footprint_gt_polygons = bstool.roof2footprint(roof_gt_polygons, gt_properties)
 
