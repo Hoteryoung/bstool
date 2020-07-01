@@ -183,6 +183,6 @@ if __name__ == '__main__':
                                     subimage_size=subimage_size,
                                     gap=gap,
                                     multi_processing=True,
-                                    num_processor=8)
+                                    num_processor=4)
             split_image.core()
             print("Finish processing {} {} set.".format(city, sub_fold))
