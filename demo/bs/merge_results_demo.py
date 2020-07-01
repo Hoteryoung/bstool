@@ -13,7 +13,7 @@ import bstool
 if __name__ == '__main__':
     large_image_dir = '/data/buildchange/v1/xian_fine_origin/images'
     anno_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine.json'
-    pkl_file = '/data/buildchange/bc_v001_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_roof_bbox_coco_results.pkl'
+    pkl_file = '/data/buildchange/coco_results_v015.pkl'
     
     results = mmcv.load(pkl_file)
     ret = bstool.merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.5, nms='mask_nms')

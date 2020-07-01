@@ -114,3 +114,15 @@ def show_coco_mask(coco, image_file, anns, output_file=None):
         plt.clf()
     else:
         plt.show()
+
+def draw_masks_boundary(img, masks, color=(0, 0, 255)):
+    for mask in masks:
+        img = draw_mask_boundary(img, mask, color=color)
+
+    return img
+
+def draw_mask_boundary(img, mask, color=(0, 0, 255)):
+    mask = np.array(mask).reshape((-1, 1, 2))
+    img = cv2.polylines(img, [mask], True, color, thickness=2, lineType=cv2.LINE_AA)
+
+    return img

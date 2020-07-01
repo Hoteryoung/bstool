@@ -4,8 +4,11 @@ import mmcv
 from pycocotools.coco import COCO
 import pycocotools.mask as maskUtils
 import cv2
+import pandas
 from collections import defaultdict
 from tqdm import tqdm
+from shapely import affinity
+import shapely
 
 import bstool
 
@@ -158,3 +161,241 @@ def solaris_semantic_evaluation(csv_pred_file, csv_gt_file):
                                                                                                     eval_results[1]['TruePos'].sum(), 
                                                                                                     eval_results[1]['FalsePos'].sum(), 
                                                                                                     eval_results[1]['FalseNeg'].sum()))
+
+def pkl2csv_roof(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
+    results = mmcv.load(pkl_file)
+    
+    if len(results) == 0:
+        return
+
+    coco = COCO(anno_file)
+    img_ids = coco.get_img_ids()
+
+    csv_file = csv_prefix + "_" + 'roof' + '.csv'
+
+    first_in = True
+    for idx, img_id in tqdm(enumerate(img_ids)):
+        info = coco.load_imgs([img_id])[0]
+        img_name = info['file_name']
+
+        det, seg = results[idx], None
+
+        bboxes = np.vstack(det)
+        segms = mmcv.concat_list(seg)
+        
+        single_image_bboxes = []
+        single_image_masks = []
+        single_image_scores = []
+        for i in range(bboxes.shape[0]):
+            score = bboxes[i][4]
+            if score < score_threshold:
+                continue
+
+            if isinstance(segms[i]['counts'], bytes):
+                segms[i]['counts'] = segms[i]['counts'].decode()
+            mask = maskUtils.decode(segms[i]).astype(np.bool)
+            gray = np.array(mask * 255, dtype=np.uint8)
+
+            contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = contours[0] if len(contours) == 2 else contours[1]
+            
+            if contours != []:
+                cnt = max(contours, key = cv2.contourArea)
+                if cv2.contourArea(cnt) < 5:
+                    continue
+                mask = np.array(cnt).reshape(1, -1).tolist()[0]
+                if len(mask) < 8:
+                    continue
+
+                valid_flag = bstool.single_valid_polygon(bstool.mask2polygon(mask))
+                if not valid_flag:
+                    continue
+            else:
+                continue
+
+            bbox = bboxes[i][0:4]
+            score = bboxes[i][-1]
+            mask = mask
+
+            single_image_bboxes.append(bbox.tolist())
+            single_image_masks.append(bstool.mask2polygon(mask))
+            single_image_scores.append(score.tolist())
+
+        csv_image = pandas.DataFrame({'ImageId': img_name.split('.')[0],
+                                      'BuildingId': range(len(single_image_masks)),
+                                      'PolygonWKT_Pix': single_image_masks,
+                                      'Confidence': single_image_scores})
+        if first_in:
+            csv_dataset = csv_image
+            first_in = False
+        else:
+            csv_dataset = csv_dataset.append(csv_image)
+
+    csv_dataset.to_csv(csv_file, index=False)
+
+def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
+    results = mmcv.load(pkl_file)
+    
+    if len(results) == 0:
+        return
+
+    coco = COCO(anno_file)
+    img_ids = coco.get_img_ids()
+
+    csv_file_roof = csv_prefix + "_" + 'roof' + '.csv'
+    csv_file_footprint = csv_prefix + "_" + 'footprint' + '.csv'
+
+    first_in = True
+    for idx, img_id in tqdm(enumerate(img_ids)):
+        info = coco.load_imgs([img_id])[0]
+        img_name = info['file_name']
+
+        det, seg, offset = results[idx]
+
+        bboxes = np.vstack(det)
+        segms = mmcv.concat_list(seg)
+
+        if isinstance(offset, tuple):
+            offsets = offset[0]
+        else:
+            offsets = offset
+        
+        single_image_bboxes = []
+        single_image_roofs = []
+        single_image_footprints = []
+        single_image_scores = []
+        for i in range(bboxes.shape[0]):
+            score = bboxes[i][4]
+            offset = offsets[i]
+            if score < score_threshold:
+                continue
+
+            if isinstance(segms[i]['counts'], bytes):
+                segms[i]['counts'] = segms[i]['counts'].decode()
+            mask = maskUtils.decode(segms[i]).astype(np.bool)
+            gray = np.array(mask * 255, dtype=np.uint8)
+
+            contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = contours[0] if len(contours) == 2 else contours[1]
+            
+            if contours != []:
+                cnt = max(contours, key = cv2.contourArea)
+                if cv2.contourArea(cnt) < 5:
+                    continue
+                mask = np.array(cnt).reshape(1, -1).tolist()[0]
+                if len(mask) < 8:
+                    continue
+
+                valid_flag = bstool.single_valid_polygon(bstool.mask2polygon(mask))
+                if not valid_flag:
+                    continue
+            else:
+                continue
+
+            bbox = bboxes[i][0:4]
+            score = bboxes[i][-1]
+            roof = mask
+
+            roof_polygon = bstool.mask2polygon(roof)
+
+            transform_matrix = [1, 0, 0, 1,  -1.0 * offset[0], -1.0 * offset[1]]
+            footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
+
+            single_image_bboxes.append(bbox.tolist())
+            single_image_roofs.append(roof_polygon)
+            single_image_footprints.append(footprint_polygon)
+            single_image_scores.append(score.tolist())
+
+        csv_image_roof = pandas.DataFrame({'ImageId': img_name.split('.')[0],
+                                      'BuildingId': range(len(single_image_roofs)),
+                                      'PolygonWKT_Pix': single_image_roofs,
+                                      'Confidence': single_image_scores})
+        csv_image_footprint = pandas.DataFrame({'ImageId': img_name.split('.')[0],
+                                      'BuildingId': range(len(single_image_footprints)),
+                                      'PolygonWKT_Pix': single_image_footprints,
+                                      'Confidence': single_image_scores})
+        if first_in:
+            csv_dataset_roof = csv_image_roof
+            csv_dataset_footprint = csv_image_footprint
+            first_in = False
+        else:
+            csv_dataset_roof = csv_dataset_roof.append(csv_image_roof)
+            csv_dataset_footprint = csv_dataset_footprint.append(csv_image_footprint)
+
+    csv_dataset_roof.to_csv(csv_file_roof, index=False)
+    csv_dataset_footprint.to_csv(csv_file_footprint, index=False)
+
+def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_threshold=0.4, min_area=100):
+    csv_df = pandas.read_csv(input_csv_file)
+    image_name_list = list(set(csv_df.ImageId.unique()))
+    
+    ori_image_name_set = set()
+    merged_masks = defaultdict(dict)
+    merged_scores = defaultdict(dict)
+    print("Indexing results of original images")
+    for idx, image_name in tqdm(enumerate(image_name_list)):
+        single_image_masks = []
+        single_image_scores = []
+
+        sub_fold, ori_image_name, coord = bstool.get_info_splitted_imagename(image_name)
+        ori_image_name_set.add(ori_image_name)
+        for idx, row in csv_df[csv_df.ImageId == image_name].iterrows():
+            polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
+            if polygon.area < min_area:
+                continue
+            mask = bstool.polygon2mask(polygon)
+            score = float(row.Confidence)
+            if score < score_threshold:
+                continue
+            single_image_masks.append(mask)
+            single_image_scores.append(score)
+
+        if len(single_image_masks) == 0:
+            continue
+    
+        merged_masks[ori_image_name][coord] = np.array(single_image_masks)
+        merged_scores[ori_image_name][coord] = np.array(single_image_scores)
+
+    ori_image_name_list = list(ori_image_name_set)
+    print("Nms for original images")
+    first_in = True
+    for ori_image_name in tqdm(ori_image_name_list):
+        ori_image_masks = merged_masks[ori_image_name]
+        ori_image_scores = merged_scores[ori_image_name]
+
+        nmsed_masks, nmsed_scores = bstool.merge_masks_on_subimage((ori_image_masks, ori_image_scores), 
+                                                                    iou_threshold=iou_threshold)
+        nmsed_masks = [bstool.mask2polygon(mask) for mask in nmsed_masks]
+
+        csv_image = pandas.DataFrame({'ImageId': ori_image_name,
+                                      'BuildingId': range(len(nmsed_masks)),
+                                      'PolygonWKT_Pix': nmsed_masks,
+                                      'Confidence': nmsed_scores})
+        if first_in:
+            csv_dataset = csv_image
+            first_in = False
+        else:
+            csv_dataset = csv_dataset.append(csv_image)
+
+    csv_dataset.to_csv(output_csv_file, index=False)
+
+def merge_masks_on_subimage(results_with_coordinate, iou_threshold=0.1):
+    masks_with_coordinate, scores_with_coordinate = results_with_coordinate
+    subimage_coordinates = list(masks_with_coordinate.keys())
+
+    masks_merged, scores_merged = [], []
+    for subimage_coordinate in subimage_coordinates:
+        masks_single_image = masks_with_coordinate[subimage_coordinate]
+        scores_single_image = scores_with_coordinate[subimage_coordinate]
+
+        if len(masks_single_image) == 0:
+            continue
+
+        masks_single_image = bstool.chang_mask_coordinate(masks_single_image, subimage_coordinate)
+
+        masks_merged += masks_single_image
+        scores_merged += scores_single_image.tolist()
+
+        keep = bstool.mask_nms(masks_merged, np.array(scores_merged), iou_threshold=iou_threshold)
+
+    return np.array(masks_merged)[keep].tolist(), np.array(scores_merged)[keep].tolist()

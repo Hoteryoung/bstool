@@ -37,3 +37,13 @@ def get_dir_name(file_path):
     dir_name = os.path.abspath(os.path.dirname(file_path))
 
     return dir_name
+
+
+def get_info_splitted_imagename(img_name):
+    base_name = get_basename(img_name)
+    sub_fold = base_name.split("__")[0].split('_')[1]
+    ori_image_fn = base_name.split("__")[1]
+    coord_x, coord_y = base_name.split("__")[2].split('_')    # top left corner
+    coord_x, coord_y = int(coord_x), int(coord_y)
+
+    return sub_fold, ori_image_fn, (coord_x, coord_y)
