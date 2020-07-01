@@ -32,12 +32,13 @@ python setup.py develop
 - [x] Split large image and corresponding polygons
 - [x] Convert Json to COCO format
 - [x] COCO format visualization codes
-- [ ] Merge detection results on small image to original image
-- [ ] Generate CSV file for evaluation (xian fine)
-- [ ] Evaluation codes for semantic segmentation
-- [ ] Evaluation codes for instance segmentation
+- [x] Merge detection results on small image to original image
+- [x] Generate CSV file for evaluation (xian fine)
+- [x] Evaluation codes for semantic segmentation
+- [x] Evaluation codes for instance segmentation
 - [ ] Evaluation codes for offset
-- [ ] Visualization code for ground truth CSV file and prediction CSV file
+- [x] Visualization code for ground truth CSV file and prediction CSV file
+- [x] Visualization code for TP, FN, FP (pred and gt)
 
 
 ### Structure
