@@ -126,3 +126,12 @@ def draw_mask_boundary(img, mask, color=(0, 0, 255)):
     img = cv2.polylines(img, [mask], True, color, thickness=2, lineType=cv2.LINE_AA)
 
     return img
+
+def draw_iou(img, polygon, iou, color=(0, 0, 255)):
+    centroid = bstool.get_polygon_centroid([polygon])[0]
+
+    centroid = tuple([int(_) for _ in centroid])
+
+    img = cv2.putText(img, "{:.2f}".format(iou), centroid, cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 1.0, color = color, thickness = 2, lineType = 8)
+
+    return img
