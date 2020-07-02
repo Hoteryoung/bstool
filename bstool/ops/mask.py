@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+from shapely.validation import explain_validity
 
 import bstool
 
@@ -30,7 +31,10 @@ def mask_nms(masks, scores, iou_threshold=0.5):
         for remain_mask in remain_masks:
             mask1 = best_mask
             mask2 = remain_mask
-            inter = mask1.intersection(mask2).area
+            try:
+                inter = mask1.intersection(mask2).area
+            except:
+                inter = 2048 * 2048
             inters.append(inter)
 
         inters = np.array(inters)

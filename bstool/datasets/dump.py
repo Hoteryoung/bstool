@@ -24,20 +24,34 @@ def bs_json_dump(polygons, properties, image_info, json_file):
                     object_struct['roof'] = bstool.polygon2mask(roof_polygon_)
                     xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
                     transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
-                    footprint_polygon = affinity.affine_transform(roof_polygon_, transform_matrix)    
+                    footprint_polygon = affinity.affine_transform(roof_polygon_, transform_matrix)
+                    if 'Floor' in single_property.keys():
+                        building_height = 3 * single_property['Floor']
+                    elif 'half_H' in single_property.keys():
+                        building_height = 3 * single_property['half_H']
+                    else:
+                        raise(RuntimeError("No Floor key in property, keys = {}".format(type(single_property.keys()))))    
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
                     object_struct['offset'] = [xoffset, yoffset]
                     object_struct['ignore'] = single_property['ignore']
-        
+                    object_struct['building_height'] = building_height
+
                     annos.append(object_struct)
         elif roof_polygon.geom_type == 'Polygon':
             object_struct['roof'] = bstool.polygon2mask(roof_polygon)
             xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
             transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
-            footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)    
+            footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
+            if 'Floor' in single_property.keys():
+                building_height = 3 * single_property['Floor']
+            elif 'half_H' in single_property.keys():
+                building_height = 3 * single_property['half_H']
+            else:
+                raise(RuntimeError("No Floor key in property, keys = {}".format(type(single_property.keys()))))    
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
             object_struct['offset'] = [xoffset, yoffset]
             object_struct['ignore'] = single_property['ignore']
+            object_struct['building_height'] = building_height
         
             annos.append(object_struct)
         else:

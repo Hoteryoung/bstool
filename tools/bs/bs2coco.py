@@ -33,6 +33,7 @@ class BS2COCO(bstool.Convert2COCO):
             footprint_mask = object_struct['footprint_mask']
             ignore_flag = object_struct['ignore_flag']
             offset = object_struct['offset']
+            building_height = object_struct['building_height']
             iscrowd = object_struct['iscrowd']
 
             width = bbox[2]
@@ -61,6 +62,7 @@ class BS2COCO(bstool.Convert2COCO):
             coco_annotation['footprint_mask'] = footprint_mask
             coco_annotation['ignore_flag'] = ignore_flag
             coco_annotation['offset'] = offset
+            coco_annotation['building_height'] = building_height
             coco_annotation['iscrowd'] = iscrowd
 
             coco_annotations.append(coco_annotation)
@@ -98,8 +100,8 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'buildchange'
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine']
-    cities = ['dalian_fine']
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine']
+    # cities = ['dalian_fine']
     release_version = 'v1'
 
     groundtruth = True

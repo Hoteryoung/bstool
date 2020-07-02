@@ -9,6 +9,7 @@ from collections import defaultdict
 from tqdm import tqdm
 from shapely import affinity
 import shapely
+from shapely.validation import explain_validity
 
 import bstool
 
@@ -242,11 +243,12 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
     coco = COCO(anno_file)
     img_ids = coco.get_img_ids()
 
-    csv_file_roof = csv_prefix + "_" + 'roof' + '.csv'
-    csv_file_footprint = csv_prefix + "_" + 'footprint' + '.csv'
+    csv_file_roof = csv_prefix + "_roof.csv"
+    csv_file_footprint = csv_prefix + "_footprint.csv"
 
     first_in = True
-    for idx, img_id in tqdm(enumerate(img_ids)):
+    progress_bar = mmcv.ProgressBar(len(img_ids))
+    for idx, img_id in enumerate(img_ids):
         info = coco.load_imgs([img_id])[0]
         img_name = info['file_name']
 
@@ -322,6 +324,8 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
             csv_dataset_roof = csv_dataset_roof.append(csv_image_roof)
             csv_dataset_footprint = csv_dataset_footprint.append(csv_image_footprint)
 
+        progress_bar.update()
+
     csv_dataset_roof.to_csv(csv_file_roof, index=False)
     csv_dataset_footprint.to_csv(csv_file_footprint, index=False)
 
@@ -333,7 +337,8 @@ def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_
     merged_masks = defaultdict(dict)
     merged_scores = defaultdict(dict)
     print("Indexing results of original images")
-    for idx, image_name in tqdm(enumerate(image_name_list)):
+    progress_bar = mmcv.ProgressBar(len(image_name_list))
+    for idx, image_name in enumerate(image_name_list):
         single_image_masks = []
         single_image_scores = []
 
@@ -343,10 +348,13 @@ def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_
             polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
             if polygon.area < min_area:
                 continue
-            mask = bstool.polygon2mask(polygon)
+            if not bstool.single_valid_polygon(polygon):
+                continue
             score = float(row.Confidence)
             if score < score_threshold:
                 continue
+
+            mask = bstool.polygon2mask(polygon)
             single_image_masks.append(mask)
             single_image_scores.append(score)
 
@@ -355,6 +363,8 @@ def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_
     
         merged_masks[ori_image_name][coord] = np.array(single_image_masks)
         merged_scores[ori_image_name][coord] = np.array(single_image_scores)
+
+        progress_bar.update()
 
     ori_image_name_list = list(ori_image_name_set)
     print("Nms for original images")
@@ -365,6 +375,8 @@ def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_
 
         nmsed_masks, nmsed_scores = bstool.merge_masks_on_subimage((ori_image_masks, ori_image_scores), 
                                                                     iou_threshold=iou_threshold)
+        if len(nmsed_masks) == 0:
+            continue
         nmsed_masks = [bstool.mask2polygon(mask) for mask in nmsed_masks]
 
         csv_image = pandas.DataFrame({'ImageId': ori_image_name,
@@ -384,6 +396,7 @@ def merge_masks_on_subimage(results_with_coordinate, iou_threshold=0.1):
     subimage_coordinates = list(masks_with_coordinate.keys())
 
     masks_merged, scores_merged = [], []
+    keep = []
     for subimage_coordinate in subimage_coordinates:
         masks_single_image = masks_with_coordinate[subimage_coordinate]
         scores_single_image = scores_with_coordinate[subimage_coordinate]
@@ -393,8 +406,16 @@ def merge_masks_on_subimage(results_with_coordinate, iou_threshold=0.1):
 
         masks_single_image = bstool.chang_mask_coordinate(masks_single_image, subimage_coordinate)
 
-        masks_merged += masks_single_image
-        scores_merged += scores_single_image.tolist()
+        masks, scores = [], []
+        for mask_, score_ in zip(masks_single_image, scores_single_image.tolist()):
+            polygons_ = bstool.mask2polygon(mask_)
+            if not bstool.single_valid_polygon(polygons_):
+                continue
+            masks.append(mask_)
+            scores.append(score_)
+
+        masks_merged += masks
+        scores_merged += scores
 
         keep = bstool.mask_nms(masks_merged, np.array(scores_merged), iou_threshold=iou_threshold)
 

@@ -155,6 +155,7 @@ def bs_json_parse(json_file):
         object_struct['footprint_mask'] = footprint_mask
         object_struct['ignore_flag'] = annotation['ignore']
         object_struct['offset'] = annotation['offset']
+        object_struct['building_height'] = annotation['building_height']
         
         object_struct['segmentation'] = roof_mask
         object_struct['label'] = 1

@@ -40,6 +40,9 @@ def get_confusion_matrix_indexes(pred_csv_file, gt_csv_file, show_matplotlib=Fal
                 continue
             pred_polygons.append(pred_polygon)
 
+        if len(gt_polygons) == 0 or len(pred_polygons) == 0:
+            continue
+
         gt_polygons = geopandas.GeoSeries(gt_polygons)
         pred_polygons = geopandas.GeoSeries(pred_polygons)
 

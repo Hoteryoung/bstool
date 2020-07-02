@@ -4,10 +4,10 @@ import bstool
 
 
 if __name__ == '__main__':
-    pred_csv_file = '/data/buildchange/v0/xian_fine/evaluation_results/bc_v015_mask_rcnn_r50_v2_roof_trainval_roof_merged.csv'
-    gt_csv_file = '/data/buildchange/v0/xian_fine/xian_val_roof_gt_minarea100.csv'
-    image_dir = '/data/buildchange/v0/xian_fine/images'
-    output_dir = '/data/buildchange/v0/xian_fine/vis/v015_roof'
+    pred_csv_file = '/home/jwwangchn/Documents/100-Work/170-Codes/aidet/results/buildchange/bc_v015_mask_rcnn_r50_v2_roof_trainval/bc_v015_mask_rcnn_r50_v2_roof_trainval_dalian_fine_footprint_merged.csv'
+    gt_csv_file = '/data/buildchange/v0/dalian_fine/dalian_footprint_gt_minarea100.csv'
+    image_dir = '/data/buildchange/v0/dalian_fine/images'
+    output_dir = '/data/buildchange/v0/dalian_fine/vis/v015_footprint'
     bstool.mkdir_or_exist(output_dir)
 
     # RGB
@@ -25,6 +25,9 @@ if __name__ == '__main__':
         output_file = os.path.join(output_dir, image_name)
 
         img = cv2.imread(image_file)
+        
+        if image_basename not in dataset_gt_polygons or image_basename not in dataset_pred_polygons:
+            continue
 
         for idx, gt_polygon in enumerate(dataset_gt_polygons[image_basename]):
             if idx in gt_TP_indexes[image_basename]:

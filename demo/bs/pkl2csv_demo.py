@@ -8,10 +8,12 @@ import cv2
 if __name__ == '__main__':
     model = 'bc_v015_mask_rcnn_r50_v2_roof_trainval'
 
-    anno_file = './data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine.json'
-    pkl_file = f'/home/jwwangchn/Documents/100-Work/170-Codes/aidet/results/buildchange/{model}/coco_results.pkl'
-    csv_prefix = f'/home/jwwangchn/Documents/100-Work/170-Codes/aidet/results/buildchange/{model}/{model}'
-    image_dir = '/data/buildchange/v1/xian_fine/images'
+    image_set = 'dalian_fine'
+
+    anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_val_{image_set}.json'
+    pkl_file = f'/home/jwwangchn/Documents/100-Work/170-Codes/aidet/results/buildchange/{model}/coco_results_{image_set}_v015.pkl'
+    csv_prefix = f'/home/jwwangchn/Documents/100-Work/170-Codes/aidet/results/buildchange/{model}/{model}_{image_set}'
+    image_dir = f'/data/buildchange/v1/{image_set}/images'
 
     bstool.pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05)
 
@@ -26,9 +28,10 @@ if __name__ == '__main__':
         roof_masks = []
         for idx, row in roof_df[roof_df.ImageId == image_basename].iterrows():
             roof_polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
-
+            if not roof_polygon.is_valid:
+                continue
             roof_mask = bstool.polygon2mask(roof_polygon)
             roof_masks.append(roof_mask)
         
-        img = bstool.draw_mask_boundary(img, roof_masks)
+        img = bstool.draw_masks_boundary(img, roof_masks)
         bstool.show_image(img)
