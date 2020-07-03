@@ -49,9 +49,15 @@ def bs_json_dump(polygons, properties, image_info, json_file):
             transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
             footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
             if 'Floor' in single_property.keys():
-                building_height = 3 * single_property['Floor']
+                if single_property['Floor'] is None:
+                    building_height = 0.0
+                else:
+                    building_height = 3 * single_property['Floor']
             elif 'half_H' in single_property.keys():
-                building_height = 3 * single_property['half_H']
+                if single_property['half_H'] is None:
+                    building_height = 0.0
+                else:
+                    building_height = 3 * single_property['half_H']
             else:
                 raise(RuntimeError("No Floor key in property, keys = {}".format(type(single_property.keys()))))    
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
