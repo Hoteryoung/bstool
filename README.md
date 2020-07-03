@@ -36,23 +36,30 @@ python setup.py develop
 - [x] Generate CSV file for evaluation (xian fine)
 - [x] Evaluation codes for semantic segmentation
 - [x] Evaluation codes for instance segmentation
-- [ ] Evaluation codes for offset
 - [x] Visualization code for ground truth CSV file and prediction CSV file
 - [x] Visualization code for TP, FN, FP (pred and gt)
+- [ ] Evaluation codes for offset
+- [ ] Evaluation codes for height
 
 
 ### Structure
-- scripts
-- tests
-- tools
+- demo:                 Simple demo to illustrate how to use the corresponding functions
+- tools:                Put the codes for projects
 - bstool
-    - datasets:         Create and read data from dataset
-    - transforms:       bbox and image transformation
+    - datasets:         Parse and dump data for dataset (e.g. shapefile, coco, json file)
+    - evaluation:       Detection and segmentation evaluation codes
+    - generation:       Generation the specific objects (e.g. empty images, polygons on pixel annotation)
+    - ops:              Operators (e.g. bbox nms, mask nms)
+    - transforms:       bbox, mask, image transformation functions (e.g. mask to polygon, polygon to mask)
         - image
         - bbox
-    - visualization:    code for visualization
+        - mask
+    - visualization:    Codes for visualization
         - image
         - mask
         - bbox
-    - utils:            tools for other tasks
+        - color
+        - utils
+    - utils:            Small useful tools for general tasks
         - path
+        - mask
