@@ -252,7 +252,10 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
         info = coco.load_imgs([img_id])[0]
         img_name = info['file_name']
 
-        det, seg, offset = results[idx]
+        if len(results[idx]) == 3:
+            det, seg, offset = results[idx]
+        elif len(results[idx]) == 4:
+            det, seg, offset, height = results[idx]
 
         bboxes = np.vstack(det)
         segms = mmcv.concat_list(seg)
