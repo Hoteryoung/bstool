@@ -34,7 +34,7 @@ def bs_json_dump(polygons, properties, image_info, json_file):
                         if single_property['half_H'] is None:
                             building_height = 0.0
                         else:
-                            building_height = 3 * single_property['half_H']
+                            building_height = single_property['half_H']
                     else:
                         raise(RuntimeError("No Floor key in property, keys = {}".format(type(single_property.keys()))))    
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
@@ -57,7 +57,7 @@ def bs_json_dump(polygons, properties, image_info, json_file):
                 if single_property['half_H'] is None:
                     building_height = 0.0
                 else:
-                    building_height = 3 * single_property['half_H']
+                    building_height = single_property['half_H']
             else:
                 raise(RuntimeError("No Floor key in property, keys = {}".format(type(single_property.keys()))))    
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)

@@ -235,7 +235,10 @@ def pkl2csv_roof(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
     csv_dataset.to_csv(csv_file, index=False)
 
 def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
-    results = mmcv.load(pkl_file)
+    if isinstance(pkl_file, str):
+        results = mmcv.load(pkl_file)
+    else:
+        results = pkl_file
     
     if len(results) == 0:
         return
@@ -254,8 +257,10 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
 
         if len(results[idx]) == 3:
             det, seg, offset = results[idx]
+            height_flag = False
         elif len(results[idx]) == 4:
             det, seg, offset, height = results[idx]
+            height_flag = True
 
         bboxes = np.vstack(det)
         segms = mmcv.concat_list(seg)
@@ -264,14 +269,24 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
             offsets = offset[0]
         else:
             offsets = offset
+
+        if height_flag and isinstance(height, tuple):
+            heights = height[0]
+        else:
+            heights = height
         
         single_image_bboxes = []
         single_image_roofs = []
         single_image_footprints = []
         single_image_scores = []
+        single_image_heights = []
         for i in range(bboxes.shape[0]):
             score = bboxes[i][4]
             offset = offsets[i]
+
+            if height_flag:
+                height = heights[i][0]
+
             if score < score_threshold:
                 continue
 
@@ -310,15 +325,18 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
             single_image_roofs.append(roof_polygon)
             single_image_footprints.append(footprint_polygon)
             single_image_scores.append(score.tolist())
+            single_image_heights.append(height)
 
         csv_image_roof = pandas.DataFrame({'ImageId': img_name.split('.')[0],
                                       'BuildingId': range(len(single_image_roofs)),
                                       'PolygonWKT_Pix': single_image_roofs,
-                                      'Confidence': single_image_scores})
+                                      'Confidence': single_image_scores,
+                                      'BuildingHeight': single_image_heights})
         csv_image_footprint = pandas.DataFrame({'ImageId': img_name.split('.')[0],
                                       'BuildingId': range(len(single_image_footprints)),
                                       'PolygonWKT_Pix': single_image_footprints,
-                                      'Confidence': single_image_scores})
+                                      'Confidence': single_image_scores,
+                                      'BuildingHeight': single_image_heights})
         if first_in:
             csv_dataset_roof = csv_image_roof
             csv_dataset_footprint = csv_image_footprint
@@ -423,3 +441,106 @@ def merge_masks_on_subimage(results_with_coordinate, iou_threshold=0.1):
         keep = bstool.mask_nms(masks_merged, np.array(scores_merged), iou_threshold=iou_threshold)
 
     return np.array(masks_merged)[keep].tolist(), np.array(scores_merged)[keep].tolist()
+
+def merge_csv_results_with_height(input_csv_file, output_csv_file, iou_threshold=0.1, score_threshold=0.4, min_area=100):
+    csv_df = pandas.read_csv(input_csv_file)
+    image_name_list = list(set(csv_df.ImageId.unique()))
+    
+    ori_image_name_set = set()
+    merged_masks = defaultdict(dict)
+    merged_scores = defaultdict(dict)
+    merged_heights = defaultdict(dict)
+    print("Indexing results of original images")
+    progress_bar = mmcv.ProgressBar(len(image_name_list))
+    for idx, image_name in enumerate(image_name_list):
+        single_image_masks = []
+        single_image_scores = []
+        single_image_heights = []
+
+        sub_fold, ori_image_name, coord = bstool.get_info_splitted_imagename(image_name)
+        ori_image_name_set.add(ori_image_name)
+        for idx, row in csv_df[csv_df.ImageId == image_name].iterrows():
+            polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
+            if polygon.area < min_area:
+                continue
+            if not bstool.single_valid_polygon(polygon):
+                continue
+            score = float(row.Confidence)
+            height = float(row.BuildingHeight)
+            if score < score_threshold:
+                continue
+
+            mask = bstool.polygon2mask(polygon)
+            single_image_masks.append(mask)
+            single_image_scores.append(score)
+            single_image_heights.append(height)
+
+        if len(single_image_masks) == 0:
+            continue
+    
+        merged_masks[ori_image_name][coord] = np.array(single_image_masks)
+        merged_scores[ori_image_name][coord] = np.array(single_image_scores)
+        merged_heights[ori_image_name][coord] = np.array(single_image_heights)
+
+        progress_bar.update()
+
+    ori_image_name_list = list(ori_image_name_set)
+    print("NMS for original images")
+    first_in = True
+    for ori_image_name in tqdm(ori_image_name_list):
+        ori_image_masks = merged_masks[ori_image_name]
+        ori_image_scores = merged_scores[ori_image_name]
+        ori_image_heights = merged_heights[ori_image_name]
+
+        nmsed_masks, nmsed_scores, nmsed_heights = merge_masks_on_subimage_with_height((ori_image_masks, ori_image_scores, ori_image_heights), iou_threshold=iou_threshold)
+        
+        if len(nmsed_masks) == 0:
+            continue
+        nmsed_masks = [bstool.mask2polygon(mask) for mask in nmsed_masks]
+
+        csv_image = pandas.DataFrame({'ImageId': ori_image_name,
+                                      'BuildingId': range(len(nmsed_masks)),
+                                      'PolygonWKT_Pix': nmsed_masks,
+                                      'Confidence': nmsed_scores,
+                                      'BuildingHeight': nmsed_heights}
+                                      )
+        if first_in:
+            csv_dataset = csv_image
+            first_in = False
+        else:
+            csv_dataset = csv_dataset.append(csv_image)
+
+    csv_dataset.to_csv(output_csv_file, index=False)
+
+def merge_masks_on_subimage_with_height(results_with_coordinate, iou_threshold=0.1):
+    masks_with_coordinate, scores_with_coordinate, heights_with_coordinate = results_with_coordinate
+    subimage_coordinates = list(masks_with_coordinate.keys())
+
+    masks_merged, scores_merged, heights_merged = [], [], []
+    keep = []
+    for subimage_coordinate in subimage_coordinates:
+        masks_single_image = masks_with_coordinate[subimage_coordinate]
+        scores_single_image = scores_with_coordinate[subimage_coordinate]
+        heights_single_image = heights_with_coordinate[subimage_coordinate]
+
+        if len(masks_single_image) == 0:
+            continue
+
+        masks_single_image = bstool.chang_mask_coordinate(masks_single_image, subimage_coordinate)
+
+        masks, scores, heights = [], [], []
+        for mask_, score_, height_ in zip(masks_single_image, scores_single_image.tolist(), heights_single_image.tolist()):
+            polygons_ = bstool.mask2polygon(mask_)
+            if not bstool.single_valid_polygon(polygons_):
+                continue
+            masks.append(mask_)
+            scores.append(score_)
+            heights.append(height_)
+
+        masks_merged += masks
+        scores_merged += scores
+        heights_merged += heights
+
+        keep = bstool.mask_nms(masks_merged, np.array(scores_merged), iou_threshold=iou_threshold)
+
+    return np.array(masks_merged)[keep].tolist(), np.array(scores_merged)[keep].tolist(), np.array(heights_merged)[keep].tolist()

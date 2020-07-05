@@ -64,7 +64,7 @@ def get_confusion_matrix_indexes(pred_csv_file, gt_csv_file, show_matplotlib=Fal
 
             union = pred_polygons[pred_idx].area + gt_polygons[gt_idx].area
 
-            iou[pred_idx, gt_idx] = inter / (union - inter)
+            iou[pred_idx, gt_idx] = inter / (union - inter + 1.0)
         
         iou_indexes = np.argwhere(iou >= 0.5)
 
@@ -91,21 +91,19 @@ def get_confusion_matrix_indexes(pred_csv_file, gt_csv_file, show_matplotlib=Fal
     return gt_TP_indexes, pred_TP_indexes, gt_FN_indexes, pred_FP_indexes, dataset_gt_polygons, dataset_pred_polygons, gt_ious
 
 
-def draw_confusion_matrix_on_image(img, confusion_matrix, color=(0, 0, 255)):
+def draw_confusion_matrix_on_image(img, image_basename, confusion_matrix, color=(200, 130, 0)):
     gt_TP_indexes, pred_TP_indexes, gt_FN_indexes, pred_FP_indexes = confusion_matrix
 
-    TP = len(gt_TP_indexes)
-    FN = len(gt_FN_indexes)
-    FP = len(pred_FP_indexes)
+    TP = len(gt_TP_indexes[image_basename])
+    FN = len(gt_FN_indexes[image_basename])
+    FP = len(pred_FP_indexes[image_basename])
 
     height, width, _ = img.shape
 
     num_name = ['TP', 'FN', 'FP']
 
-    print(height, width)
-
     for idx, num in enumerate([TP, FN, FP]):
         name = num_name[idx]
-        img = cv2.putText(img, "{}: {}".format(name, num), (height - 200, 200), cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 2.0, color = color, thickness = 2, lineType = 8)
+        img = cv2.putText(img, "{}: {}".format(name, num), (0, height - 10 - 50 * idx), cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 2.0, color = color, thickness = 2, lineType = 8)
 
     return img

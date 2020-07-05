@@ -14,8 +14,6 @@ from terminaltables import AsciiTable
 import tqdm
 
 
-
-
 class SemanticEval():
     def __init__(self, 
                  results,
