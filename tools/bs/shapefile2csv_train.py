@@ -9,7 +9,7 @@ from shapely import affinity
 
 
 if __name__ == '__main__':
-    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    cities = ['haerbin', 'shanghai', 'beijing', 'jinan', 'chengdu']
     sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
                  'chengdu':  ['arg', 'google', 'ms', 'tdt'],
                  'haerbin':  ['arg', 'google', 'ms'],
