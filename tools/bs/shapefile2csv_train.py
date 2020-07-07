@@ -21,7 +21,7 @@ if __name__ == '__main__':
         roof_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_roof_gt.csv'
         footprint_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_footprint_gt.csv'
         for sub_fold in sub_folds[city]:
-            shp_dir = f'./data/buildchange/v0/{city}/{sub_fold}/merged_shp'
+            shp_dir = f'./data/buildchange/v0/{city}/{sub_fold}/roof_shp_4326'
             rgb_img_dir = f'./data/buildchange/v0/{city}/{sub_fold}/images'
             geo_info_dir = f'./data/buildchange/v0/{city}/{sub_fold}/geo_info'
 
