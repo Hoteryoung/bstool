@@ -15,6 +15,7 @@ if __name__ == '__main__':
     footprint_csv_file = './data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
     
     first_in = True
+    min_area = 100
 
     shp_dir = f'./data/buildchange/v0/dalian_fine/merged_shp'
     rgb_img_dir = f'./data/buildchange/v0/dalian_fine/images'
@@ -31,13 +32,16 @@ if __name__ == '__main__':
                                     dst_coord='pixel',
                                     keep_polarity=False)
 
-        roof_gt_polygons, gt_properties, gt_heights = [], [], []
+        roof_gt_polygons, gt_properties, gt_heights, gt_offsets = [], [], [], []
         for obj in objects:
             roof_gt_polygon = obj['polygon']
+            if roof_gt_polygon.area < min_area:
+                continue
             valid_flag = bstool.single_valid_polygon(roof_gt_polygon)
             if not valid_flag:
                 continue
             roof_gt_polygons.append(obj['polygon'])
+            gt_offsets.append([obj['property']['xoffset'], obj['property']['yoffset']])
             gt_heights.append(obj['property']['Floor'] * 3)
             gt_properties.append(obj['property'])
 
@@ -47,12 +51,14 @@ if __name__ == '__main__':
                                         'BuildingId': range(len(roof_gt_polygons)),
                                         'PolygonWKT_Pix': roof_gt_polygons,
                                         'Confidence': 1,
-                                        'BuildingHeight': gt_heights})
+                                        'Offset': gt_offsets,
+                                        'Height': gt_heights})
         footprint_csv_image = pandas.DataFrame({'ImageId': base_name,
                                         'BuildingId': range(len(footprint_gt_polygons)),
                                         'PolygonWKT_Pix': footprint_gt_polygons,
                                         'Confidence': 1,
-                                        'BuildingHeight': gt_heights})
+                                        'Offset': gt_offsets,
+                                        'Height': gt_heights})
         if first_in:
             roof_csv_dataset = roof_csv_image
             footprint_csv_dataset = footprint_csv_image

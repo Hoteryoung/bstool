@@ -17,7 +17,7 @@ def get_confusion_matrix_indexes(pred_csv_file, gt_csv_file, show_matplotlib=Fal
     gt_TP_indexes, pred_TP_indexes, gt_FN_indexes, pred_FP_indexes = dict(), dict(), dict(), dict()
     dataset_gt_polygons, dataset_gt_heights, dataset_pred_polygons, dataset_pred_heights = dict(), dict(), dict(), dict()
     gt_ious, dataset_ious = dict(), dict()
-    for image_name in    image_name_list:
+    for image_name in image_name_list:
         gt_polygons, gt_heights, pred_polygons, pred_heights = [], [], [], []
         for idx, row in gt_csv_df[gt_csv_df.ImageId == image_name].iterrows():
             gt_polygon = shapely.wkt.loads(row.PolygonWKT_Pix)

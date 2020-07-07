@@ -1,5 +1,7 @@
 import json
 from shapely import affinity
+import tqdm
+import pandas
 
 import bstool
 
@@ -76,3 +78,43 @@ def bs_json_dump(polygons, properties, image_info, json_file):
 
     with open(json_file, "w") as jsonfile:
         json.dump(json_data, jsonfile, indent=4)
+
+
+def bs_csv_dump(objects, roof_csv_file, footprint_csv_file):
+    ori_image_name_list = list(objects.keys())
+
+    first_in = True
+    for ori_image_name in tqdm.tqdm(ori_image_name_list):
+        buildings = objects[ori_image_name]
+
+        if len(buildings) == 0:
+            continue
+        
+        roof_polygons = [building['roof_polygon'] for building in buildings]
+        footprint_polygons = [building['footprint_polygon'] for building in buildings]
+        scores = [building['score'] for building in buildings]
+        heights = [building['height'] for building in buildings]
+        offsets = [building['offset'] for building in buildings]
+
+        roof_csv = pandas.DataFrame({'ImageId': ori_image_name,
+                                      'BuildingId': range(len(roof_polygons)),
+                                      'PolygonWKT_Pix': roof_polygons,
+                                      'Confidence': scores,
+                                      'Offset': offsets,
+                                      'Height': heights})
+        footprint_csv = pandas.DataFrame({'ImageId': ori_image_name,
+                                      'BuildingId': range(len(footprint_polygons)),
+                                      'PolygonWKT_Pix': footprint_polygons,
+                                      'Confidence': scores,
+                                      'Offset': offsets,
+                                      'Height': heights})
+        if first_in:
+            roof_csv_dataset = roof_csv
+            footprint_csv_dataset = footprint_csv
+            first_in = False
+        else:
+            roof_csv_dataset = roof_csv_dataset.append(roof_csv)
+            footprint_csv_dataset = footprint_csv_dataset.append(footprint_csv)
+
+    roof_csv_dataset.to_csv(roof_csv_file, index=False)
+    footprint_csv_dataset.to_csv(footprint_csv_file, index=False)
