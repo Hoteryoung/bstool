@@ -23,20 +23,25 @@ if __name__ == '__main__':
         for sub_fold in sub_folds[city]:
             shp_dir = f'./data/buildchange/v0/{city}/{sub_fold}/merged_shp'
             rgb_img_dir = f'./data/buildchange/v0/{city}/{sub_fold}/images'
+            geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/geo_info'
 
             shp_file_list = glob.glob("{}/*.shp".format(shp_dir))
             for shp_file in shp_file_list:
                 base_name = bstool.get_basename(shp_file)
 
                 rgb_img_file = os.path.join(rgb_img_dir, base_name + '.jpg')
+                geo_file = os.path.join(geo_info_dir, base_name + '.png')
 
                 objects = bstool.shp_parse(shp_file=shp_file,
-                                            geo_file=rgb_img_file,
-                                            src_coord='pixel',
+                                            geo_file=geo_file,
+                                            src_coord='4326',
                                             dst_coord='pixel',
+                                            clean_polygon_flag=True,
                                             keep_polarity=False)
 
             roof_gt_polygons, gt_properties, gt_heights, gt_offsets = [], [], [], []
+            if len(objects) == 0:
+                continue
             for obj in objects:
                 roof_gt_polygon = obj['polygon']
                 if roof_gt_polygon.area < min_area:
