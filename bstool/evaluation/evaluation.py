@@ -24,6 +24,8 @@ class Evaluation():
         self.roof_csv_file = roof_csv_file
         self.rootprint_csv_file = rootprint_csv_file
 
+        self.pkl_file = pkl_file
+
         pkl_parser = bstool.BSPklParser(anno_file, 
                                         pkl_file, 
                                         iou_threshold=iou_threshold, 
@@ -51,8 +53,12 @@ class Evaluation():
         for ori_image_name in self.ori_image_name_list:
             if ori_image_name not in objects.keys():
                 continue
+
             gt_heights = objects[ori_image_name]['gt_heights']
             pred_heights = objects[ori_image_name]['pred_heights']
+
+            if len(gt_heights) == 0 or len(pred_heights) == 0:
+                continue
 
             gt_offsets = np.array(objects[ori_image_name]['gt_offsets'])
             pred_offsets = np.array(objects[ori_image_name]['pred_offsets'])
@@ -72,15 +78,12 @@ class Evaluation():
             gt_angle_std.append(single_image_gt_angle_std)
             pred_angle_std.append(single_image_pred_angle_std)
 
-            print(f"{ori_image_name}: {single_image_gt_angle_std}, {single_image_pred_angle_std}")
-
         mse = np.array(errors).mean()
 
+        print("Evaluation pkl file: ", self.pkl_file)
         print("Height MSE: ", mse)
         print("GT angle Std: ", np.array(gt_angle_std).mean())
         print("Pred angle Std: ", np.array(pred_angle_std).mean())
-
-        # print("Error: ", errors)
 
     def get_confusion_matrix_indexes(self):
         gt_csv_parser = bstool.CSVParse(self.gt_footprint_csv_file)
@@ -153,31 +156,3 @@ class Evaluation():
             objects[ori_image_name] = buildings
 
         return objects
-
-
-if __name__ == '__main__':
-    model = 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50'
-    image_set = 'dalian_fine'
-
-    anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_val_{image_set}.json'
-    pkl_file = f'/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/buildchange/{model}/{model}_dalian_coco_results.pkl'
-    
-    gt_roof_csv_file = '/data/buildchange/v0/dalian_fine/dalian_fine_2048_roof_gt.csv'
-    gt_footprint_csv_file = '/data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
-    
-    roof_csv_file = f'/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/buildchange/{model}/{model}_roof_merged.csv'
-    rootprint_csv_file = f'/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/buildchange/{model}/{model}_footprint_merged.csv'
-
-    evaluation = Evaluation(model=model,
-                            anno_file=anno_file,
-                            pkl_file=pkl_file,
-                            gt_roof_csv_file=gt_roof_csv_file,
-                            gt_footprint_csv_file=gt_footprint_csv_file,
-                            roof_csv_file=roof_csv_file,
-                            rootprint_csv_file=rootprint_csv_file,
-                            with_offset=True,
-                            with_height=True)
-
-    # evaluation.segmentation()
-
-    evaluation.height()
