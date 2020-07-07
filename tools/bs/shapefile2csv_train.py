@@ -23,7 +23,7 @@ if __name__ == '__main__':
         for sub_fold in sub_folds[city]:
             shp_dir = f'./data/buildchange/v0/{city}/{sub_fold}/merged_shp'
             rgb_img_dir = f'./data/buildchange/v0/{city}/{sub_fold}/images'
-            geo_info_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/geo_info'
+            geo_info_dir = f'./data/buildchange/v0/{city}/{sub_fold}/geo_info'
 
             shp_file_list = glob.glob("{}/*.shp".format(shp_dir))
             for shp_file in shp_file_list:
