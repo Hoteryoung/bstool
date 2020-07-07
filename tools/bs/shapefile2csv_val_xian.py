@@ -15,6 +15,7 @@ if __name__ == '__main__':
     footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
     
     first_in = True
+    min_area = 100
 
     for sub_fold in sub_folds:
         shp_dir = f'./data/buildchange/v0/xian_fine/{sub_fold}/merged_shp'
@@ -59,13 +60,13 @@ if __name__ == '__main__':
                                         'Confidence': 1,
                                         'Offset': gt_offsets,
                                         'Height': gt_heights})
-            if first_in:
-                roof_csv_dataset = roof_csv_image
-                footprint_csv_dataset = footprint_csv_image
-                first_in = False
-            else:
-                roof_csv_dataset = roof_csv_dataset.append(roof_csv_image)
-                footprint_csv_dataset = footprint_csv_dataset.append(footprint_csv_image)
+        if first_in:
+            roof_csv_dataset = roof_csv_image
+            footprint_csv_dataset = footprint_csv_image
+            first_in = False
+        else:
+            roof_csv_dataset = roof_csv_dataset.append(roof_csv_image)
+            footprint_csv_dataset = footprint_csv_dataset.append(footprint_csv_image)
 
     roof_csv_dataset.to_csv(roof_csv_file, index=False)
     footprint_csv_dataset.to_csv(footprint_csv_file, index=False)

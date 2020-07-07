@@ -15,12 +15,11 @@ if __name__ == '__main__':
                  'haerbin':  ['arg', 'google', 'ms'],
                  'jinan':    ['arg', 'google', 'ms', 'tdt'],
                  'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
-
-    roof_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_roof_gt.csv'
-    footprint_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_footprint_gt.csv'
-    
-    first_in = True
+    min_area = 100
     for city in cities:
+        first_in = True
+        roof_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_roof_gt.csv'
+        footprint_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_footprint_gt.csv'
         for sub_fold in sub_folds[city]:
             shp_dir = f'./data/buildchange/v0/{city}/{sub_fold}/merged_shp'
             rgb_img_dir = f'./data/buildchange/v0/{city}/{sub_fold}/images'
@@ -47,7 +46,10 @@ if __name__ == '__main__':
                     continue
                 roof_gt_polygons.append(obj['polygon'])
                 gt_offsets.append([obj['property']['xoffset'], obj['property']['yoffset']])
-                gt_heights.append(obj['property']['Floor'] * 3)
+                if 'Floor' in obj['property'].keys():
+                    gt_heights.append(obj['property']['Floor'] * 3)
+                elif 'half_H' in obj['property'].keys():
+                    gt_heights.append(obj['property']['half_H'])
                 gt_properties.append(obj['property'])
 
             footprint_gt_polygons = bstool.roof2footprint(roof_gt_polygons, gt_properties)
@@ -64,13 +66,13 @@ if __name__ == '__main__':
                                             'Confidence': 1,
                                             'Offset': gt_offsets,
                                             'Height': gt_heights})
-                if first_in:
-                    roof_csv_dataset = roof_csv_image
-                    footprint_csv_dataset = footprint_csv_image
-                    first_in = False
-                else:
-                    roof_csv_dataset = roof_csv_dataset.append(roof_csv_image)
-                    footprint_csv_dataset = footprint_csv_dataset.append(footprint_csv_image)
+            if first_in:
+                roof_csv_dataset = roof_csv_image
+                footprint_csv_dataset = footprint_csv_image
+                first_in = False
+            else:
+                roof_csv_dataset = roof_csv_dataset.append(roof_csv_image)
+                footprint_csv_dataset = footprint_csv_dataset.append(footprint_csv_image)
 
         roof_csv_dataset.to_csv(roof_csv_file, index=False)
         footprint_csv_dataset.to_csv(footprint_csv_file, index=False)
