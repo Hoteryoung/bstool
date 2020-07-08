@@ -11,4 +11,6 @@ if __name__ == '__main__':
         csv_file = f'./data/buildchange/v0/{city}/{city}_2048_footprint_gt.csv'
         csv_files.append(csv_file)
 
-    bstool.Statistic(ann_file=None, csv_file=csv_files)
+    statistic = bstool.Statistic(ann_file=None, csv_file=csv_files)
+    
+    statistic.height()
