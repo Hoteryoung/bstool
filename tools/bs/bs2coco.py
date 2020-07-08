@@ -100,8 +100,8 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'buildchange'
-    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
-    # cities = ['dalian_fine']
+    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
+    cities = ['xian_fine']
     release_version = 'v1'
 
     groundtruth = True
