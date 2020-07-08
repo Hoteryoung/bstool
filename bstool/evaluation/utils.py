@@ -13,11 +13,6 @@ from shapely.validation import explain_validity
 
 import bstool
 
-try:
-    import solaris
-except:
-    print("Please install solaris")
-
 
 def merge_results_on_subimage(results_with_coordinate, iou_threshold=0.5, nms='bbox_nms'):
     """designed for bboxes and masks
@@ -153,15 +148,6 @@ def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, n
         ret[ori_image_fn] = (nmsed_bboxes, nmsed_masks, nmsed_scores)
 
     return ret
-
-def solaris_semantic_evaluation(csv_pred_file, csv_gt_file):
-    eval_results = solaris.eval.challenges.spacenet_buildings_2(csv_pred_file, csv_gt_file)
-    print("F1 Score: {}\nPrecision: {}\nRecall: {}\nTruePos: {}\nFalsePos: {}\nFalseNeg: {}".format(eval_results[1]['F1Score'].mean()*100, 
-                                                                                                    eval_results[1]['Precision'].mean()*100, 
-                                                                                                    eval_results[1]['Recall'].mean()*100, 
-                                                                                                    eval_results[1]['TruePos'].sum(), 
-                                                                                                    eval_results[1]['FalsePos'].sum(), 
-                                                                                                    eval_results[1]['FalseNeg'].sum()))
 
 def pkl2csv_roof(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
     results = mmcv.load(pkl_file)

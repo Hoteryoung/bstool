@@ -37,10 +37,6 @@ class Evaluation():
         
         bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
 
-    def segmentation(self):
-        bstool.solaris_semantic_evaluation(self.roof_csv_file, self.gt_roof_csv_file)
-        bstool.solaris_semantic_evaluation(self.rootprint_csv_file, self.gt_footprint_csv_file)
-
     def detection(self):
         pass
 

@@ -55,5 +55,4 @@ class SemanticEval():
         print("Begin to convert results to csv files")
         self.results2csv()
         print("Begin to evaluate csv files")
-        bstool.solaris_semantic_evaluation(self.csv_pred_file, self.csv_gt_file)
         

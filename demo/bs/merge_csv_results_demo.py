@@ -11,5 +11,3 @@ if __name__ == "__main__":
         print("score: ", score)
         merged_csv_file = pred_csv_file.split('.csv')[0] + f"_merged_{score}.csv"
         bstool.merge_csv_results(pred_csv_file, merged_csv_file, iou_threshold=0.1, score_threshold=score, min_area=100)
-
-        bstool.solaris_semantic_evaluation(merged_csv_file, gt_csv_file)
