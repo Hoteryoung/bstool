@@ -7,7 +7,12 @@ from collections import  Counter
 from collections import defaultdict
 from shapely.geometry import Polygon
 import pandas
+import matplotlib
+
 import bstool
+
+
+matplotlib.use('Agg')
 
 # plt.rcParams.update({'font.size': 14})    # ICPR paper
 plt.rcParams.update({'font.size': 12})
