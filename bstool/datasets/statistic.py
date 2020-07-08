@@ -36,8 +36,6 @@ class Statistic():
             for csv_file_ in csv_file:
                 self.objects += self._parse_csv(csv_file_)
 
-        self.height()
-
     def _parse_coco(self, ann_file):
         coco =  COCO(ann_file)
         img_ids = coco.get_img_ids()
@@ -82,6 +80,18 @@ class Statistic():
 
     def height(self):
         heights = np.array([obj['height'] for obj in self.objects])
+
+        print("Height mean: ", heights.mean())
+        print("Height std: ", heights.std())
+        height_90 = np.percentile(heights, 90)
+        height_80 = np.percentile(heights, 80)
+        height_70 = np.percentile(heights, 70)
+        height_60 = np.percentile(heights, 60)
+
+        print("Height 90: ", heights[heights < height_90].mean(), heights[heights < height_90].std())
+        print("Height 80: ", heights[heights < height_80].mean(), heights[heights < height_80].std())
+        print("Height 70: ", heights[heights < height_70].mean(), heights[heights < height_70].std())
+        print("Height 60: ", heights[heights < height_60].mean(), heights[heights < height_60].std())
         
         plt.hist(heights, bins=np.arange(0, 100, 100 / 30), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
         plt.savefig(os.path.join(self.output_dir, f'height.{self.out_file_format}'), bbox_inches='tight', dpi=600, pad_inches=0.1)
