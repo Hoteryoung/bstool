@@ -40,6 +40,42 @@ class Evaluation():
     def detection(self):
         pass
 
+    def segmentation(self):
+        objects = self.get_confusion_matrix_indexes()
+
+        dataset_gt_TP_indexes, dataset_pred_TP_indexes, dataset_gt_FN_indexes, dataset_pred_FP_indexes = [], [], [], []
+        for ori_image_name in self.ori_image_name_list:
+            if ori_image_name not in objects.keys():
+                continue
+
+            gt_TP_indexes = objects[ori_image_name]['gt_TP_indexes']
+            pred_TP_indexes = objects[ori_image_name]['pred_TP_indexes']
+            gt_FN_indexes = objects[ori_image_name]['gt_FN_indexes']
+            pred_FP_indexes = objects[ori_image_name]['pred_FP_indexes']
+
+            dataset_gt_TP_indexes += gt_TP_indexes
+            dataset_pred_TP_indexes += pred_TP_indexes
+            dataset_gt_FN_indexes += gt_FN_indexes
+            dataset_pred_FP_indexes += pred_FP_indexes
+
+        TP = len(dataset_gt_TP_indexes)
+        FN = len(dataset_gt_FN_indexes)
+        FP = len(dataset_pred_FP_indexes)
+
+        print("Summary (codes by jwwangchn):")
+        print("TP: ", TP)
+        print("FN: ", FN)
+        print("FP: ", FP)
+
+        Precision = float(TP) / (float(TP) + float(FP))
+        Recall = float(TP) / (float(TP) + float(FN))
+
+        F1_score = (2 * Precision * Recall) / (Precision + Recall)
+        print("Precision: ", Precision)
+        print("Recall: ", Recall)
+
+        print("F1 score: ", F1_score)
+
     def height(self):
         objects = self.get_confusion_matrix_indexes()
 

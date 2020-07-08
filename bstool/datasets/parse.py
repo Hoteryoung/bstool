@@ -208,8 +208,12 @@ class BSPklParser():
         if not self.with_offset:
             if self.with_height:
                 raise(RuntimeError('not support with_offset={}, with_height={}'.format(self.with_offset, self.with_height)))
-            
-        results = mmcv.load(pkl_file)
+        
+
+        if isinstance(pkl_file, str):
+            results = mmcv.load(pkl_file)
+        else:
+            results = pkl_file
         
         coco = COCO(anno_file)
         img_ids = coco.get_img_ids()
