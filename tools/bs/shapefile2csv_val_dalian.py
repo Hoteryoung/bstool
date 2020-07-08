@@ -6,6 +6,7 @@ import cv2
 import pandas
 import glob
 from shapely import affinity
+import math
 
 
 if __name__ == '__main__':
@@ -40,7 +41,13 @@ if __name__ == '__main__':
                 continue
             roof_gt_polygons.append(obj['polygon'])
             gt_offsets.append([obj['property']['xoffset'], obj['property']['yoffset']])
-            gt_heights.append(obj['property']['Floor'] * 3)
+            if obj['property']['Floor'] is not None:
+                if math.isnan(obj['property']['Floor']):
+                    gt_heights.append(1 * 3)
+                else:
+                    gt_heights.append(obj['property']['Floor'] * 3)
+            else:
+                gt_heights.append(1 * 3)
             gt_properties.append(obj['property'])
 
         footprint_gt_polygons = bstool.roof2footprint(roof_gt_polygons, gt_properties)

@@ -8,6 +8,7 @@ from collections import defaultdict
 from shapely.geometry import Polygon
 import pandas
 import matplotlib
+import math
 
 import bstool
 
@@ -69,12 +70,11 @@ class Statistic():
                 obj_keys = row.to_dict().keys()
 
                 if 'Height' in obj_keys:
-                    building['height'] = row.Height
+                    building['height'] = int(row.Height)
                 else:
-                    building['height'] = 0
+                    building['height'] = 3.0
 
                 buildings.append(building)
-
             objects += buildings
 
         return objects
