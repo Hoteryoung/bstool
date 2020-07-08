@@ -4,8 +4,7 @@ import bstool
 if __name__ == '__main__':
     ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_train_shanghai.json'
     
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    cities = ['xian_fine']
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
 #  'xian_fine', 'dalian_fine'
     csv_files = []
     title = []
