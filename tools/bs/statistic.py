@@ -5,7 +5,7 @@ if __name__ == '__main__':
     ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_train_shanghai.json'
     
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    cities = ['dalian_fine']
+    cities = ['xian_fine']
 #  'xian_fine', 'dalian_fine'
     csv_files = []
     title = []
