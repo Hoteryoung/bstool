@@ -76,7 +76,7 @@ class Evaluation():
 
         print("F1 score: ", F1_score)
 
-    def height(self):
+    def height(self, percent=100):
         objects = self.get_confusion_matrix_indexes()
 
         errors = []
@@ -86,17 +86,25 @@ class Evaluation():
             if ori_image_name not in objects.keys():
                 continue
 
-            gt_heights = objects[ori_image_name]['gt_heights']
-            pred_heights = objects[ori_image_name]['pred_heights']
+            gt_heights = np.array(objects[ori_image_name]['gt_heights'])
+            pred_heights = np.array(objects[ori_image_name]['pred_heights'])
 
             if len(gt_heights) == 0 or len(pred_heights) == 0:
                 continue
 
+            max_height = np.percentile(gt_heights, percent)
+            bool_keep = gt_heights < max_height
+            gt_heights = gt_heights[bool_keep]
+            pred_heights = pred_heights[bool_keep]
+
+            if len(gt_heights) == 0 or len(pred_heights) == 0:
+                continue
+
+            error = np.abs(gt_heights - pred_heights)
+            errors += error.tolist()
+
             gt_offsets = np.array(objects[ori_image_name]['gt_offsets'])
             pred_offsets = np.array(objects[ori_image_name]['pred_offsets'])
-
-            error = np.abs(np.array(gt_heights) - np.array(pred_heights))
-            errors += error.tolist()
 
             # gt_avg_offsets = np.array(gt_offsets) / np.array(gt_heights)
             gt_angle = np.arctan2(gt_offsets[:, 1], gt_offsets[:, 0])
