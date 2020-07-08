@@ -21,11 +21,13 @@ class SplitImage():
                  subimage_size=1024,
                  gap=512,
                  multi_processing=False,
-                 num_processor=8):
+                 num_processor=8,
+                 invalid_images=None):
         self.city = city
         self.sub_fold = sub_fold
         self.subimage_size = subimage_size
         self.gap = gap
+        self.invalid_images = invalid_images
 
         self.image_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/images'
         self.roof_shp_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/merged_shp'
@@ -41,6 +43,10 @@ class SplitImage():
 
     def split_image(self, shapefile):
         file_name = bstool.get_basename(shapefile)
+
+        if file_name in self.invalid_images:
+            print("This xian image is invalid, skip")
+            return
 
         image_file = os.path.join(self.image_dir, file_name + '.jpg')
         geo_file = os.path.join(self.geo_info_dir, file_name + '.jpg')
@@ -134,6 +140,8 @@ if __name__ == '__main__':
     subimage_size = 1024
     gap = subimage_size // 2
 
+    invalid_images = ['L18_104432_210416', 'L18_104440_210384', 'L18_104440_210416', 'L18_104448_210384', 'L18_104448_210432']
+
     for city in cities:
         for sub_fold in sub_folds[city]:
             print("Begin processing {} {} set.".format(city, sub_fold))
@@ -145,6 +153,7 @@ if __name__ == '__main__':
                                     subimage_size=subimage_size,
                                     gap=gap,
                                     multi_processing=True,
-                                    num_processor=8)
+                                    num_processor=8,
+                                    invalid_images=invalid_images)
             split_image.core()
             print("Finish processing {} {} set.".format(city, sub_fold))

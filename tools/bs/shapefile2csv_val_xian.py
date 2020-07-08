@@ -14,6 +14,8 @@ if __name__ == '__main__':
 
     roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
     footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
+
+    invalid_images = ['L18_104432_210416', 'L18_104440_210384', 'L18_104440_210416', 'L18_104448_210384', 'L18_104448_210432']
     
     first_in = True
     min_area = 100
@@ -25,6 +27,10 @@ if __name__ == '__main__':
         shp_file_list = glob.glob("{}/*.shp".format(shp_dir))
         for shp_file in shp_file_list:
             base_name = bstool.get_basename(shp_file)
+
+            if base_name in invalid_images:
+                print("This xian image is invalid, skip")
+                continue
 
             rgb_img_file = os.path.join(rgb_img_dir, base_name + '.jpg')
 
