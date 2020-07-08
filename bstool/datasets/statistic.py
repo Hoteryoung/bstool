@@ -34,6 +34,7 @@ class Statistic():
         elif isinstance(csv_file, list):
             self.objects = []
             for csv_file_ in csv_file:
+                print("Processing: ", csv_file_)
                 self.objects += self._parse_csv(csv_file_)
 
     def _parse_coco(self, ann_file):
