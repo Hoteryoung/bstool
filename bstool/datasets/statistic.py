@@ -79,7 +79,7 @@ class Statistic():
 
         return objects
 
-    def height(self):
+    def height(self, title=['all']):
         heights = np.array([obj['height'] for obj in self.objects])
 
         print("Height mean: ", heights.mean())
@@ -95,4 +95,5 @@ class Statistic():
         print("Height 60: ", heights[heights < height_60].mean(), heights[heights < height_60].std())
         
         plt.hist(heights, bins=np.arange(0, 100, 100 / 30), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+        plt.title("_".join(title))
         plt.savefig(os.path.join(self.output_dir, f'height.{self.out_file_format}'), bbox_inches='tight', dpi=600, pad_inches=0.1)
