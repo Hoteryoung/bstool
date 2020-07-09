@@ -97,7 +97,7 @@ if __name__ == '__main__':
         img_dir = './data/buildchange/v1/other/images'
         output_dir = './data/buildchange/v1/other/vis/{}'.format(score_threshold)
         bstool.mkdir_or_exist(output_dir)
-        pkl_file = '../mmdetv2-bc/results/building/bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0/bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0_coco_results.pkl'
+        pkl_file = '../mmdetv2-bc/results/buildchange/bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0/bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0_coco_results.pkl'
         ann_file = './data/buildchange/v1/coco/annotations/buildchange_v1_train_other.json'
 
         results = mmcv.load(pkl_file)
