@@ -10,6 +10,8 @@ if __name__ == '__main__':
     for city in cities:
         print(f"Start processing {city}")
 
+        output_dir = './data/buildchange/v0/statistic'
+
         if 'xian' in city or 'dalian' in city:
             imageset = 'val'
         else:
