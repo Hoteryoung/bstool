@@ -3,9 +3,12 @@ import cv2
 import numpy as np
 import geopandas
 from matplotlib import pyplot as plt
+import matplotlib
 
 import bstool
 
+
+matplotlib.use('Agg')
 
 class Evaluation():
     def __init__(self,
@@ -20,7 +23,7 @@ class Evaluation():
                  score_threshold=0.4,
                  with_offset=False,
                  with_height=False,
-                 output_dir='./data/buildchange/v0/statistic',
+                 output_dir=None,
                  out_file_format='png',
                  show=True):
         self.gt_roof_csv_file = gt_roof_csv_file
