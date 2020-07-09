@@ -35,9 +35,10 @@ if __name__ == '__main__':
                                 rootprint_csv_file=rootprint_csv_file,
                                 iou_threshold=0.1,
                                 score_threshold=0.4,
+                                output_dir=output_dir,
                                 with_offset=True,
                                 with_height=True,
-                                show=True)
+                                show=False)
 
         evaluation.height(percent=100, title=city)
         print(f"Finish processing {city}")
