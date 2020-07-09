@@ -13,7 +13,7 @@ import math
 import bstool
 
 
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 
 # plt.rcParams.update({'font.size': 14})    # ICPR paper
 plt.rcParams.update({'font.size': 12})
@@ -96,4 +96,4 @@ class Statistic():
         
         plt.hist(heights, bins=np.arange(0, 100, 100 / 30), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
         plt.title("_".join(title))
-        plt.savefig(os.path.join(self.output_dir, f'{title}_height.{self.out_file_format}'), bbox_inches='tight', dpi=600, pad_inches=0.1)
+        plt.savefig(os.path.join(self.output_dir, '{}_height.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)

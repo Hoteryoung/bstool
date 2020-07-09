@@ -70,7 +70,26 @@ class BS2COCO(bstool.Convert2COCO):
         return coco_annotations
     
     def __json_parse__(self, label_file, image_file):
-        objects = bstool.bs_json_parse(label_file)
+        objects = []
+        if self.groundtruth:
+            objects = bstool.bs_json_parse(label_file)
+        else:
+            object_struct = {}
+            object_struct['bbox'] = [0, 0, 0, 0]
+            object_struct['roof_bbox'] = [0, 0, 0, 0]
+            object_struct['footprint_bbox'] = [0, 0, 0, 0]
+            object_struct['building_bbox'] = [0, 0, 0, 0]
+
+            object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            object_struct['footprint_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            object_struct['ignore_flag'] = 0
+            object_struct['offset'] = [0, 0]
+            object_struct['building_height'] = 0
+            
+            object_struct['segmentation'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            object_struct['label'] = 1
+            object_struct['iscrowd'] = 0
+            objects.append(object_struct)
 
         return objects
 
@@ -101,10 +120,10 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'buildchange'
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
-    cities = ['xian_fine']
+    cities = ['other']
     release_version = 'v1'
 
-    groundtruth = True
+    groundtruth = False
 
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")

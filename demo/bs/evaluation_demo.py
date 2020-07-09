@@ -2,9 +2,10 @@ import bstool
 
 
 if __name__ == '__main__':
-    model = 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50'
+    # model = 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50'
+    model = 'bc_v006_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox'
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
-    cities = ['dalian_fine']
+    cities = ['haerbin']
     
     for city in cities:
         print(f"Start processing {city}")
@@ -30,8 +31,11 @@ if __name__ == '__main__':
                                 gt_footprint_csv_file=gt_footprint_csv_file,
                                 roof_csv_file=roof_csv_file,
                                 rootprint_csv_file=rootprint_csv_file,
+                                iou_threshold=0.1,
+                                score_threshold=0.4,
                                 with_offset=True,
-                                with_height=True)
+                                with_height=True,
+                                show=True)
 
-        evaluation.height(percent=100)
+        evaluation.height(percent=100, title=city)
         print(f"Finish processing {city}")

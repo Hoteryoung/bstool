@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 import geopandas
+from matplotlib import pyplot as plt
 
 import bstool
 
@@ -18,13 +19,21 @@ class Evaluation():
                  iou_threshold=0.1,
                  score_threshold=0.4,
                  with_offset=False,
-                 with_height=False):
+                 with_height=False,
+                 output_dir='./data/buildchange/v0/statistic',
+                 out_file_format='png',
+                 show=True):
         self.gt_roof_csv_file = gt_roof_csv_file
         self.gt_footprint_csv_file = gt_footprint_csv_file
         self.roof_csv_file = roof_csv_file
         self.rootprint_csv_file = rootprint_csv_file
-
         self.pkl_file = pkl_file
+        self.show = show
+
+        self.out_file_format = out_file_format
+
+        self.output_dir = output_dir
+        bstool.mkdir_or_exist(self.output_dir)
 
         pkl_parser = bstool.BSPklParser(anno_file, 
                                         pkl_file, 
@@ -76,15 +85,20 @@ class Evaluation():
 
         print("F1 score: ", F1_score)
 
-    def height(self, percent=100):
+    def height(self, percent=100, title='dalian'):
         objects = self.get_confusion_matrix_indexes()
 
         errors = []
+
+        dataset_gt_heights, dataset_pred_heights = [], []
         gt_angle_std = []
         pred_angle_std = []
         for ori_image_name in self.ori_image_name_list:
             if ori_image_name not in objects.keys():
                 continue
+
+            dataset_gt_heights += objects[ori_image_name]['gt_heights']
+            dataset_pred_heights += objects[ori_image_name]['pred_heights']
 
             gt_heights = np.array(objects[ori_image_name]['gt_heights'])
             pred_heights = np.array(objects[ori_image_name]['pred_heights'])
@@ -124,6 +138,28 @@ class Evaluation():
         print("Height MSE: ", mse)
         print("GT angle Std: ", np.array(gt_angle_std).mean())
         print("Pred angle Std: ", np.array(pred_angle_std).mean())
+
+        if self.show:
+            
+            y_gt = np.array(dataset_gt_heights)
+            y_pred = np.array(dataset_pred_heights)
+            
+            sort_index = np.argsort(y_gt)[::-1]
+            y_gt = y_gt[sort_index]
+            y_pred = y_pred[sort_index]
+
+            # index_100 = y_gt < 100
+            # y_gt = y_gt[index_100]
+            # y_pred = y_pred[index_100]
+
+            x = range(y_gt.shape[0])
+            
+            plt.plot(x, y_gt)
+            plt.scatter(x, y_pred, s=1, color='green')
+            plt.title(title + ' {}'.format(mse))
+            plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+            plt.show()
+
 
     def get_confusion_matrix_indexes(self):
         gt_csv_parser = bstool.CSVParse(self.gt_footprint_csv_file)
