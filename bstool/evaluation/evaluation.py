@@ -38,16 +38,16 @@ class Evaluation():
         self.output_dir = output_dir
         bstool.mkdir_or_exist(self.output_dir)
 
-        # pkl_parser = bstool.BSPklParser(anno_file, 
-        #                                 pkl_file, 
-        #                                 iou_threshold=iou_threshold, 
-        #                                 score_threshold=score_threshold, 
-        #                                 with_offset=with_offset, 
-        #                                 with_height=with_height)
+        pkl_parser = bstool.BSPklParser(anno_file, 
+                                        pkl_file, 
+                                        iou_threshold=iou_threshold, 
+                                        score_threshold=score_threshold, 
+                                        with_offset=with_offset, 
+                                        with_height=with_height)
 
-        # merged_objects = pkl_parser.merged_objects
+        merged_objects = pkl_parser.merged_objects
         
-        # bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
+        bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
 
     def detection(self):
         pass
