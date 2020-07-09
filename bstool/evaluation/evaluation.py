@@ -38,16 +38,16 @@ class Evaluation():
         self.output_dir = output_dir
         bstool.mkdir_or_exist(self.output_dir)
 
-        pkl_parser = bstool.BSPklParser(anno_file, 
-                                        pkl_file, 
-                                        iou_threshold=iou_threshold, 
-                                        score_threshold=score_threshold, 
-                                        with_offset=with_offset, 
-                                        with_height=with_height)
+        # pkl_parser = bstool.BSPklParser(anno_file, 
+        #                                 pkl_file, 
+        #                                 iou_threshold=iou_threshold, 
+        #                                 score_threshold=score_threshold, 
+        #                                 with_offset=with_offset, 
+        #                                 with_height=with_height)
 
-        merged_objects = pkl_parser.merged_objects
+        # merged_objects = pkl_parser.merged_objects
         
-        bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
+        # bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
 
     def detection(self):
         pass
@@ -161,7 +161,6 @@ class Evaluation():
             plt.scatter(x, y_pred, s=1, color='green')
             plt.title(title + ' {}'.format(mse))
             plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
-            plt.show()
 
 
     def get_confusion_matrix_indexes(self):

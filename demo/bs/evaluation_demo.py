@@ -38,7 +38,7 @@ if __name__ == '__main__':
                                 output_dir=output_dir,
                                 with_offset=True,
                                 with_height=True,
-                                show=False)
+                                show=True)
 
         evaluation.height(percent=100, title=city)
         print(f"Finish processing {city}")
