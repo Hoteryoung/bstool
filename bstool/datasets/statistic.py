@@ -100,6 +100,8 @@ class Statistic():
         ax.hist(heights, bins=np.arange(0, 100, 100 / 30), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
         ax.set_yscale('log', basey=10)
         plt.title("_".join(title))
+        plt.xlabel('height (m)')
+        plt.ylabel('count')
         plt.savefig(os.path.join(self.output_dir, '{}_height.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
         plt.clf()
@@ -113,9 +115,11 @@ class Statistic():
         ax = fig.add_subplot(111)
         
         x = range(heights.shape[0])
-            
+        
         ax.plot(x, heights)
         plt.title("_".join(title))
+        plt.xlabel('index')
+        plt.ylabel('height (m)')
         plt.savefig(os.path.join(self.output_dir, '{}_height_curve.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
         plt.clf()
