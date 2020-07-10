@@ -79,7 +79,7 @@ class Statistic():
 
         return objects
 
-    def height(self, title=['all']):
+    def height_distribution(self, title=['all']):
         heights = np.array([obj['height'] for obj in self.objects])
 
         print("Height mean: ", heights.mean())
@@ -94,6 +94,12 @@ class Statistic():
         print("Height 70: ", heights[heights < height_70].mean(), heights[heights < height_70].std())
         print("Height 60: ", heights[heights < height_60].mean(), heights[heights < height_60].std())
         
-        plt.hist(heights, bins=np.arange(0, 100, 100 / 30), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        
+        ax.hist(heights, bins=np.arange(0, 100, 100 / 30), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+        ax.set_yscale('log', basey=10)
         plt.title("_".join(title))
         plt.savefig(os.path.join(self.output_dir, '{}_height.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+        plt.clf()

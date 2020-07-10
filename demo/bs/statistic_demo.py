@@ -3,8 +3,8 @@ import bstool
 
 if __name__ == '__main__':
     
-    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-#  'xian_fine', 'dalian_fine'
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'dalian_fine']
+    # cities = ['dalian_fine']
     for city in cities:
         csv_files = []
         title = []
@@ -15,4 +15,4 @@ if __name__ == '__main__':
 
         statistic = bstool.Statistic(ann_file=None, csv_file=csv_files)
         
-        statistic.height(title)
+        statistic.height_distribution(title)
