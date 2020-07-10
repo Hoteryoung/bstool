@@ -2,7 +2,6 @@ import bstool
 
 
 if __name__ == '__main__':
-    ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_train_shanghai.json'
     
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
 #  'xian_fine', 'dalian_fine'
