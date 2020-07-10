@@ -36,7 +36,8 @@ class Evaluation():
         self.out_file_format = out_file_format
 
         self.output_dir = output_dir
-        bstool.mkdir_or_exist(self.output_dir)
+        if output_dir:
+            bstool.mkdir_or_exist(self.output_dir)
 
         pkl_parser = bstool.BSPklParser(anno_file, 
                                         pkl_file, 
