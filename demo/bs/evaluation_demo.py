@@ -2,10 +2,10 @@ import bstool
 
 
 if __name__ == '__main__':
-    model = 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50'
-    # model = 'bc_v006_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox'
+    # model = 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50'
+    model = 'bc_v006_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox'
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
-    cities = ['chengdu']
+    cities = ['dalian_fine']
     
     for city in cities:
         print(f"Start processing {city}")

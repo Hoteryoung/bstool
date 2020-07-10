@@ -325,7 +325,7 @@ class BSPklParser():
         buildings = []
         if self.with_offset and not self.with_height:
             det, seg, offset = result
-            height = np.zeros(offset.size())
+            height = np.zeros((offset.shape[0], 1))
         if self.with_height:
             det, seg, offset, height = result
 
