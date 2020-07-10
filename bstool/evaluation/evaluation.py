@@ -21,6 +21,7 @@ class Evaluation():
                  rootprint_csv_file=None,
                  iou_threshold=0.1,
                  score_threshold=0.4,
+                 min_area=500,
                  with_offset=False,
                  with_height=False,
                  output_dir=None,
@@ -42,7 +43,8 @@ class Evaluation():
         pkl_parser = bstool.BSPklParser(anno_file, 
                                         pkl_file, 
                                         iou_threshold=iou_threshold, 
-                                        score_threshold=score_threshold, 
+                                        score_threshold=score_threshold,
+                                        min_area=min_area,
                                         with_offset=with_offset, 
                                         with_height=with_height)
 
