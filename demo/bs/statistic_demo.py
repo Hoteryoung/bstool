@@ -15,4 +15,4 @@ if __name__ == '__main__':
 
         statistic = bstool.Statistic(ann_file=None, csv_file=csv_files)
         
-        statistic.height_distribution(title)
+        statistic.height_curve(title)

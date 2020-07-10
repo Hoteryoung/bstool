@@ -103,3 +103,19 @@ class Statistic():
         plt.savefig(os.path.join(self.output_dir, '{}_height.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
         plt.clf()
+
+    def height_curve(self, title=['all']):
+        heights = np.array([obj['height'] for obj in self.objects])
+
+        heights = np.sort(heights)[::-1]
+        
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        
+        x = range(heights.shape[0])
+            
+        ax.plot(x, heights)
+        plt.title("_".join(title))
+        plt.savefig(os.path.join(self.output_dir, '{}_height_curve.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+        plt.clf()
