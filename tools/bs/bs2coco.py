@@ -73,6 +73,13 @@ class BS2COCO(bstool.Convert2COCO):
         objects = []
         if self.groundtruth:
             objects = bstool.bs_json_parse(label_file)
+            
+            if with_height_sample:
+                heights = [obj['building_height'] for obj in objects]
+                if max(heights) < min_height:
+                    return []
+                else:
+                    print("The max height is: ", max(heights))
         else:
             object_struct = {}
             object_struct['bbox'] = [0, 0, 0, 0]
@@ -119,11 +126,14 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'buildchange'
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
-    cities = ['xian_fine_origin']
+    # cities = ['xian_fine_origin']
     release_version = 'v1'
 
     groundtruth = True
+    with_height_sample = True
+    min_height = 100
 
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")
@@ -131,6 +141,9 @@ if __name__ == "__main__":
             anno_name = [core_dataset_name, release_version, 'val', city]
         else:
             anno_name = [core_dataset_name, release_version, 'train', city]
+
+        if with_height_sample:
+            anno_name.append("height_sampled")
         
         imgpath = f'./data/{core_dataset_name}/{release_version}/{city}/images'
         annopath = f'./data/{core_dataset_name}/{release_version}/{city}/labels'
@@ -148,7 +161,7 @@ if __name__ == "__main__":
                                 data_type="instances",
                                 groundtruth=groundtruth,
                                 small_object_area=10,
-                                image_size=(2048, 2048))
+                                image_size=(1024, 1024))
 
         images, annotations = bs2coco.get_image_annotation_pairs()
 
