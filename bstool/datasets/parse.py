@@ -410,7 +410,7 @@ class BSPklParser():
 
 
 class CSVParse():
-    def __init__(self, csv_file):
+    def __init__(self, csv_file, min_area=0):
         csv_df = pandas.read_csv(csv_file)
         self.image_name_list = list(set(csv_df.ImageId.unique()))
 
@@ -420,7 +420,10 @@ class CSVParse():
             for idx, row in csv_df[csv_df.ImageId == image_name].iterrows():
                 building = dict()
                 obj_keys = row.to_dict().keys()
-                building['polygon'] = shapely.wkt.loads(row.PolygonWKT_Pix)
+                polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
+                if polygon.area < min_area:
+                    continue
+                building['polygon'] = polygon
 
                 if not bstool.single_valid_polygon(building['polygon']):
                     continue

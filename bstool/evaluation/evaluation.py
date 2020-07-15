@@ -91,6 +91,76 @@ class Evaluation():
 
         print("F1 score: ", F1_score)
 
+    def offset(self, title='dalian'):
+        objects = self.get_confusion_matrix_indexes()
+
+        errors = []
+
+        dataset_gt_offsets, dataset_pred_heights = [], []
+        gt_angle_std = []
+        pred_angle_std = []
+        for ori_image_name in self.ori_image_name_list:
+            if ori_image_name not in objects.keys():
+                continue
+
+            dataset_gt_heights += objects[ori_image_name]['gt_heights']
+            dataset_pred_heights += objects[ori_image_name]['pred_heights']
+
+            gt_heights = np.array(objects[ori_image_name]['gt_heights'])
+            pred_heights = np.array(objects[ori_image_name]['pred_heights'])
+
+            if len(gt_heights) == 0 or len(pred_heights) == 0:
+                continue
+
+            max_height = np.percentile(gt_heights, percent)
+            bool_keep = gt_heights < max_height
+            gt_heights = gt_heights[bool_keep]
+            pred_heights = pred_heights[bool_keep]
+
+            if len(gt_heights) == 0 or len(pred_heights) == 0:
+                continue
+
+            error = np.abs(gt_heights - pred_heights)
+            errors += error.tolist()
+
+            gt_offsets = np.array(objects[ori_image_name]['gt_offsets'])
+            pred_offsets = np.array(objects[ori_image_name]['pred_offsets'])
+
+            # gt_avg_offsets = np.array(gt_offsets) / np.array(gt_heights)
+            gt_angle = np.arctan2(gt_offsets[:, 1], gt_offsets[:, 0])
+
+            # pred_avg_offsets = np.array(pred_offsets) / np.array(pred_heights)
+            pred_angle = np.arctan2(pred_offsets[:, 1], pred_offsets[:, 0])
+
+            single_image_gt_angle_std = gt_angle.std()
+            single_image_pred_angle_std = pred_angle.std()
+
+            gt_angle_std.append(single_image_gt_angle_std)
+            pred_angle_std.append(single_image_pred_angle_std)
+
+        mse = np.array(errors).mean()
+
+        print("Evaluation pkl file: ", self.pkl_file)
+        print("Height MSE: ", mse)
+        print("GT angle Std: ", np.array(gt_angle_std).mean())
+        print("Pred angle Std: ", np.array(pred_angle_std).mean())
+
+        if self.show:
+            
+            y_gt = np.array(dataset_gt_heights)
+            y_pred = np.array(dataset_pred_heights)
+            
+            sort_index = np.argsort(y_gt)[::-1]
+            y_gt = y_gt[sort_index]
+            y_pred = y_pred[sort_index]
+
+            x = range(y_gt.shape[0])
+            
+            plt.plot(x, y_gt)
+            plt.scatter(x, y_pred, s=1, color='green')
+            plt.title(title + ' {}'.format(mse))
+            plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
     def height(self, percent=100, title='dalian'):
         objects = self.get_confusion_matrix_indexes()
 

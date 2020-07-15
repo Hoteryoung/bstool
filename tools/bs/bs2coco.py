@@ -120,10 +120,10 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'buildchange'
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
-    cities = ['other']
+    cities = ['xian_fine_origin']
     release_version = 'v1'
 
-    groundtruth = False
+    groundtruth = True
 
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")
@@ -148,7 +148,7 @@ if __name__ == "__main__":
                                 data_type="instances",
                                 groundtruth=groundtruth,
                                 small_object_area=10,
-                                image_size=(1024, 1024))
+                                image_size=(2048, 2048))
 
         images, annotations = bs2coco.get_image_annotation_pairs()
 

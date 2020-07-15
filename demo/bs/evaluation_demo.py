@@ -27,18 +27,18 @@ if __name__ == '__main__':
         rootprint_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_footprint_merged.csv'
 
         evaluation = bstool.Evaluation(model=model,
-                                anno_file=anno_file,
-                                pkl_file=pkl_file,
-                                gt_roof_csv_file=gt_roof_csv_file,
-                                gt_footprint_csv_file=gt_footprint_csv_file,
-                                roof_csv_file=roof_csv_file,
-                                rootprint_csv_file=rootprint_csv_file,
-                                iou_threshold=0.1,
-                                score_threshold=0.4,
-                                output_dir=output_dir,
-                                with_offset=True,
-                                with_height=True,
-                                show=True)
+                                       anno_file=anno_file,
+                                       pkl_file=pkl_file,
+                                       gt_roof_csv_file=gt_roof_csv_file,
+                                       gt_footprint_csv_file=gt_footprint_csv_file,
+                                       roof_csv_file=roof_csv_file,
+                                       rootprint_csv_file=rootprint_csv_file,
+                                       iou_threshold=0.1,
+                                       score_threshold=0.4,
+                                       output_dir=output_dir,
+                                       with_offset=True,
+                                       with_height=True,
+                                       show=True)
 
         evaluation.height(percent=100, title=city)
         print(f"Finish processing {city}")
