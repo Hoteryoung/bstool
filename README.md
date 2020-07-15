@@ -14,6 +14,7 @@ It will provide the following functionalities.
 - Pytorch 1.1+
 - CUDA 9.0+
 - [mmcv](https://github.com/open-mmlab/mmcv)
+- pycocotools (pip install lvis@git+https://github.com/open-mmlab/cocoapi.git#subdirectory=lvis)
 
 ### Installation
 ```

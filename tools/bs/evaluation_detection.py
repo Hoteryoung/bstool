@@ -181,6 +181,4 @@ if __name__ == '__main__':
     coco_eval_extend.evaluation(metric=['bbox', 'segm'],
                                 classwise=False,
                                 proposal_nums=(100, 300, 1000),
-                                iou_thrs=np.arange(0.5, 0.96, 0.05))                  
-
-    
+                                iou_thrs=np.arange(0.5, 0.96, 0.05))
