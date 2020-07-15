@@ -9,6 +9,7 @@ from shapely.geometry import Polygon
 import pandas
 import matplotlib
 import math
+import ast
 
 import bstool
 
@@ -74,6 +75,14 @@ class Statistic():
                 else:
                     building['height'] = 3.0
 
+                if 'Offset' in obj_keys:
+                    if type(row.Offset) == str:
+                        building['offset'] = ast.literal_eval(row.Offset)
+                    else:
+                        building['offset'] = row.Offset
+                else:
+                    building['offset'] = [0.0, 0.0]
+
                 buildings.append(building)
             objects += buildings
 
@@ -121,5 +130,34 @@ class Statistic():
         plt.xlabel('index')
         plt.ylabel('height (m)')
         plt.savefig(os.path.join(self.output_dir, '{}_height_curve.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+        plt.clf()
+
+    def offset_distribution(self, title=['all']):
+        offsets = np.array([obj['offset'] for obj in self.objects])
+
+        print("Offset X mean: ", offsets[:, 0].mean())
+        print("Offset X std: ", offsets[:, 0].std())
+        print("Offset X median: ", np.median(offsets[:, 0]))
+
+        print("Offset Y mean: ", offsets[:, 1].mean())
+        print("Offset Y std: ", offsets[:, 1].std())
+        print("Offset Y median: ", np.median(offsets[:, 1]))
+        
+        fig, ax = plt.subplots(1, 2, figsize=(14, 7))
+
+        ax[0].hist(offsets[:, 0], bins=np.arange(-20, 20, 40 / 200), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+        # ax.set_yscale('log', basey=10)
+        ax[0].set_title("_".join(title) + ' offset X distribution', fontsize=10)
+        ax[0].set_xlabel('offset (pixel)')
+        ax[0].set_ylabel('count')
+
+        ax[1].hist(offsets[:, 1], bins=np.arange(-20, 20, 40 / 100), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+        # ax.set_yscale('log', basey=10)
+        ax[1].set_title("_".join(title) + ' offset Y distribution', fontsize=10)
+        ax[1].set_xlabel('offset (pixel)')
+        ax[1].set_ylabel('count')
+
+        plt.savefig(os.path.join(self.output_dir, '{}_offset_distribution.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
         plt.clf()
