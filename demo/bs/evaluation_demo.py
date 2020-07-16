@@ -14,7 +14,7 @@ if __name__ == '__main__':
         else:
             with_height = False
         for city in cities:
-            print(f"========== {model} {city} ==========")
+            print(f"========== {model} ========== {city} ==========")
 
             output_dir = f'./data/buildchange/v0/statistic/models/{model}'
 
