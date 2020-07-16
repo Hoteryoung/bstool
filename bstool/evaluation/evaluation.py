@@ -95,41 +95,43 @@ class Evaluation():
 
             plt.clf()
 
-    def segmentation(self):
-        objects = self.get_confusion_matrix_indexes()
+    def segmentation(self, mask_types = ['roof', 'footprint']):
+        for mask_type in mask_types:
+            print(f"========== Processing {mask_type} segmentation ==========")
+            objects = self.get_confusion_matrix_indexes(mask_type=mask_type)
 
-        dataset_gt_TP_indexes, dataset_pred_TP_indexes, dataset_gt_FN_indexes, dataset_pred_FP_indexes = [], [], [], []
-        for ori_image_name in self.ori_image_name_list:
-            if ori_image_name not in objects.keys():
-                continue
+            dataset_gt_TP_indexes, dataset_pred_TP_indexes, dataset_gt_FN_indexes, dataset_pred_FP_indexes = [], [], [], []
+            for ori_image_name in self.ori_image_name_list:
+                if ori_image_name not in objects.keys():
+                    continue
 
-            gt_TP_indexes = objects[ori_image_name]['gt_TP_indexes']
-            pred_TP_indexes = objects[ori_image_name]['pred_TP_indexes']
-            gt_FN_indexes = objects[ori_image_name]['gt_FN_indexes']
-            pred_FP_indexes = objects[ori_image_name]['pred_FP_indexes']
+                gt_TP_indexes = objects[ori_image_name]['gt_TP_indexes']
+                pred_TP_indexes = objects[ori_image_name]['pred_TP_indexes']
+                gt_FN_indexes = objects[ori_image_name]['gt_FN_indexes']
+                pred_FP_indexes = objects[ori_image_name]['pred_FP_indexes']
 
-            dataset_gt_TP_indexes += gt_TP_indexes
-            dataset_pred_TP_indexes += pred_TP_indexes
-            dataset_gt_FN_indexes += gt_FN_indexes
-            dataset_pred_FP_indexes += pred_FP_indexes
+                dataset_gt_TP_indexes += gt_TP_indexes
+                dataset_pred_TP_indexes += pred_TP_indexes
+                dataset_gt_FN_indexes += gt_FN_indexes
+                dataset_pred_FP_indexes += pred_FP_indexes
 
-        TP = len(dataset_gt_TP_indexes)
-        FN = len(dataset_gt_FN_indexes)
-        FP = len(dataset_pred_FP_indexes)
+            TP = len(dataset_gt_TP_indexes)
+            FN = len(dataset_gt_FN_indexes)
+            FP = len(dataset_pred_FP_indexes)
 
-        print("Summary (codes by jwwangchn):")
-        print("TP: ", TP)
-        print("FN: ", FN)
-        print("FP: ", FP)
+            print("Summary (codes by jwwangchn):")
+            print("TP: ", TP)
+            print("FN: ", FN)
+            print("FP: ", FP)
 
-        Precision = float(TP) / (float(TP) + float(FP))
-        Recall = float(TP) / (float(TP) + float(FN))
+            Precision = float(TP) / (float(TP) + float(FP))
+            Recall = float(TP) / (float(TP) + float(FN))
 
-        F1_score = (2 * Precision * Recall) / (Precision + Recall)
-        print("Precision: ", Precision)
-        print("Recall: ", Recall)
+            F1_score = (2 * Precision * Recall) / (Precision + Recall)
+            print("Precision: ", Precision)
+            print("Recall: ", Recall)
 
-        print("F1 score: ", F1_score)
+            print("F1 score: ", F1_score)
 
     def offset_angle(self, title='dalian'):
         objects = self.get_confusion_matrix_indexes()
@@ -275,9 +277,13 @@ class Evaluation():
             plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
 
-    def get_confusion_matrix_indexes(self):
-        gt_csv_parser = bstool.CSVParse(self.gt_footprint_csv_file)
-        pred_csv_parser = bstool.CSVParse(self.rootprint_csv_file)
+    def get_confusion_matrix_indexes(self, mask_type='footprint'):
+        if mask_type == 'footprint':
+            gt_csv_parser = bstool.CSVParse(self.gt_footprint_csv_file)
+            pred_csv_parser = bstool.CSVParse(self.rootprint_csv_file)
+        else:
+            gt_csv_parser = bstool.CSVParse(self.gt_roof_csv_file)
+            pred_csv_parser = bstool.CSVParse(self.roof_csv_file)
 
         self.ori_image_name_list = gt_csv_parser.image_name_list
 
