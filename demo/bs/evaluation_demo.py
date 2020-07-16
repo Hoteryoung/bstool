@@ -7,7 +7,7 @@ if __name__ == '__main__':
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
-    cities = ['dalian']
+    cities = ['xian', 'dalian']
 
     for model in models:
         if 'v006' in model:
