@@ -133,6 +133,31 @@ class Statistic():
 
         plt.clf()
 
+    def offset_polar(self, title=['all']):
+        offsets = np.array([obj['offset'] for obj in self.objects])
+
+        r = np.sqrt(offsets[:, 0] ** 2 + offsets[:, 1] ** 2)
+        angle = np.arctan2(offsets[:, 1], offsets[:, 0]) * 180.0 / np.pi
+        max_r = np.percentile(r, 90)
+
+        fig = plt.figure(figsize=(7, 7))
+        ax = plt.gca(projection='polar')
+        ax.set_thetagrids(np.arange(0.0, 360.0, 15.0))
+        ax.set_thetamin(0.0)
+        ax.set_thetamax(360.0)
+        ax.set_rgrids(np.arange(0, max_r, max_r / 10))
+        ax.set_rlabel_position(0.0)
+        ax.set_rlim(0, max_r)
+        plt.setp(ax.get_yticklabels(), fontsize=6)
+        ax.grid(True, linestyle = "-", color = "k", linewidth = 0.5, alpha = 0.5)
+        ax.set_axisbelow('True')
+
+        plt.scatter(angle, r, s = 2.0)
+
+        plt.savefig(os.path.join(self.output_dir, '{}_offset_polar.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+        plt.clf()
+
     def offset_distribution(self, title=['all']):
         offsets = np.array([obj['offset'] for obj in self.objects])
 
@@ -144,7 +169,7 @@ class Statistic():
         print("Offset Y std: ", offsets[:, 1].std())
         print("Offset Y median: ", np.median(offsets[:, 1]))
         
-        fig, ax = plt.subplots(1, 2, figsize=(14, 7))
+        fig, ax = plt.subplots(1, 2, figsize=(14, 5))
 
         ax[0].hist(offsets[:, 0], bins=np.arange(-20, 20, 40 / 200), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
         # ax.set_yscale('log', basey=10)

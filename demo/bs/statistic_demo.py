@@ -18,4 +18,5 @@ if __name__ == '__main__':
         # statistic.height_distribution(title)
         # statistic.height_curve(title)
 
-        statistic.offset_distribution(title)
+        # statistic.offset_distribution(title)
+        statistic.offset_polar(title)
