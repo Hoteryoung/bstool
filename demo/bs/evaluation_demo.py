@@ -54,6 +54,6 @@ if __name__ == '__main__':
                                         show=True)
 
             evaluation.segmentation()
-            # evaluation.height(percent=100, title=city)
+            evaluation.height(percent=100, title=city)
             evaluation.offset(title=city)
             print(f"Finish processing {city}")
