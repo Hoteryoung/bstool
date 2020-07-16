@@ -22,8 +22,8 @@ if __name__ == '__main__':
             if 'xian' in city:
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
-                gt_roof_csv_file = f'./data/buildchange/v0/xian_fine/xian_val_roof_gt_minarea100_26.csv'
-                gt_footprint_csv_file = f'./data/buildchange/v0/xian_fine/xian_val_footprint_gt_minarea100_26.csv'
+                gt_roof_csv_file = f'./data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
+                gt_footprint_csv_file = f'./data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
             elif 'dalian' in city:
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
