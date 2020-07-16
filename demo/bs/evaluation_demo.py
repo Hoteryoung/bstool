@@ -39,21 +39,24 @@ if __name__ == '__main__':
             roof_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_roof_merged.csv'
             rootprint_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_footprint_merged.csv'
 
-            evaluation = bstool.Evaluation(model=model,
-                                        anno_file=anno_file,
-                                        pkl_file=pkl_file,
-                                        gt_roof_csv_file=gt_roof_csv_file,
-                                        gt_footprint_csv_file=gt_footprint_csv_file,
-                                        roof_csv_file=roof_csv_file,
-                                        rootprint_csv_file=rootprint_csv_file,
-                                        iou_threshold=0.1,
-                                        score_threshold=0.4,
-                                        output_dir=output_dir,
-                                        with_offset=True,
-                                        with_height=with_height,
-                                        show=True)
+            try:
+                evaluation = bstool.Evaluation(model=model,
+                                            anno_file=anno_file,
+                                            pkl_file=pkl_file,
+                                            gt_roof_csv_file=gt_roof_csv_file,
+                                            gt_footprint_csv_file=gt_footprint_csv_file,
+                                            roof_csv_file=roof_csv_file,
+                                            rootprint_csv_file=rootprint_csv_file,
+                                            iou_threshold=0.1,
+                                            score_threshold=0.4,
+                                            output_dir=output_dir,
+                                            with_offset=True,
+                                            with_height=with_height,
+                                            show=True)
 
-            evaluation.segmentation()
-            evaluation.height(percent=100, title=city)
-            evaluation.offset(title=city)
-            print(f"Finish processing {city}")
+                evaluation.segmentation()
+                evaluation.height(percent=100, title=city)
+                evaluation.offset(title=city)
+                print(f"Finish processing {city}")
+            except:
+                print(f"Error")
