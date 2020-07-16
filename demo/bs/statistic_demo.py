@@ -3,8 +3,8 @@ import bstool
 
 if __name__ == '__main__':
     
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'dalian_fine']
-    cities = ['dalian_fine']
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'dalian_fine', 'xian_fine']
+    # cities = ['dalian_fine']
     for city in cities:
         csv_files = []
         title = []
