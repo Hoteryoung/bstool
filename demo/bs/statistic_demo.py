@@ -4,11 +4,12 @@ import bstool
 if __name__ == '__main__':
     
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'dalian_fine', 'xian_fine']
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     # cities = ['dalian_fine']
+    csv_files = []
+    title = []
     for city in cities:
         print("City: ", city)
-        csv_files = []
-        title = []
         
         csv_file = f'./data/buildchange/v0/{city}/{city}_2048_footprint_gt.csv'
         csv_files.append(csv_file)
