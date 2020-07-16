@@ -56,7 +56,7 @@ class Evaluation():
         pass
 
     def offset(self, title):
-        objects = self.get_confusion_matrix_indexes()
+        objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []
         for ori_image_name in self.ori_image_name_list:
@@ -134,7 +134,7 @@ class Evaluation():
             print("F1 score: ", F1_score)
 
     def offset_angle(self, title='dalian'):
-        objects = self.get_confusion_matrix_indexes()
+        objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         errors = []
 
@@ -203,7 +203,7 @@ class Evaluation():
             plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
     def height(self, percent=100, title='dalian'):
-        objects = self.get_confusion_matrix_indexes()
+        objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         errors = []
 
