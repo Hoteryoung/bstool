@@ -153,6 +153,7 @@ class Statistic():
         ax.set_axisbelow('True')
 
         plt.scatter(angle, r, s = 2.0)
+        plt.title("_".join(title) + ' offset polar distribution', fontsize=10)
 
         plt.savefig(os.path.join(self.output_dir, '{}_offset_polar.{}'.format("_".join(title), self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
