@@ -56,8 +56,11 @@ if __name__ == '__main__':
                                             show=True)
 
                 evaluation.segmentation()
-                evaluation.height(percent=100, title=city)
                 evaluation.offset(title=city)
-                print(f"Finish processing {city}")
+                if city == 'xian':
+                    continue
+                evaluation.height(percent=100, title=city)
+                
+                print(f"========== Finish processing {city} ==========")
             except:
                 print(f"Error")
