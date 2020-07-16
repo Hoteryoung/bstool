@@ -55,6 +55,46 @@ class Evaluation():
     def detection(self):
         pass
 
+    def offset(self, title):
+        objects = self.get_confusion_matrix_indexes()
+
+        dataset_gt_offsets, dataset_pred_offsets = [], []
+        for ori_image_name in self.ori_image_name_list:
+            if ori_image_name not in objects.keys():
+                continue
+
+            dataset_gt_offsets += objects[ori_image_name]['gt_offsets']
+            dataset_pred_offsets += objects[ori_image_name]['pred_offsets']
+
+        dataset_gt_offsets = np.array(dataset_gt_offsets)
+        dataset_pred_offsets = np.array(dataset_pred_offsets)
+
+        error_vectors = dataset_gt_offsets - dataset_pred_offsets
+
+        if self.show:
+            r = np.sqrt(error_vectors[:, 0] ** 2 + error_vectors[:, 1] ** 2)
+            angle = np.arctan2(error_vectors[:, 1], error_vectors[:, 0]) * 180.0 / np.pi
+            max_r = np.percentile(r, 95)
+
+            fig = plt.figure(figsize=(7, 7))
+            ax = plt.gca(projection='polar')
+            ax.set_thetagrids(np.arange(0.0, 360.0, 15.0))
+            ax.set_thetamin(0.0)
+            ax.set_thetamax(360.0)
+            ax.set_rgrids(np.arange(0, max_r, max_r / 10))
+            ax.set_rlabel_position(0.0)
+            ax.set_rlim(0, max_r)
+            plt.setp(ax.get_yticklabels(), fontsize=6)
+            ax.grid(True, linestyle = "-", color = "k", linewidth = 0.5, alpha = 0.5)
+            ax.set_axisbelow('True')
+
+            plt.scatter(angle, r, s = 2.0)
+            plt.title(title + ' offset error distribution', fontsize=10)
+
+            plt.savefig(os.path.join(self.output_dir, '{}_offset_error_polar_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+            plt.clf()
+
     def segmentation(self):
         objects = self.get_confusion_matrix_indexes()
 
@@ -91,7 +131,7 @@ class Evaluation():
 
         print("F1 score: ", F1_score)
 
-    def offset(self, title='dalian'):
+    def offset_angle(self, title='dalian'):
         objects = self.get_confusion_matrix_indexes()
 
         errors = []
@@ -146,7 +186,6 @@ class Evaluation():
         print("Pred angle Std: ", np.array(pred_angle_std).mean())
 
         if self.show:
-            
             y_gt = np.array(dataset_gt_heights)
             y_pred = np.array(dataset_pred_heights)
             
