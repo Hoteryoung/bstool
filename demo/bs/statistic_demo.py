@@ -6,6 +6,7 @@ if __name__ == '__main__':
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'dalian_fine', 'xian_fine']
     # cities = ['dalian_fine']
     for city in cities:
+        print("City: ", city)
         csv_files = []
         title = []
         
@@ -18,5 +19,5 @@ if __name__ == '__main__':
         # statistic.height_distribution(title)
         # statistic.height_curve(title)
 
-        # statistic.offset_distribution(title)
+        statistic.offset_distribution(title)
         statistic.offset_polar(title)
