@@ -59,7 +59,7 @@ class COCOEvalExtend():
             image_name = bstool.get_basename(info['file_name'])
 
             png_file = os.path.join(png_dir, image_name + self.png_format)
-            objects = bstool.mask_parse(png_file, subclasses=[255, 255], clean_polygon_flag=True)
+            objects = bstool.mask_parse(png_file, subclasses=[255, 255], clean_polygon_flag=True, with_opencv=True)
             
             masks = [obj['mask'] for obj in objects]
             bboxes = [bstool.mask2bbox(mask) for mask in masks]
@@ -169,7 +169,8 @@ class COCOEvalExtend():
 
 if __name__ == '__main__':
     ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine_origin.json'
-    png_dir = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/weijia'
+    # png_dir = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/weijia'
+    png_dir = '/data/buildchange/v0/xian_fine/png_gt'
     json_prefix = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/pred'
 
 

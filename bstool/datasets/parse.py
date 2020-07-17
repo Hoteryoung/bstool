@@ -80,7 +80,8 @@ def shp_parse(shp_file,
 
 def mask_parse(mask_file,
                subclasses=(1, 3),
-               clean_polygon_flag=False):
+               clean_polygon_flag=False,
+               with_opencv=False):
     """parse mask image
 
     Args:
@@ -101,7 +102,10 @@ def mask_parse(mask_file,
         return []
 
     sub_mask = bstool.generate_subclass_mask(mask_image, subclasses=subclasses)
-    polygons = bstool.generate_polygon(sub_mask)
+    if with_opencv:
+        polygons = bstool.generate_polygon_opencv(sub_mask)
+    else:
+        polygons = bstool.generate_polygon(sub_mask)
 
     objects = []
     for polygon in polygons:
@@ -112,6 +116,8 @@ def mask_parse(mask_file,
             if polygon.geom_type not in ['Polygon', 'MultiPolygon']:
                 continue
         object_struct['mask'] = bstool.polygon2mask(polygon)
+        if len(object_struct['mask']) == 0:
+            continue
         object_struct['polygon'] = polygon
         objects.append(object_struct)
 

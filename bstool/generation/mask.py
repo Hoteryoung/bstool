@@ -1,5 +1,7 @@
+import numpy as np
 from shapely.geometry import Polygon, MultiPolygon
 from skimage import measure
+import cv2
 import bstool
 
 
@@ -17,6 +19,46 @@ def generate_polygon(mask_image,
             continue
         
         poly = Polygon(contour)
+        if poly.area < min_area:
+            continue
+        poly = poly.simplify(1.0, preserve_topology=False)
+        if poly.geom_type == 'MultiPolygon':
+            for poly_ in poly:
+                if poly_.area < min_area:
+                    continue
+                valid_flag = bstool.single_valid_polygon(poly_)
+                if not valid_flag:
+                    continue
+                polygons.append(poly_)
+        elif poly.geom_type == 'Polygon':
+            valid_flag = bstool.single_valid_polygon(poly)
+            if not valid_flag:
+                continue
+            polygons.append(poly)
+        else:
+            continue
+
+    return polygons
+
+def generate_polygon_opencv(mask_image, 
+                            min_area=20):
+
+    contours = cv2.findContours(mask_image.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours = contours[0] if len(contours) == 2 else contours[1]
+    
+    if len(contours) == 0:
+        return []
+
+    polygons = []
+    for contour in contours:
+        if cv2.contourArea(contour) < 5:
+            continue
+        
+        contour = np.array(contour).reshape(1, -1).tolist()[0]
+        if len(contour) < 8:
+            continue
+
+        poly = bstool.mask2polygon(contour)
         if poly.area < min_area:
             continue
         poly = poly.simplify(1.0, preserve_topology=False)
