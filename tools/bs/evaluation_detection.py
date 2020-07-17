@@ -185,7 +185,8 @@ if __name__ == '__main__':
                                       png_dir=png_dir,
                                       csv_file=None,
                                       json_prefix=json_prefix,
-                                      image_size=(300, 300))
+                                      image_size=(300, 300),
+                                      subclass=1)
     
     coco_eval_extend.evaluation(metric=['bbox', 'segm'],
                                 classwise=False,
