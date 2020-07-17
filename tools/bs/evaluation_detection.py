@@ -168,12 +168,17 @@ class COCOEvalExtend():
 
 
 if __name__ == '__main__':
-    ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine_origin.json'
-    # png_dir = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/weijia'
-    png_dir = '/data/buildchange/v0/xian_fine/png_gt'
-    json_prefix = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/pred'
+    # ann_file = '/data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine_origin.json'
+    # # png_dir = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/weijia'
+    # png_dir = '/data/buildchange/v0/xian_fine/png_gt'
+    # json_prefix = '/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/pred'
 
+    ann_file = '/mnt/lustrenew/liweijia/data/crowdAI/val/annotation-small.json'
+    png_dir = '/mnt/lustrenew/liweijia/data/crowdAI/val/val-annotation-small-png-01'
+    json_prefix = '/mnt/lustre/wangjinwang/buildchange/codes/bstool/data/buildchange/v0/crowdAI/crowdAI'
 
+    bstool.mkdir_or_exist('/mnt/lustre/wangjinwang/buildchange/codes/bstool/data/buildchange/v0/crowdAI')
+    
     coco_eval_extend = COCOEvalExtend(ann_file=ann_file,
                                       png_dir=png_dir,
                                       csv_file=None,
