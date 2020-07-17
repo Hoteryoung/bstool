@@ -22,12 +22,14 @@ class COCOEvalExtend():
                  png_format='.png',
                  csv_file=None,
                  json_prefix=None,
-                 image_size=(2048, 2048)):
+                 image_size=(2048, 2048),
+                 subclass=255):
         self.png_dir = png_dir
         self.png_format = png_format
         self.csv_file = csv_file
         self.json_prefix = json_prefix
         self.image_size = image_size
+        self.subclass = subclass
 
         self.coco = COCO(ann_file)
         self.cat_ids = self.coco.get_cat_ids()
@@ -59,8 +61,7 @@ class COCOEvalExtend():
             image_name = bstool.get_basename(info['file_name'])
 
             png_file = os.path.join(png_dir, image_name + self.png_format)
-            print(png_file)
-            objects = bstool.mask_parse(png_file, subclasses=[255, 255], clean_polygon_flag=True, with_opencv=True)
+            objects = bstool.mask_parse(png_file, subclasses=[self.subclass, self.subclass], clean_polygon_flag=True, with_opencv=True)
             
             masks = [obj['mask'] for obj in objects]
             bboxes = [bstool.mask2bbox(mask) for mask in masks]
