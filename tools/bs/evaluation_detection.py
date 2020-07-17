@@ -64,7 +64,7 @@ class COCOEvalExtend():
             image_name = bstool.get_basename(info['file_name'])
 
             png_file = os.path.join(png_dir, image_name + self.png_format)
-            objects = bstool.mask_parse(png_file, subclasses=[self.subclass, self.subclass], clean_polygon_flag=True, with_opencv=True)
+            objects = bstool.mask_parse(png_file, subclasses=[self.subclass, self.subclass], clean_polygon_flag=True, with_opencv=False)
             
             masks = [obj['mask'] for obj in objects]
             bboxes = [bstool.mask2bbox(mask) for mask in masks]
