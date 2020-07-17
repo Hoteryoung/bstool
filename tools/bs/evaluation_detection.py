@@ -24,13 +24,15 @@ class COCOEvalExtend():
                  csv_file=None,
                  json_prefix=None,
                  image_size=(2048, 2048),
-                 subclass=255):
+                 subclass=255,
+                 category_id=1):
         self.png_dir = png_dir
         self.png_format = png_format
         self.csv_file = csv_file
         self.json_prefix = json_prefix
         self.image_size = image_size
         self.subclass = subclass
+        self.category_id = category_id
 
         self.coco = COCO(ann_file)
         self.cat_ids = self.coco.get_cat_ids()
@@ -72,7 +74,7 @@ class COCOEvalExtend():
                 data['image_id'] = img_id
                 data['bbox'] = bstool.xyxy2xywh(bbox)
                 data['score'] = 1.0
-                data['category_id'] = 1
+                data['category_id'] = self.category_id
 
                 rles = maskUtils.frPyObjects([mask], self.image_size[0], self.image_size[1])
                 rle = maskUtils.merge(rles)
@@ -187,7 +189,8 @@ if __name__ == '__main__':
                                       csv_file=None,
                                       json_prefix=json_prefix,
                                       image_size=(300, 300),
-                                      subclass=1)
+                                      subclass=1,
+                                      category_id=100)
     
     coco_eval_extend.evaluation(metric=['bbox', 'segm'],
                                 classwise=False,
