@@ -10,6 +10,7 @@ from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 import pycocotools.mask as maskUtils
 from terminaltables import AsciiTable
+import tqdm
 
 import mmcv
 import bstool
@@ -55,7 +56,7 @@ class COCOEvalExtend():
     def _png2json(self, png_dir):
         bbox_json_results = []
         segm_json_results = []
-        for idx in range(len(self.img_ids)):
+        for idx in tqdm.tqdm(range(len(self.img_ids))):
             img_id = self.img_ids[idx]
             info = self.coco.load_imgs([img_id])[0]
             image_name = bstool.get_basename(info['file_name'])
