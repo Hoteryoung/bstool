@@ -138,6 +138,9 @@ class Statistic():
 
         r = np.sqrt(offsets[:, 0] ** 2 + offsets[:, 1] ** 2)
         angle = np.arctan2(offsets[:, 1], offsets[:, 0]) * 180.0 / np.pi
+
+        print(f"length mean: {r.mean()}, angle mean: {angle.mean()}")
+
         max_r = np.percentile(r, 90)
 
         fig = plt.figure(figsize=(7, 7))
