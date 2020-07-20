@@ -93,10 +93,13 @@ class Statistic():
 
         print("Height mean: ", heights.mean())
         print("Height std: ", heights.std())
+        height_95 = np.percentile(heights, 95)
         height_90 = np.percentile(heights, 90)
         height_80 = np.percentile(heights, 80)
         height_70 = np.percentile(heights, 70)
         height_60 = np.percentile(heights, 60)
+
+        print(f"Height 95: {height_95}, Height 90: {height_90}, Height 80: {height_80}")
 
         print("Height 90: ", heights[heights < height_90].mean(), heights[heights < height_90].std())
         print("Height 80: ", heights[heights < height_80].mean(), heights[heights < height_80].std())
