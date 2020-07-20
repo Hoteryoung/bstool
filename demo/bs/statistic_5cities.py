@@ -14,3 +14,4 @@ if __name__ == '__main__':
 
     statistic = bstool.Statistic(ann_file=None, csv_file=csv_files)
     statistic.offset_polar(title)
+    statistic.height_distribution(title)
