@@ -21,7 +21,7 @@ if __name__ == '__main__':
     else:
         models = [args.model]
     
-    cities = ['dalian', 'xian']
+    cities = ['xian', 'dalian']
 
     for model in models:
         version = model.split('_')[1]
@@ -70,7 +70,7 @@ if __name__ == '__main__':
                                         with_height=with_height,
                                         show=True)
 
-            title = city + version
+            title = city + "_" + version
 
             evaluation.segmentation()
             evaluation.offset_classification(title=title)
