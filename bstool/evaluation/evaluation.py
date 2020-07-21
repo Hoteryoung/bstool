@@ -4,6 +4,7 @@ import numpy as np
 import geopandas
 from matplotlib import pyplot as plt
 import matplotlib
+import seaborn as sns
 
 import bstool
 
@@ -33,6 +34,8 @@ class Evaluation():
         self.rootprint_csv_file = rootprint_csv_file
         self.pkl_file = pkl_file
         self.show = show
+        self.classify_interval=[0,2,4,6,8,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,130,140,150,160,170,180,190,200,220,240,260,280,300,340,380]
+        self.offset_class_num = len(self.classify_interval)
 
         self.out_file_format = out_file_format
 
@@ -55,7 +58,79 @@ class Evaluation():
     def detection(self):
         pass
 
-    def offset(self, title):
+    def _get_length_index(self, length):
+        for index, value in enumerate(self.classify_interval):
+            if length == 0:
+                index = 0
+                break
+            elif index == self.offset_class_num - 1:
+                index = self.offset_class_num
+                break
+            elif length > self.classify_interval[index] and length <= self.classify_interval[index + 1]:
+                index = index + 1
+                break
+            else:
+                pass
+        
+        return index
+
+    def _rectangle2polar(self, offset):
+        length = np.sqrt(offset[0] ** 2 + offset[1] ** 2)
+        angle = np.angle(offset[0] - 1j * offset[1]) - np.pi / 2
+        return length, angle
+
+    def offset_classification(self, title='demo', interval=2, bins=15):
+        objects = self.get_confusion_matrix_indexes(mask_type='roof')
+
+        dataset_gt_offsets, dataset_pred_offsets = [], []
+        for ori_image_name in self.ori_image_name_list:
+            if ori_image_name not in objects.keys():
+                continue
+
+            dataset_gt_offsets += objects[ori_image_name]['gt_offsets']
+            dataset_pred_offsets += objects[ori_image_name]['pred_offsets']
+
+        confusion_matrix = np.zeros((self.offset_class_num + 1, self.offset_class_num + 1))
+        length_error = np.zeros(self.offset_class_num + 1)
+
+        for gt_offset, pred_offset in zip(dataset_gt_offsets, dataset_pred_offsets):
+            gt_length = self._rectangle2polar(gt_offset)[0]
+            gt_index = self._get_length_index(gt_length)
+            pred_length = self._rectangle2polar(pred_offset)[0]
+            pred_index = self._get_length_index(pred_length)
+
+            confusion_matrix[gt_index, pred_index] += 1
+            length_error[gt_index] += abs(gt_length - pred_length)
+
+        confusion_matrix_small = np.zeros((bins, bins))
+        length_error_each_class = length_error / confusion_matrix.sum(axis=1)
+        np.set_printoptions(precision=2, floatmode='maxprec')
+        np.set_printoptions(suppress=True)
+        print("Each class error (full): ", length_error_each_class)
+        
+        for idx in range(0, self.offset_class_num + 1, 5):
+            _ = length_error_each_class[idx : idx + 5]
+            print(f"{idx}: ", np.mean(_[~np.isnan(_)]))
+
+        for i in range(bins):
+            for j in range(bins):
+                confusion_matrix_small[i, j] = np.sum(confusion_matrix[interval * i : interval * (i + 1), interval * j : interval * (j + 1)])
+
+        if self.show:
+            sns.set(rc={'figure.figsize': (15, 15)})
+            fig = sns.heatmap(confusion_matrix_small, annot=True,
+                            fmt='g', cmap='PuRd').get_figure()
+
+            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_num.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+            fig.clf()
+            confusion_matrix_small /= confusion_matrix_small.sum(axis=1)[:, np.newaxis]
+            fig = sns.heatmap(confusion_matrix_small, annot=True,
+                            fmt='.2f', cmap='PuRd').get_figure()
+
+            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+    def offset_error_vector(self, title='demo'):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []

@@ -219,7 +219,7 @@ class BSPklParser():
             results = mmcv.load(pkl_file)
         else:
             results = pkl_file
-        
+            
         coco = COCO(anno_file)
         img_ids = coco.get_img_ids()
 
