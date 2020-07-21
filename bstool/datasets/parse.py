@@ -424,6 +424,7 @@ class CSVParse():
         self.image_name_list = list(set(csv_df.ImageId.unique()))
 
         self.objects = defaultdict(dict)
+        self.dataset_buildings = []
         for image_name in self.image_name_list:
             buildings = []
             for idx, row in csv_df[csv_df.ImageId == image_name].iterrows():
@@ -433,6 +434,7 @@ class CSVParse():
                 if polygon.area < min_area:
                     continue
                 building['polygon'] = polygon
+                building['mask'] = bstool.polygon2mask(polygon)
 
                 if not bstool.single_valid_polygon(building['polygon']):
                     continue
@@ -454,6 +456,7 @@ class CSVParse():
                 buildings.append(building)
 
             self.objects[image_name] = buildings
+            self.dataset_buildings += buildings
 
     def __call__(self, image_fn):
         if image_fn in self.objects.keys():
