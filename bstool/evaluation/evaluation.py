@@ -213,10 +213,10 @@ class Evaluation():
         return index
 
     def _get_angle_index(self, angle):
-        index = int((angle * 180.0 / np.pi + 180) / 10.0)
+        index = int((angle * 180.0 / np.pi + 180) / 20.0)
 
         index = 0 if index < 0 else index
-        index = 35 if index > 35 else index
+        index = 17 if index > 17 else index
         
         return index
 
@@ -276,7 +276,9 @@ class Evaluation():
 
             fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_length_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
-    def offset_angle_classification(self, title='demo', interval=2, bins=15):
+            fig.clf()
+
+    def offset_angle_classification(self, title='demo', interval=1, bins=18):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []
@@ -287,8 +289,8 @@ class Evaluation():
             dataset_gt_offsets += objects[ori_image_name]['gt_offsets']
             dataset_pred_offsets += objects[ori_image_name]['pred_offsets']
 
-        confusion_matrix = np.zeros((self.offset_class_num + 1, self.offset_class_num + 1))
-        length_error = np.zeros(self.offset_class_num + 1)
+        confusion_matrix = np.zeros((18, 18))
+        angle_error = np.zeros(18)
 
         for gt_offset, pred_offset in zip(dataset_gt_offsets, dataset_pred_offsets):
             gt_angle = self._rectangle2polar(gt_offset)[1]
@@ -297,17 +299,13 @@ class Evaluation():
             pred_index = self._get_angle_index(pred_angle)
 
             confusion_matrix[gt_index, pred_index] += 1
-            length_error[gt_index] += abs(gt_length - pred_length)
+            angle_error[gt_index] += abs(gt_angle - pred_angle)
 
         confusion_matrix_small = np.zeros((bins, bins))
-        length_error_each_class = length_error / confusion_matrix.sum(axis=1)
+        angle_error_each_class = angle_error / confusion_matrix.sum(axis=1)
         np.set_printoptions(precision=2, floatmode='maxprec')
         np.set_printoptions(suppress=True)
-        print("Each angle class error (full): ", length_error_each_class)
-        
-        for idx in range(0, self.offset_class_num + 1, 5):
-            _ = length_error_each_class[idx : idx + 5]
-            print(f"{idx}: ", np.mean(_[~np.isnan(_)]))
+        print("Each angle class error (full): ", angle_error_each_class)
 
         for i in range(bins):
             for j in range(bins):
@@ -322,10 +320,13 @@ class Evaluation():
 
             fig.clf()
             confusion_matrix_small /= confusion_matrix_small.sum(axis=1)[:, np.newaxis]
+            confusion_matrix_small[np.isnan(confusion_matrix_small)] = 0
             fig = sns.heatmap(confusion_matrix_small, annot=True,
                             fmt='.2f', cmap='PuRd').get_figure()
 
             fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_angle_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+            fig.clf()
 
     def cosine_distance(self, a, b):
         a_norm = np.linalg.norm(a, axis=1, keepdims=True)
@@ -357,7 +358,7 @@ class Evaluation():
         aEPE = EPE.mean()
         aAE = AE.mean()
 
-        cos_distance = cosine_distance(dataset_gt_offsets, dataset_pred_offsets)
+        cos_distance = self.cosine_distance(dataset_gt_offsets, dataset_pred_offsets)
         average_cos_distance = cos_distance.mean()
 
         print(f"Offset AEPE: {aEPE}, aAE: {aAE}, cos distance: ", {average_cos_distance})
