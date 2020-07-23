@@ -73,7 +73,8 @@ if __name__ == '__main__':
             title = city + "_" + version
 
             evaluation.segmentation()
-            evaluation.offset_classification(title=title)
+            evaluation.offset_length_classification(title=title)
+            evaluation.offset_angle_classification(title=title)
             evaluation.offset_error_vector(title=title)
             if city == 'xian':
                 continue

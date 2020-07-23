@@ -252,7 +252,7 @@ class Evaluation():
         length_error_each_class = length_error / confusion_matrix.sum(axis=1)
         np.set_printoptions(precision=2, floatmode='maxprec')
         np.set_printoptions(suppress=True)
-        print("Each class error (full): ", length_error_each_class)
+        print("Each length class error (full): ", length_error_each_class)
         
         for idx in range(0, self.offset_class_num + 1, 5):
             _ = length_error_each_class[idx : idx + 5]
@@ -303,7 +303,7 @@ class Evaluation():
         length_error_each_class = length_error / confusion_matrix.sum(axis=1)
         np.set_printoptions(precision=2, floatmode='maxprec')
         np.set_printoptions(suppress=True)
-        print("Each class error (full): ", length_error_each_class)
+        print("Each angle class error (full): ", length_error_each_class)
         
         for idx in range(0, self.offset_class_num + 1, 5):
             _ = length_error_each_class[idx : idx + 5]
@@ -327,6 +327,14 @@ class Evaluation():
 
             fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_angle_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
+    def cosine_distance(self, a, b):
+        a_norm = np.linalg.norm(a, axis=1, keepdims=True)
+        b_norm = np.linalg.norm(b, axis=1, keepdims=True)
+        
+        similiarity = (a[:, 0] * b[:, 0] + a[:, 1] * b[:, 1]) / (a_norm * b_norm)
+        dist = 1.0 - similiarity
+        return dist
+
     def offset_error_vector(self, title='demo'):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
@@ -349,7 +357,10 @@ class Evaluation():
         aEPE = EPE.mean()
         aAE = AE.mean()
 
-        print(f"Offset AEPE: {aEPE}, aAE: {aAE}")
+        cos_distance = cosine_distance(dataset_gt_offsets, dataset_pred_offsets)
+        average_cos_distance = cos_distance.mean()
+
+        print(f"Offset AEPE: {aEPE}, aAE: {aAE}, cos distance: ", {average_cos_distance})
 
         if self.show:
             r = np.sqrt(error_vectors[:, 0] ** 2 + error_vectors[:, 1] ** 2)
