@@ -276,7 +276,7 @@ class Evaluation():
 
             fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_length_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
-            fig.clf()
+            plt.clf()
 
     def offset_angle_classification(self, title='demo', interval=1, bins=18):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
