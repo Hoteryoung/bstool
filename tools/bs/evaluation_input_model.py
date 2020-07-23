@@ -74,6 +74,7 @@ if __name__ == '__main__':
 
             evaluation.segmentation()
             evaluation.offset_classification(title=title)
+            evaluation.offset_error_vector(title=title)
             if city == 'xian':
                 continue
             evaluation.height(percent=100, title=title)

@@ -212,12 +212,20 @@ class Evaluation():
         
         return index
 
+    def _get_angle_index(self, angle):
+        index = int((angle * 180.0 / np.pi + 180) / 10.0)
+
+        index = 0 if index < 0 else index
+        index = 35 if index > 35 else index
+        
+        return index
+
     def _rectangle2polar(self, offset):
         length = np.sqrt(offset[0] ** 2 + offset[1] ** 2)
-        angle = np.angle(offset[0] - 1j * offset[1]) - np.pi / 2
+        angle = np.arctan2(offset[1], offset[0])
         return length, angle
 
-    def offset_classification(self, title='demo', interval=2, bins=15):
+    def offset_length_classification(self, title='demo', interval=2, bins=15):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []
@@ -259,14 +267,65 @@ class Evaluation():
             fig = sns.heatmap(confusion_matrix_small, annot=True,
                             fmt='g', cmap='PuRd').get_figure()
 
-            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_num.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_length_num.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
             fig.clf()
             confusion_matrix_small /= confusion_matrix_small.sum(axis=1)[:, np.newaxis]
             fig = sns.heatmap(confusion_matrix_small, annot=True,
                             fmt='.2f', cmap='PuRd').get_figure()
 
-            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_length_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+    def offset_angle_classification(self, title='demo', interval=2, bins=15):
+        objects = self.get_confusion_matrix_indexes(mask_type='roof')
+
+        dataset_gt_offsets, dataset_pred_offsets = [], []
+        for ori_image_name in self.ori_image_name_list:
+            if ori_image_name not in objects.keys():
+                continue
+
+            dataset_gt_offsets += objects[ori_image_name]['gt_offsets']
+            dataset_pred_offsets += objects[ori_image_name]['pred_offsets']
+
+        confusion_matrix = np.zeros((self.offset_class_num + 1, self.offset_class_num + 1))
+        length_error = np.zeros(self.offset_class_num + 1)
+
+        for gt_offset, pred_offset in zip(dataset_gt_offsets, dataset_pred_offsets):
+            gt_angle = self._rectangle2polar(gt_offset)[1]
+            gt_index = self._get_angle_index(gt_angle)
+            pred_angle = self._rectangle2polar(pred_offset)[1]
+            pred_index = self._get_angle_index(pred_angle)
+
+            confusion_matrix[gt_index, pred_index] += 1
+            length_error[gt_index] += abs(gt_length - pred_length)
+
+        confusion_matrix_small = np.zeros((bins, bins))
+        length_error_each_class = length_error / confusion_matrix.sum(axis=1)
+        np.set_printoptions(precision=2, floatmode='maxprec')
+        np.set_printoptions(suppress=True)
+        print("Each class error (full): ", length_error_each_class)
+        
+        for idx in range(0, self.offset_class_num + 1, 5):
+            _ = length_error_each_class[idx : idx + 5]
+            print(f"{idx}: ", np.mean(_[~np.isnan(_)]))
+
+        for i in range(bins):
+            for j in range(bins):
+                confusion_matrix_small[i, j] = np.sum(confusion_matrix[interval * i : interval * (i + 1), interval * j : interval * (j + 1)])
+
+        if self.show:
+            sns.set(rc={'figure.figsize': (15, 15)})
+            fig = sns.heatmap(confusion_matrix_small, annot=True,
+                            fmt='g', cmap='PuRd').get_figure()
+
+            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_angle_num.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+            fig.clf()
+            confusion_matrix_small /= confusion_matrix_small.sum(axis=1)[:, np.newaxis]
+            fig = sns.heatmap(confusion_matrix_small, annot=True,
+                            fmt='.2f', cmap='PuRd').get_figure()
+
+            fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_angle_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
     def offset_error_vector(self, title='demo'):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
@@ -283,6 +342,14 @@ class Evaluation():
         dataset_pred_offsets = np.array(dataset_pred_offsets)
 
         error_vectors = dataset_gt_offsets - dataset_pred_offsets
+
+        EPE = np.sqrt(error_vectors[0] ** 2 + error_vectors[1] ** 2)
+        AE = np.arctan2(error_vectors[1], error_vectors[0])
+
+        aEPE = EPE.mean()
+        aAE = AE.mean()
+
+        print(f"Offset AEPE: {aEPE}, aAE: {aAE}")
 
         if self.show:
             r = np.sqrt(error_vectors[:, 0] ** 2 + error_vectors[:, 1] ** 2)

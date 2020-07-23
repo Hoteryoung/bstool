@@ -9,7 +9,6 @@ from collections import defaultdict
 from tqdm import tqdm
 from shapely import affinity
 import shapely
-from shapely.validation import explain_validity
 
 import bstool
 
