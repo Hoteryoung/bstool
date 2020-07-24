@@ -551,7 +551,6 @@ class Evaluation():
 
         if self.show:
             plt.clf()
-            plt.close()
             
             y_gt = gt_heights
             y_pred = pred_heights
