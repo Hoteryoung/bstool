@@ -506,8 +506,7 @@ class Evaluation():
             if ori_image_name not in objects.keys():
                 continue
 
-            dataset_gt_heights += objects[ori_image_name]['gt_heights']
-            dataset_pred_heights += objects[ori_image_name]['pred_heights']
+            
 
             gt_heights = np.array(objects[ori_image_name]['gt_heights'])
             pred_heights = np.array(objects[ori_image_name]['pred_heights'])
@@ -517,9 +516,12 @@ class Evaluation():
 
             max_height = np.percentile(gt_heights, percent)
 
-            bool_keep = gt_heights < 10000
+            bool_keep = gt_heights < max_height
             gt_heights = gt_heights[bool_keep]
             pred_heights = pred_heights[bool_keep]
+
+            dataset_gt_heights += gt_heights.tolist()
+            dataset_pred_heights += pred_heights.tolist()
 
             if len(gt_heights) == 0 or len(pred_heights) == 0:
                 continue
