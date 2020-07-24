@@ -554,8 +554,8 @@ class Evaluation():
         if self.show:
             plt.clf()
             
-            y_gt = gt_heights
-            y_pred = pred_heights
+            y_gt = np.array(dataset_gt_heights)
+            y_pred = np.array(dataset_pred_heights)
             
             sort_index = np.argsort(y_gt)[::-1]
             y_gt = y_gt[sort_index]
