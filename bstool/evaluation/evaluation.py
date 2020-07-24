@@ -559,10 +559,6 @@ class Evaluation():
             y_gt = y_gt[sort_index]
             y_pred = y_pred[sort_index]
 
-            # index_100 = y_gt < 100
-            # y_gt = y_gt[index_100]
-            # y_pred = y_pred[index_100]
-
             x = range(y_gt.shape[0])
             
             plt.plot(x, y_gt)
