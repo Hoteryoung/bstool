@@ -1,24 +1,57 @@
 import os
-import bstool
-import numpy as np
-import rasterio as rio
-import cv2
 import pandas
 import glob
-from shapely import affinity
 import math
+import numpy as np
+
+import bstool
+
+
+def get_image_height_angle(objects, resolution = 0.6):
+    angles = []
+    for obj in objects:
+        offset_x, offset_y = obj['property']['xoffset'], obj['property']['yoffset']
+        if obj['property']['Floor'] is not None:
+            if math.isnan(obj['property']['Floor']):
+                continue
+            else:
+                height = obj['property']['Floor'] * 3
+        else:
+            continue
+
+        angle = math.atan2(math.sqrt(offset_x ** 2 + offset_y ** 2) * resolution, height)
+        angles.append(angle)
+    
+    height_angle = float(np.array(angles, dtype=np.float32).mean())
+
+    return height_angle
+
+def fix_invalid_height(offset, height_angle, resolution=0.6):
+    offset_x, offset_y = offset
+
+    valid_height = (np.sqrt(offset_x ** 2 + offset_y ** 2) * resolution / np.tan(height_angle))
+
+    return valid_height
 
 
 if __name__ == '__main__':
+    with_fix_height = True
+
     sub_folds = ['arg', 'google', 'ms']
 
-    roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
-    footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
+    if with_fix_height:
+        roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt_fixed.csv'
+        footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt_fixed.csv'
+    else:
+        roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
+        footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
 
     invalid_images = ['L18_104432_210416', 'L18_104440_210384', 'L18_104440_210416', 'L18_104448_210384', 'L18_104448_210432']
     
     first_in = True
     min_area = 100
+
+    valid_num, total_num = 0, 0
 
     for sub_fold in sub_folds:
         shp_dir = f'./data/buildchange/v0/xian_fine/{sub_fold}/merged_shp'
@@ -40,6 +73,8 @@ if __name__ == '__main__':
                                         dst_coord='pixel',
                                         keep_polarity=False)
 
+            height_angle = get_image_height_angle(objects)
+
             roof_gt_polygons, gt_properties, gt_heights, gt_offsets = [], [], [], []
             for obj in objects:
                 roof_gt_polygon = obj['polygon']
@@ -52,12 +87,25 @@ if __name__ == '__main__':
                 gt_offsets.append([obj['property']['xoffset'], obj['property']['yoffset']])
                 if obj['property']['Floor'] is not None:
                     if math.isnan(obj['property']['Floor']):
-                        gt_heights.append(1 * 3)
+                        if with_fix_height:
+                            offset = [obj['property']['xoffset'], obj['property']['yoffset']]
+                            height = fix_invalid_height(offset, height_angle)
+                            gt_heights.append(height)
+                        else:
+                            gt_heights.append(10000)
                     else:
                         gt_heights.append(obj['property']['Floor'] * 3)
+                        valid_num += 1
                 else:
-                    gt_heights.append(1 * 3)
+                    if with_fix_height:
+                        offset = [obj['property']['xoffset'], obj['property']['yoffset']]
+                        height = fix_invalid_height(offset, height_angle)
+                        gt_heights.append(height)
+                    else:
+                        gt_heights.append(10000)
                 gt_properties.append(obj['property'])
+
+                total_num += 1
 
             footprint_gt_polygons = bstool.roof2footprint(roof_gt_polygons, gt_properties)
 
@@ -83,3 +131,5 @@ if __name__ == '__main__':
 
     roof_csv_dataset.to_csv(roof_csv_file, index=False)
     footprint_csv_dataset.to_csv(footprint_csv_file, index=False)
+
+    print(f"valid num: {valid_num}, total num: {total_num}, valid rate: {float(valid_num)/total_num}")
