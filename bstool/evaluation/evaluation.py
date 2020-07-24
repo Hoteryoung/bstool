@@ -550,9 +550,11 @@ class Evaluation():
         print("Pred angle Std: ", np.array(pred_angle_std).mean())
 
         if self.show:
+            plt.clf()
+            plt.close()
             
-            y_gt = np.array(dataset_gt_heights)
-            y_pred = np.array(dataset_pred_heights)
+            y_gt = gt_heights
+            y_pred = pred_heights
             
             sort_index = np.argsort(y_gt)[::-1]
             y_gt = y_gt[sort_index]
@@ -570,7 +572,6 @@ class Evaluation():
             plt.xlabel('index')
             plt.ylabel('height (m)')
             plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
-
 
     def get_confusion_matrix_indexes(self, mask_type='footprint'):
         if mask_type == 'footprint':
