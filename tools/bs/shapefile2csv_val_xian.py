@@ -22,15 +22,27 @@ def get_image_height_angle(objects, resolution = 0.6):
         angle = math.atan2(math.sqrt(offset_x ** 2 + offset_y ** 2) * resolution, height)
         angles.append(angle)
     
-    height_angle = float(np.array(angles, dtype=np.float32).mean())
+    if len(angles) == 0:
+        height_angle = 10000
+    else:
+        height_angle = float(np.array(angles, dtype=np.float32).mean())
 
     return height_angle
 
 def fix_invalid_height(offset, height_angle, resolution=0.6):
     offset_x, offset_y = offset
 
-    valid_height = (np.sqrt(offset_x ** 2 + offset_y ** 2) * resolution / np.tan(height_angle))
+    if height_angle != 0:
+        if height_angle == 10000:
+            valid_height = 10000
+        else:
+            valid_height = (np.sqrt(offset_x ** 2 + offset_y ** 2) * resolution / np.tan(height_angle))
+    else:
+        valid_height = 3.0
 
+    if valid_height > 500:
+        valid_height == 10000
+    
     return valid_height
 
 
@@ -51,7 +63,7 @@ if __name__ == '__main__':
     first_in = True
     min_area = 100
 
-    valid_num, total_num = 0, 0
+    valid_num, total_num, fixed_valid_num = 0, 0, 0
 
     for sub_fold in sub_folds:
         shp_dir = f'./data/buildchange/v0/xian_fine/{sub_fold}/merged_shp'
@@ -90,6 +102,8 @@ if __name__ == '__main__':
                         if with_fix_height:
                             offset = [obj['property']['xoffset'], obj['property']['yoffset']]
                             height = fix_invalid_height(offset, height_angle)
+                            if height != 10000:
+                                fixed_valid_num += 1
                             gt_heights.append(height)
                         else:
                             gt_heights.append(10000)
@@ -100,9 +114,12 @@ if __name__ == '__main__':
                     if with_fix_height:
                         offset = [obj['property']['xoffset'], obj['property']['yoffset']]
                         height = fix_invalid_height(offset, height_angle)
+                        if height != 10000:
+                            fixed_valid_num += 1
                         gt_heights.append(height)
                     else:
                         gt_heights.append(10000)
+                
                 gt_properties.append(obj['property'])
 
                 total_num += 1
@@ -132,4 +149,4 @@ if __name__ == '__main__':
     roof_csv_dataset.to_csv(roof_csv_file, index=False)
     footprint_csv_dataset.to_csv(footprint_csv_file, index=False)
 
-    print(f"valid num: {valid_num}, total num: {total_num}, valid rate: {float(valid_num)/total_num}")
+    print(f"valid num: {valid_num}, fixed valid, num: {fixed_valid_num + valid_num}, total num: {total_num}, valid rate: {float(valid_num) / total_num}, fixed valid rate: {float(fixed_valid_num + valid_num) / total_num}")

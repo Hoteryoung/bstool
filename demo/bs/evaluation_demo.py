@@ -2,12 +2,13 @@ import bstool
 
 
 if __name__ == '__main__':
-    models = ['bc_v006_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox', 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50', 'bc_v006.01.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50_loss_weight', 'bc_v006.01.02_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50_loss_weight_full_max', 'bc_v006.02_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_log_mean_0_std_50', 'bc_v006.03_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_21_24', 'bc_v006.03.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_21_24_height_sample', 'bc_v006.03.02_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_14_8', 'bc_v006.04_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_share_conv', 'bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle', 'bc_v006.06_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_share_conv_coupling']
-    # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
+    # models = ['bc_v006_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox', 'bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50', 'bc_v006.01.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50_loss_weight', 'bc_v006.01.02_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50_loss_weight_full_max', 'bc_v006.02_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_log_mean_0_std_50', 'bc_v006.03_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_21_24', 'bc_v006.03.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_21_24_height_sample', 'bc_v006.03.02_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_14_8', 'bc_v006.04_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_share_conv', 'bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle', 'bc_v006.06_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_share_conv_coupling']
+    models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
-    cities = ['dalian', 'xian', 'xian_fixed']
+    # cities = ['dalian', 'xian', 'xian_fixed']
+    cities = ['xian_fixed']
 
     for model in models:
         version = model.split('_')[1]
