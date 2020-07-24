@@ -512,9 +512,7 @@ class Evaluation():
             if len(gt_heights) == 0 or len(pred_heights) == 0:
                 continue
 
-            max_height = np.percentile(gt_heights, percent)
-
-            bool_keep = gt_heights < max_height
+            bool_keep = gt_heights < 10000
             gt_heights = gt_heights[bool_keep]
             pred_heights = pred_heights[bool_keep]
 
