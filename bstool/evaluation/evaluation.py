@@ -506,8 +506,6 @@ class Evaluation():
             if ori_image_name not in objects.keys():
                 continue
 
-            
-
             gt_heights = np.array(objects[ori_image_name]['gt_heights'])
             pred_heights = np.array(objects[ori_image_name]['pred_heights'])
 
