@@ -516,7 +516,7 @@ class Evaluation():
                 continue
 
             max_height = np.percentile(gt_heights, percent)
-            
+
             bool_keep = gt_heights < max_height
             gt_heights = gt_heights[bool_keep]
             pred_heights = pred_heights[bool_keep]
@@ -567,6 +567,8 @@ class Evaluation():
             plt.plot(x, y_gt)
             plt.scatter(x, y_pred, s=1, color='green')
             plt.title(title + ' {}'.format(mse))
+            plt.xlabel('index')
+            plt.ylabel('height (m)')
             plt.savefig(os.path.join(self.output_dir, '{}_height_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
 
