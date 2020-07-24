@@ -40,8 +40,8 @@ def fix_invalid_height(offset, height_angle, resolution=0.6):
     else:
         valid_height = 3.0
 
-    if valid_height > 500:
-        valid_height == 10000
+    if valid_height > 500 or valid_height < 3:
+        valid_height = 10000
     
     return valid_height
 
