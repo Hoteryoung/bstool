@@ -2,13 +2,13 @@ import bstool
 
 
 if __name__ == '__main__':
-    models = ['bc_v006.01.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50_loss_weight']
+    models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin']
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     cities = ['dalian', 'xian', 'xian_fixed']
-    # cities = ['xian_fixed']
+    cities = ['dalian', 'xian']
 
     for model in models:
         version = model.split('_')[1]
