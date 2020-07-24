@@ -516,6 +516,7 @@ class Evaluation():
                 continue
 
             max_height = np.percentile(gt_heights, percent)
+            
             bool_keep = gt_heights < max_height
             gt_heights = gt_heights[bool_keep]
             pred_heights = pred_heights[bool_keep]
