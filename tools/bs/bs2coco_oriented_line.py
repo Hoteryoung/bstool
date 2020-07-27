@@ -141,7 +141,7 @@ if __name__ == "__main__":
     # cities = ['xian_fine_origin']
     release_version = 'v1'
 
-    with_normal = True
+    with_normal = False
 
     groundtruth = True
     with_height_sample = False
