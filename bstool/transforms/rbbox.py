@@ -2,7 +2,6 @@ import cv2
 import math
 import numpy as np
 import mmcv
-import wwtool
 
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
