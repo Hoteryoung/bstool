@@ -32,7 +32,7 @@ if __name__ == '__main__':
             mask = ori_ann['roof']
             masks.append(mask)
             
-        wireframe_items = bstool.mask2line(masks)
+        wireframe_items = bstool.mask2wireframe(masks)
         junctions += wireframe_items[0]
         edges_positive += wireframe_items[1]
         edges_negative += wireframe_items[2]

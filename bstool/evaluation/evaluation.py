@@ -14,7 +14,7 @@ from terminaltables import AsciiTable
 import bstool
 
 
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 
 class Evaluation():
     def __init__(self,

@@ -339,33 +339,6 @@ def clean_polygon(polygons):
 
     return polygons_
 
-def mask2line(masks):
-    ret_junctions = []              # N * 2
-    ret_edges_positive = []         # M * 4
-    ret_edges_negative = []         # K * 4
-
-    point_number_count = 0
-    for mask in masks:
-        mask_point_num = len(mask) // 2
-        mask_junctions = [mask[i:i + 2] for i in range(0, len(mask), 2)]
-        point_combinnations = list(itertools.combinations(range(point_number_count, point_number_count + mask_point_num, 1), 2))
-        
-        edges_positive_coms, edges_negative_coms = [], []
-        for combination in point_combinnations:
-            if abs(combination[0] - combination[1]) == 1 or abs(combination[0] - combination[1]) == mask_point_num - 1:
-                edges_positive_coms.append(combination)
-            else:
-                edges_negative_coms.append(combination)
-
-        ret_junctions += mask_junctions
-        ret_edges_positive += edges_positive_coms
-        ret_edges_negative += edges_negative_coms
-
-        point_number_count += mask_point_num
-
-    return ret_junctions, ret_edges_positive, ret_edges_negative
-
-
 def roof2footprint(roof_polygons, properties):
     footprint_polygons = []
     for idx, (roof_polygon, single_property) in enumerate(zip(roof_polygons, properties)):

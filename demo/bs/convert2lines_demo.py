@@ -15,9 +15,9 @@ if __name__ == '__main__':
 
     masks = [[100, 100, 200, 200, 300, 300, 400, 400], [500, 500, 600, 600, 700, 700, 800, 800]]
 
-    wireframe_items = bstool.mask2wireframe(masks)
-    junctions = wireframe_items[0]
-    edges_positive = wireframe_items[1]
-    edges_negative = wireframe_items[2]
+    lines = bstool.mask2lines(masks[1])
 
-    print(junctions, edges_positive, edges_negative)
+    for line in lines:
+        thetaobb = bstool.line2thetaobb(line, angle_mode='atan')
+
+        print(thetaobb)

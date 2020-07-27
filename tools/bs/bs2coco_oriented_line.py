@@ -25,23 +25,15 @@ class BS2COCO(bstool.Convert2COCO):
             bbox = object_struct['bbox']
             segmentation = object_struct['segmentation']
             label = object_struct['label']
-
-            roof_bbox = object_struct['roof_bbox']
-            building_bbox = object_struct['building_bbox']
-            roof_mask = object_struct['roof_mask']
-            footprint_bbox = object_struct['footprint_bbox']
-            footprint_mask = object_struct['footprint_mask']
-            ignore_flag = object_struct['ignore_flag']
-            offset = object_struct['offset']
-            building_height = object_struct['building_height']
+            thetaobb = object_struct['thetaobb']
             iscrowd = object_struct['iscrowd']
 
             width = bbox[2]
             height = bbox[3]
             area = height * width
 
-            footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
-            if footprint_bbox_width * footprint_bbox_height <= self.small_object_area and self.groundtruth:
+            bbox_width, bbox_height = bbox[2], bbox[3]
+            if bbox_width * bbox_height <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
                 continue
 
@@ -55,24 +47,48 @@ class BS2COCO(bstool.Convert2COCO):
             coco_annotation['category_id'] = label
             coco_annotation['area'] = np.float(area)
 
-            coco_annotation['roof_bbox'] = roof_bbox
-            coco_annotation['building_bbox'] = building_bbox
-            coco_annotation['roof_mask'] = roof_mask
-            coco_annotation['footprint_bbox'] = footprint_bbox
-            coco_annotation['footprint_mask'] = footprint_mask
-            coco_annotation['ignore_flag'] = ignore_flag
-            coco_annotation['offset'] = offset
-            coco_annotation['building_height'] = building_height
             coco_annotation['iscrowd'] = iscrowd
 
             coco_annotations.append(coco_annotation)
 
         return coco_annotations
+
+    def __bs_json2oriented_lines(self, objects):
+        converted_objects = []
+        for object_struct in objects:
+            segmentation = object_struct['segmentation']
+            
+            label = object_struct['label']
+            iscrowd = object_struct['iscrowd']
+
+            splited_objects = []
+            lines = bstool.mask2lines(segmentation)
+            for line in lines:
+                splited_object_struct = {}
+                thetaobb = bstool.line2thetaobb(line, angle_mode='atan')
+                pointobb = bstool.thetaobb2pointobb(thetaobb)
+                # pointobb = bstool.line2pointobb(line)
+                # thetaobb = bstool.pointobb2thetaobb(pointobb)
+
+                bbox = bstool.pointobb2bbox(pointobb)
+
+                splited_object_struct['bbox'] = bstool.xyxy2xywh(bbox)
+                splited_object_struct['segmentation'] = pointobb
+                splited_object_struct['thetaobb'] = thetaobb
+                splited_object_struct['label'] = label
+                splited_object_struct['iscrowd'] = iscrowd
+
+                splited_objects.append(splited_object_struct)
+
+            converted_objects += splited_objects
+                
+        return converted_objects
     
     def __json_parse__(self, label_file, image_file):
         objects = []
         if self.groundtruth:
             objects = bstool.bs_json_parse(label_file)
+            objects = self.__bs_json2oriented_lines(objects)
             
             if with_height_sample:
                 heights = [obj['building_height'] for obj in objects]
@@ -83,23 +99,13 @@ class BS2COCO(bstool.Convert2COCO):
         else:
             object_struct = {}
             object_struct['bbox'] = [0, 0, 0, 0]
-            object_struct['roof_bbox'] = [0, 0, 0, 0]
-            object_struct['footprint_bbox'] = [0, 0, 0, 0]
-            object_struct['building_bbox'] = [0, 0, 0, 0]
-
-            object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
-            object_struct['footprint_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
-            object_struct['ignore_flag'] = 0
-            object_struct['offset'] = [0, 0]
-            object_struct['building_height'] = 0
-            
             object_struct['segmentation'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            object_struct['thetaobb'] = [0, 0, 0, 0, 0]
             object_struct['label'] = 1
             object_struct['iscrowd'] = 0
             objects.append(object_struct)
 
         return objects
-
 
 if __name__ == "__main__":
     # basic dataset information
@@ -138,9 +144,9 @@ if __name__ == "__main__":
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")
         if 'xian' in city or 'dalian' in city:
-            anno_name = [core_dataset_name, release_version, 'val', city]
+            anno_name = [core_dataset_name, release_version, 'val', city, 'oriented_line']
         else:
-            anno_name = [core_dataset_name, release_version, 'train', city]
+            anno_name = [core_dataset_name, release_version, 'train', city, 'oriented_line']
 
         if with_height_sample:
             anno_name.append("height_sampled")
