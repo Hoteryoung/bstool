@@ -57,6 +57,9 @@ def line_angle(line, mode='atan'):
             angle = -(angle - math.pi / 2.0)
         else:
             angle = -angle
+    elif mode == 'normal':
+        angle = -math.atan2(x2 - x1, y2 - y1)
+        angle = (angle + math.pi) % math.pi 
 
     return angle
 

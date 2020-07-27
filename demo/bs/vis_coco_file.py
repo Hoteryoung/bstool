@@ -5,7 +5,7 @@ import bstool
 
 if __name__ == '__main__':
     image_dir = './data/buildchange/v1/shanghai/images'
-    anno_file = './data/buildchange/v1/coco/annotations/buildchange_v1_train_shanghai_oriented_line.json'
+    anno_file = './data/buildchange/v1/coco/annotations/buildchange_v1_train_shanghai_oriented_line_normal.json'
 
     coco_parser = bstool.COCOParse(anno_file)
 

@@ -65,8 +65,12 @@ class BS2COCO(bstool.Convert2COCO):
             lines = bstool.mask2lines(segmentation)
             for line in lines:
                 splited_object_struct = {}
-                thetaobb = bstool.line2thetaobb(line, angle_mode='atan')
-                pointobb = bstool.thetaobb2pointobb(thetaobb)
+                if with_normal:
+                    thetaobb = bstool.line2thetaobb(line, angle_mode='normal')
+                    pointobb = bstool.thetaobb2pointobb(thetaobb)
+                else:
+                    thetaobb = bstool.line2thetaobb(line, angle_mode='atan')
+                    pointobb = bstool.thetaobb2pointobb(thetaobb)
                 # pointobb = bstool.line2pointobb(line)
                 # thetaobb = bstool.pointobb2thetaobb(pointobb)
 
@@ -137,6 +141,8 @@ if __name__ == "__main__":
     # cities = ['xian_fine_origin']
     release_version = 'v1'
 
+    with_normal = True
+
     groundtruth = True
     with_height_sample = False
     min_height = 100
@@ -147,6 +153,9 @@ if __name__ == "__main__":
             anno_name = [core_dataset_name, release_version, 'val', city, 'oriented_line']
         else:
             anno_name = [core_dataset_name, release_version, 'train', city, 'oriented_line']
+
+        if with_normal:
+            anno_name.append('normal')
 
         if with_height_sample:
             anno_name.append("height_sampled")
