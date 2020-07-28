@@ -17,7 +17,8 @@ class Convert2COCO():
                 groundtruth=True,
                 small_object_area=0,
                 sub_anno_fold=False,
-                image_size=None):
+                image_size=None,
+                meta_info=None):
         super(Convert2COCO, self).__init__()
 
         self.imgpath = imgpath
@@ -36,6 +37,7 @@ class Convert2COCO():
         self.sub_anno_fold = sub_anno_fold
         self.imageset_file = imageset_file
         self.image_size = image_size
+        self.meta_info = meta_info
 
         self.imlist = []
         if self.imageset_file:
