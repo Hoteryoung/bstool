@@ -71,7 +71,6 @@ class HRSC2COCO(bstool.Convert2COCO):
                 rbbox_w = float(hrsc_sub_object.find('mbox_w').text)
                 rbbox_h = float(hrsc_sub_object.find('mbox_h').text)
                 angle = float(hrsc_sub_object.find('mbox_ang').text)
-                # angle = angle * 180.0 / np.pi
 
                 obj_struct['bbox'] = [xmin, ymin, bbox_w, bbox_h]
                 obj_struct['thetaobb'] = [cx, cy, rbbox_w, rbbox_h, angle]
