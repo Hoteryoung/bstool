@@ -10,10 +10,10 @@
     #include <cmath>
     #include <algorithm>
 
-//    using std::isinf;
-//    using std::isnan;
-//    using std::max;
-//    using std::min;
+   using std::isinf;
+   using std::isnan;
+   using std::max;
+   using std::min;
 #endif
 
 __DEVICE__ const int MAX_RECT_INTERSECTIONS = 8;  // MAX number of intersections between two rotated rectangles is 8
