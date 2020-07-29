@@ -5,7 +5,7 @@ from torch import nn
 from torch.autograd import Function
 # from torch.autograd.function import once_differentiable
 
-from mmdet import _Custom as _C
+from bstool import _C
 
 from apex import amp
 
