@@ -7,11 +7,9 @@ from torch.autograd import Function
 
 from bstool import _C
 
-from apex import amp
-
-rotate_nms = amp.float_function(_C.rotate_nms)
-rotate_soft_nms = amp.float_function(_C.rotate_soft_nms)
-rotate_iou_matrix = amp.float_function(_C.rotate_iou_matrix)
+rotate_nms = _C.rotate_nms
+rotate_soft_nms = _C.rotate_soft_nms
+rotate_iou_matrix = _C.rotate_iou_matrix
 
 
 class _RotateNMSFunction(Function):

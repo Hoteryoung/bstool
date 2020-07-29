@@ -145,6 +145,7 @@ def make_cython_ext(name, module, sources):
         language='c++',
         extra_compile_args=extra_compile_args)
     extension, = cythonize(extension)
+    
     return extension
 
 if __name__ == '__main__':
