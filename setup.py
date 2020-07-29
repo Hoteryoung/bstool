@@ -6,7 +6,8 @@ import numpy as np
 from setuptools import find_packages, setup, Extension
 
 from Cython.Build import cythonize
-from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+import torch
+from torch.utils.cpp_extension import BuildExtension, CppExtension, CUDAExtension
 
 
 def readme():
@@ -84,6 +85,29 @@ def get_version():
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
 
+def make_cuda_ext(name, module, sources, sources_cuda=[]):
+    define_macros = []
+    extra_compile_args = {'cxx': []}
+
+    if torch.cuda.is_available() or os.getenv('FORCE_CUDA', '0') == '1':
+        define_macros += [('WITH_CUDA', None)]
+        extension = CUDAExtension
+        extra_compile_args['nvcc'] = [
+            '-D__CUDA_NO_HALF_OPERATORS__',
+            '-D__CUDA_NO_HALF_CONVERSIONS__',
+            '-D__CUDA_NO_HALF2_OPERATORS__',
+        ]
+        sources += sources_cuda
+    else:
+        print(f'Compiling {name} without CUDA')
+        extension = CppExtension
+        # raise EnvironmentError('CUDA is required to compile MMDetection!')
+
+    return extension(
+        name=f'{module}.{name}',
+        sources=[os.path.join(*module.split('.'), p) for p in sources],
+        define_macros=define_macros,
+        extra_compile_args=extra_compile_args)
 
 def make_cython_ext(name, module, sources):
     extra_compile_args = None
@@ -129,6 +153,33 @@ if __name__ == '__main__':
         install_requires=[
             'mmcv>0.2.6', 'numpy', 'matplotlib', 'six', 'terminaltables',
             'pycocotools', 'shapely', 'geojson', 'scikit-image', 'geopandas', 'rasterio', 'networkx'
+        ],
+        ext_modules=[
+            make_cuda_ext(
+                name='nms_ext',
+                module='bstool.csrc.nms',
+                sources=['src/nms_ext.cpp', 'src/cpu/nms_cpu.cpp'],
+                sources_cuda=[
+                    'src/cuda/nms_cuda.cpp', 'src/cuda/nms_kernel.cu'
+                ]),
+            make_cuda_ext(
+                name='rnms_ext',
+                module='bstool.csrc.nms',
+                sources=['src/rnms_ext.cpp', 'src/rcpu/rnms_cpu.cpp'],
+                sources_cuda=[
+                    'src/rcuda/rnms_cuda.cpp', 'src/rcuda/rnms_kernel.cu'
+                ]),
+            make_cuda_ext(
+                name='rbbox_geo_cuda',
+                module='bstool.csrc.rbbox_geo',
+                sources=[],
+                sources_cuda=[
+                    'src/rbbox_geo_cuda.cpp', 'src/rbbox_geo_kernel.cu'
+                ]),
+            make_cuda_ext(
+                name='polygon_geo_cpu',
+                module='bstool.csrc.polygon_geo',
+                sources=['src/polygon_geo_cpu.cpp']),
         ],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
