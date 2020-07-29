@@ -1,5 +1,4 @@
-from .nms import batched_nms, batched_nms_rotated, nms, nms_rotated
-from .roi_align_rotated import ROIAlignRotated, roi_align_rotated
-from .rotated_boxes import pairwise_iou_rotated
+from .nms import batched_rnms, rnms
+from .rbbox_geo import rbbox_iou_iof
 
-__all__ = ['batched_nms', 'batched_nms_rotated', 'nms', 'nms_rotated', 'ROIAlignRotated', 'roi_align_rotated', 'pairwise_iou_rotated']
+__all__ = ['rbbox_iou_iof', 'batched_rnms', 'rnms']

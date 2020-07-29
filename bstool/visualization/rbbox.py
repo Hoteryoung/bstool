@@ -25,7 +25,7 @@ def show_pointobb(im, pointobb, color=(0, 0, 255)):
 def show_thetaobb(im, thetaobb, color=(0, 0, 255)):
     cx, cy, w, h, theta = thetaobb
 
-    rect = ((cx, cy), (w, h), theta/np.pi*180.0)
+    rect = ((cx, cy), (w, h), theta / np.pi * 180.0)
     rect = cv2.boxPoints(rect)
     rect = np.int0(rect)
     cv2.drawContours(im, [rect], -1, color, 3)

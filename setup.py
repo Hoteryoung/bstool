@@ -87,51 +87,75 @@ def get_version():
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
 
-def get_cuda_extensions():
-    this_dir = path.dirname(path.abspath(__file__))
-    extensions_dir = path.join(this_dir, "bstool", "csrc")
+def make_cuda_ext(name, module, sources, sources_cuda=[]):
 
-    main_source = path.join(extensions_dir, "vision.cpp")
-    sources = glob.glob(path.join(extensions_dir, "**", "*.cpp"))
-    source_cuda = glob.glob(path.join(extensions_dir, "**", "*.cu")) + glob.glob(
-        path.join(extensions_dir, "*.cu")
-    )
-
-    sources = [main_source] + sources
-    extension = CppExtension
-
-    extra_compile_args = {"cxx": []}
     define_macros = []
+    extra_compile_args = {'cxx': []}
 
-    if (torch.cuda.is_available() and CUDA_HOME is not None) or os.getenv("FORCE_CUDA", "0") == "1":
+    if torch.cuda.is_available() or os.getenv('FORCE_CUDA', '0') == '1':
+        define_macros += [('WITH_CUDA', None)]
         extension = CUDAExtension
-        sources += source_cuda
-        define_macros += [("WITH_CUDA", None)]
-        extra_compile_args["nvcc"] = [
-            "-DCUDA_HAS_FP16=1",
-            "-D__CUDA_NO_HALF_OPERATORS__",
-            "-D__CUDA_NO_HALF_CONVERSIONS__",
-            "-D__CUDA_NO_HALF2_OPERATORS__",
+        extra_compile_args['nvcc'] = [
+            '-D__CUDA_NO_HALF_OPERATORS__',
+            '-D__CUDA_NO_HALF_CONVERSIONS__',
+            '-D__CUDA_NO_HALF2_OPERATORS__',
         ]
+        sources += sources_cuda
+    else:
+        print(f'Compiling {name} without CUDA')
+        extension = CppExtension
+        # raise EnvironmentError('CUDA is required to compile MMDetection!')
 
-        # It's better if pytorch can do this by default ..
-        CC = os.environ.get("CC", None)
-        if CC is not None:
-            extra_compile_args["nvcc"].append("-ccbin={}".format(CC))
+    return extension(
+        name=f'{module}.{name}',
+        sources=[os.path.join(*module.split('.'), p) for p in sources],
+        define_macros=define_macros,
+        extra_compile_args=extra_compile_args)
+# def get_cuda_extensions():
+#     this_dir = path.dirname(path.abspath(__file__))
+#     extensions_dir = path.join(this_dir, "bstool", "csrc")
 
-    include_dirs = [extensions_dir]
+#     main_source = path.join(extensions_dir, "vision.cpp")
+#     sources = glob.glob(path.join(extensions_dir, "**", "*.cpp"))
+#     source_cuda = glob.glob(path.join(extensions_dir, "**", "*.cu")) + glob.glob(
+#         path.join(extensions_dir, "*.cu")
+#     )
 
-    ext_modules = [
-        extension(
-            "bstool._C",
-            sources,
-            include_dirs=include_dirs,
-            define_macros=define_macros,
-            extra_compile_args=extra_compile_args,
-        )
-    ]
+#     sources = [main_source] + sources
+#     extension = CppExtension
 
-    return ext_modules
+#     extra_compile_args = {"cxx": []}
+#     define_macros = []
+
+#     if (torch.cuda.is_available() and CUDA_HOME is not None) or os.getenv("FORCE_CUDA", "0") == "1":
+#         extension = CUDAExtension
+#         sources += source_cuda
+#         define_macros += [("WITH_CUDA", None)]
+#         extra_compile_args["nvcc"] = [
+#             "-DCUDA_HAS_FP16=1",
+#             "-D__CUDA_NO_HALF_OPERATORS__",
+#             "-D__CUDA_NO_HALF_CONVERSIONS__",
+#             "-D__CUDA_NO_HALF2_OPERATORS__",
+#         ]
+
+#         # It's better if pytorch can do this by default ..
+#         CC = os.environ.get("CC", None)
+#         if CC is not None:
+#             extra_compile_args["nvcc"].append("-ccbin={}".format(CC))
+
+#     include_dirs = [extensions_dir]
+
+#     ext_modules = [
+#         extension(
+#             "bstool._C",
+#             sources,
+#             include_dirs=include_dirs,
+#             define_macros=define_macros,
+#             extra_compile_args=extra_compile_args,
+#         )
+#     ]
+
+#     return ext_modules
 
 def make_cython_ext(name, module, sources):
     extra_compile_args = None
@@ -177,6 +201,21 @@ if __name__ == '__main__':
         install_requires=['numpy', 'matplotlib', 'six', 'terminaltables',
             'pycocotools', 'shapely', 'geojson', 'scikit-image', 'geopandas', 'rasterio', 'networkx'
         ],
-        ext_modules=get_cuda_extensions(),
+        ext_modules=[
+            make_cuda_ext(
+                name='rnms_ext',
+                module='bstool.csrc.nms',
+                sources=['src/rnms_ext.cpp', 'src/rcpu/rnms_cpu.cpp'],
+                sources_cuda=[
+                    'src/rcuda/rnms_cuda.cpp', 'src/rcuda/rnms_kernel.cu'
+                ]),
+            make_cuda_ext(
+                name='rbbox_geo_cuda',
+                module='bstool.csrc.rbbox_geo',
+                sources=[],
+                sources_cuda=[
+                    'src/rbbox_geo_cuda.cpp', 'src/rbbox_geo_kernel.cu'
+                ]),
+        ],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
