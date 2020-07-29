@@ -4,18 +4,8 @@
 
 torch::Tensor rnms_cpu(const torch::Tensor &dets_tsr, const float threshold);
 
-#ifdef WITH_CUDA
-at::Tensor rnms_cuda(const at::Tensor& dets, const float threshold);
-#endif
-
 at::Tensor rnms(const at::Tensor& dets, const float threshold){
-  if (dets.device().is_cuda()) {
-#ifdef WITH_CUDA
-    return rnms_cuda(dets, threshold);
-#else
-    AT_ERROR("nms is not compiled with GPU support");
-#endif
-  }
+
   return rnms_cpu(dets, threshold);
 }
 
