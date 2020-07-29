@@ -150,8 +150,7 @@ if __name__ == '__main__':
         license='Apache License 2.0',
         setup_requires=['cython', 'numpy'],
         # tests_require=['pytest'],
-        install_requires=[
-            'mmcv>0.2.6', 'numpy', 'matplotlib', 'six', 'terminaltables',
+        install_requires=['numpy', 'matplotlib', 'six', 'terminaltables',
             'pycocotools', 'shapely', 'geojson', 'scikit-image', 'geopandas', 'rasterio', 'networkx'
         ],
         ext_modules=[
