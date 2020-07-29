@@ -205,10 +205,7 @@ if __name__ == '__main__':
             make_cuda_ext(
                 name='rnms_ext',
                 module='bstool.csrc.nms',
-                sources=['src/rnms_ext.cpp', 'src/rcpu/rnms_cpu.cpp'],
-                sources_cuda=[
-                    'src/rcuda/rnms_cuda.cpp', 'src/rcuda/rnms_kernel.cu'
-                ]),
+                sources=['src/rnms_ext.cpp', 'src/rcpu/rnms_cpu.cpp']),
             make_cuda_ext(
                 name='rbbox_geo_cuda',
                 module='bstool.csrc.rbbox_geo',
