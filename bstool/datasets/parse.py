@@ -93,6 +93,8 @@ def mask_parse(mask_file,
     """
     if isinstance(mask_file, str):
         mask_image = cv2.imread(mask_file)
+    else:
+        mask_image = mask_file
 
     if mask_image is None:
         if isinstance(mask_file, str):
