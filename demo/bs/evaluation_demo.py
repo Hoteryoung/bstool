@@ -2,7 +2,9 @@ import bstool
 
 
 if __name__ == '__main__':
-    models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
+    # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
+    models = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0', 'bc_v005.08_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar', 'bc_v005.08.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_direct',
+    '']
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
