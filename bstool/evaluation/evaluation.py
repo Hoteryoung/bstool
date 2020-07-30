@@ -352,8 +352,10 @@ class Evaluation():
 
         error_vectors = dataset_gt_offsets - dataset_pred_offsets
 
-        EPE = np.sqrt(error_vectors[0] ** 2 + error_vectors[1] ** 2)
-        AE = np.arctan2(error_vectors[1], error_vectors[0])
+        EPE = np.sqrt(error_vectors[..., 0] ** 2 + error_vectors[..., 1] ** 2)
+        gt_angle = np.arctan2(dataset_gt_offsets[..., 1], dataset_gt_offsets[..., 0])
+        pred_angle = np.arctan2(dataset_pred_offsets[..., 1], dataset_pred_offsets[..., 0])
+        AE = np.abs(gt_angle - pred_angle)
 
         aEPE = EPE.mean()
         aAE = AE.mean()
