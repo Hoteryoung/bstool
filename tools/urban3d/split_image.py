@@ -68,7 +68,6 @@ class SplitImage():
         origin_polygons = [obj['polygon'] for obj in objects]
         origin_properties = [obj['property'] for obj in objects]
 
-        print(image_file)
         subimages = bstool.split_image(image_file, 
                                         subsize=self.subimage_size, 
                                         gap=self.gap)
