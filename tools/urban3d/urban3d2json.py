@@ -21,13 +21,13 @@ class Urban3D():
                  camera_view,
                  fold,
                  show,
-                 roof_move_mode='mean',
+                 roof_move_mode='footprint_pixel_roof_mean',
                  min_area=100):
         self.src_dir = src_dir
         self.dst_dir = dst_dir
         self.vis_dir = vis_dir
         self.dst_image_dir = os.path.join(self.dst_dir, 'images')
-        self.dst_label_dir = os.path.join(self.dst_dir, 'labels')
+        self.dst_label_dir = os.path.join(self.dst_dir, f'labels_{roof_move_mode}')
         bstool.mkdir_or_exist(self.dst_image_dir)
         bstool.mkdir_or_exist(self.dst_label_dir)
         bstool.mkdir_or_exist(self.vis_dir)
@@ -39,7 +39,7 @@ class Urban3D():
 
     def footprint2roof(self, footprint_polygon, offset):
         xoffset, yoffset = offset
-        transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
+        transform_matrix = [1, 0, 0, 1, xoffset, yoffset]
         roof_polygon = affinity.affine_transform(footprint_polygon, transform_matrix)
 
         return roof_polygon
@@ -106,8 +106,7 @@ class Urban3D():
             roof_polygons = [obj['polygon'] for obj in roof_objects]
 
             annos = []
-            if self.roof_move_mode == 'mean':
-                roof_polygons = []
+            if self.roof_move_mode == 'footprint_mean':
                 for idx, footprint_polygon in enumerate(footprint_polygons):
                     object_structure = {}
                     foreground = bstool.generate_image(rgb.shape[0], rgb.shape[1], 0)
@@ -127,8 +126,6 @@ class Urban3D():
                     mask = np.array(mask).reshape(1, -1, 2)
                     cv2.fillPoly(foreground, mask, 1)
 
-                    roof_polygons.append(roof_polygon)
-
                     polygon_inds = np.where(foreground != 0)
                     polygon_height = height_mask[polygon_inds].mean()
 
@@ -138,7 +135,7 @@ class Urban3D():
                     object_structure['building_height'] = float(polygon_height)
 
                     annos.append(object_structure)
-            elif self.roof_move_mode == 'pixel':
+            elif self.roof_move_mode == 'footprint_pixel':
                 for idx, roof_polygon in enumerate(roof_polygons):
                     object_structure = {}
                     foreground = bstool.generate_image(rgb.shape[0], rgb.shape[1], 0)
@@ -160,14 +157,39 @@ class Urban3D():
                     object_structure['building_height'] = float(polygon_height)
 
                     annos.append(object_structure)
+            elif self.roof_move_mode == 'footprint_pixel_roof_mean':
+                for idx, roof_polygon in enumerate(roof_polygons):
+                    object_structure = {}
+                    foreground = bstool.generate_image(rgb.shape[0], rgb.shape[1], 0)
+
+                    mask = bstool.polygon2mask(roof_polygon)
+                    mask = np.array(mask).reshape(1, -1, 2)
+                    cv2.fillPoly(foreground, mask, 1)
+
+                    polygon_inds = np.where(foreground != 0)
+
+                    footprint_offset_x = offset_x[polygon_inds].mean()
+                    footprint_offset_y = offset_y[polygon_inds].mean()
+
+                    polygon_height = height_mask[polygon_inds].mean()
+
+                    object_structure['roof'] = bstool.polygon2mask(roof_polygon)
+                    object_structure['footprint'] = bstool.polygon2mask(self.footprint2roof(roof_polygon, [footprint_offset_x, footprint_offset_y]))
+                    object_structure['offset'] = [float(footprint_offset_x), float(footprint_offset_y)]
+                    object_structure['building_height'] = float(polygon_height)
+
+                    annos.append(object_structure)
             else:
                 raise(RuntimeError(f'not support {self.roof_move_mode}'))
 
             if self.show:
                 plt.imshow(rgb)
                 plt.axis('off')
+                polygons = [ann['footprint'] for ann in annos]
 
-                for polygon in roof_polygons:
+                for polygon in polygons:
+                    if isinstance(polygon, list):
+                        polygon = bstool.mask2polygon(polygon)
                     if type(polygon) == str:
                         polygon = shapely.wkt.loads(polygon)
 
@@ -217,6 +239,6 @@ if __name__ == '__main__':
                                 camera_view,
                                 fold,
                                 show=True,
-                                roof_move_mode='mean')
+                                roof_move_mode='footprint_pixel_roof_mean')
 
                 urban3d.generate_v1()
