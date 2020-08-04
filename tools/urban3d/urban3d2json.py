@@ -238,7 +238,7 @@ if __name__ == '__main__':
                                 vis_dir,
                                 camera_view,
                                 fold,
-                                show=True,
+                                show=False,
                                 roof_move_mode='footprint_pixel_roof_mean')
 
                 urban3d.generate_v1()
