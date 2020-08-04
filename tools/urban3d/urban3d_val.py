@@ -26,6 +26,7 @@ class Urban3D():
         self.dst_dir = dst_dir
         self.vis_dir = vis_dir
         bstool.mkdir_or_exist(self.dst_dir)
+        bstool.mkdir_or_exist(self.vis_dir)
         self.camera_view = camera_view
         self.show = show
         self.roof_move_mode = roof_move_mode
