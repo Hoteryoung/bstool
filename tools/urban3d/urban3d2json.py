@@ -19,15 +19,20 @@ class Urban3D():
                  dst_dir,
                  vis_dir,
                  camera_view,
+                 fold,
                  show,
                  roof_move_mode='mean',
                  min_area=100):
         self.src_dir = src_dir
         self.dst_dir = dst_dir
         self.vis_dir = vis_dir
-        bstool.mkdir_or_exist(self.dst_dir)
+        self.dst_image_dir = os.path.join(self.dst_dir, 'images')
+        self.dst_label_dir = os.path.join(self.dst_dir, 'labels')
+        bstool.mkdir_or_exist(self.dst_image_dir)
+        bstool.mkdir_or_exist(self.dst_label_dir)
         bstool.mkdir_or_exist(self.vis_dir)
         self.camera_view = camera_view
+        self.fold = fold
         self.show = show
         self.roof_move_mode = roof_move_mode
         self.min_area = min_area
@@ -48,14 +53,13 @@ class Urban3D():
             indexes.append(idx)
         indexes = list(set(indexes)) 
 
-        for file_idx in [218]:
-            save_json_file_name = f'JAX_Tile_{file_idx}_JSON_{self.camera_view}.json'
+        for file_idx in indexes:
             print("Processing: ", self.camera_view, file_idx)
-            AGL_file = os.path.join(src_dir, f'JAX_Tile_{file_idx}_AGL_{self.camera_view}.tif')
-            FACADE_file = os.path.join(src_dir, f'JAX_Tile_{file_idx}_FACADE_{self.camera_view}.tif')
-            RGB_file = os.path.join(src_dir, f'JAX_Tile_{file_idx}_RGB_{self.camera_view}.tif')
-            VFLOW_file = os.path.join(src_dir, f'JAX_Tile_{file_idx}_VFLOW_{self.camera_view}.json')
-            BLDG_FTPRINT_file = os.path.join(src_dir, f'JAX_Tile_{file_idx}_BLDG_FTPRINT_{self.camera_view}.tif')
+            AGL_file = os.path.join(src_dir, f'{self.fold}_Tile_{file_idx}_AGL_{self.camera_view}.tif')
+            FACADE_file = os.path.join(src_dir, f'{self.fold}_Tile_{file_idx}_FACADE_{self.camera_view}.tif')
+            RGB_file = os.path.join(src_dir, f'{self.fold}_Tile_{file_idx}_RGB_{self.camera_view}.tif')
+            VFLOW_file = os.path.join(src_dir, f'{self.fold}_Tile_{file_idx}_VFLOW_{self.camera_view}.json')
+            BLDG_FTPRINT_file = os.path.join(src_dir, f'{self.fold}_Tile_{file_idx}_BLDG_FTPRINT_{self.camera_view}.tif')
 
             AGL_img = rio.open(AGL_file)
             height_mask = AGL_img.read(1)
@@ -172,7 +176,7 @@ class Urban3D():
                 plt.savefig(os.path.join(self.vis_dir, f'{file_idx}_{self.roof_move_mode}.png'), bbox_inches='tight', dpi=600, pad_inches=0.1)
                 plt.show()
 
-            image_info = {"ori_filename": f'JAX_Tile_{file_idx}_RGB_{self.camera_view}.tif',
+            image_info = {"ori_filename": f'{self.fold}_Tile_{file_idx}_RGB_{self.camera_view}.tif',
                           "width": rgb.shape[1],
                           "height": rgb.shape[0],
                           "camera_view": self.camera_view}
@@ -180,29 +184,39 @@ class Urban3D():
             json_data = {"image": image_info,
                          "annotations": annos}
 
-            json_file = os.path.join(dst_dir, save_json_file_name)
+            image_file_name = f'{self.fold}_Tile_{file_idx}_RGB_{self.camera_view}.png'
+            cv2.imwrite(os.path.join(self.dst_image_dir, image_file_name), rgb)
+            
+            save_json_file_name = f'{self.fold}_Tile_{file_idx}_JSON_{self.camera_view}.json'
+            json_file = os.path.join(self.dst_label_dir, save_json_file_name)
             with open(json_file, "w") as jsonfile:
                 json.dump(json_data, jsonfile, indent=4)
 
 
 if __name__ == '__main__':
-    image_sets = ['JAX', 'OMA']
+    imagesets = ['val', 'train']
+    for imageset in imagesets:
+        folds = ['JAX', 'OMA']
 
-    for image_set in image_sets:
-        processing_dir = f'./data/urban3d/v0/val/{image_set}_VAL/Val'
-        
-        camera_views = os.listdir(processing_dir)
+        for fold in folds:
+            if imageset == 'val':
+                processing_dir = f'./data/urban3d/v0/val/{fold}_VAL/Val'
+            else:
+                processing_dir = f'./data/urban3d/v0/train/{fold}_TRAIN/Train'
+            
+            camera_views = os.listdir(processing_dir)
 
-        for camera_view in camera_views:
-            src_dir = os.path.join(processing_dir, camera_view)
-            dst_dir = './data/urban3d/v1/labels'
-            vis_dir = './data/urban3d/vis'
+            for camera_view in camera_views:
+                src_dir = os.path.join(processing_dir, camera_view)
+                dst_dir = f'./data/urban3d/v1/{imageset}'
+                vis_dir = './data/urban3d/vis'
 
-            urban3d = Urban3D(src_dir,
-                              dst_dir,
-                              vis_dir,
-                              camera_view,
-                              show=True,
-                              roof_move_mode='mean')
+                urban3d = Urban3D(src_dir,
+                                dst_dir,
+                                vis_dir,
+                                camera_view,
+                                fold,
+                                show=True,
+                                roof_move_mode='mean')
 
-            urban3d.generate_v1()
+                urban3d.generate_v1()
