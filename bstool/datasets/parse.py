@@ -179,6 +179,58 @@ def bs_json_parse(json_file):
     
     return objects
 
+def urban3d_json_parse(json_file):
+    """parse json file
+
+    Args:
+        json_file (str): json file
+
+    Returns:
+        list: list of objects
+    """
+    annotations = mmcv.load(json_file)['annotations']
+    objects = []
+    for annotation in annotations:
+        object_struct = {}
+        roof_mask = annotation['roof']
+        roof_polygon = bstool.mask2polygon(roof_mask)
+        roof_bound = roof_polygon.bounds
+        footprint_mask = annotation['footprint']
+        footprint_polygon = bstool.mask2polygon(footprint_mask)
+        footprint_bound = footprint_polygon.bounds
+        building_xmin = np.minimum(roof_bound[0], footprint_bound[0])
+        building_ymin = np.minimum(roof_bound[1], footprint_bound[1])
+        building_xmax = np.maximum(roof_bound[2], footprint_bound[2])
+        building_ymax = np.maximum(roof_bound[3], footprint_bound[3])
+
+        building_bound = [building_xmin, building_ymin, building_xmax, building_ymax]
+
+        xmin, ymin, xmax, ymax = list(roof_bound)
+        bbox_w = xmax - xmin
+        bbox_h = ymax - ymin
+        object_struct['bbox'] = [xmin, ymin, bbox_w, bbox_h]
+        object_struct['roof_bbox'] = object_struct['bbox']
+        xmin, ymin, xmax, ymax = list(footprint_bound)
+        bbox_w = xmax - xmin
+        bbox_h = ymax - ymin
+        object_struct['footprint_bbox'] = [xmin, ymin, bbox_w, bbox_h]
+        xmin, ymin, xmax, ymax = list(building_bound)
+        bbox_w = xmax - xmin
+        bbox_h = ymax - ymin
+        object_struct['building_bbox'] = [xmin, ymin, bbox_w, bbox_h]
+
+        object_struct['roof_mask'] = roof_mask
+        object_struct['footprint_mask'] = footprint_mask
+        object_struct['offset'] = annotation['offset']
+        object_struct['building_height'] = annotation['building_height']
+        
+        object_struct['segmentation'] = roof_mask
+        object_struct['label'] = 1
+        
+        objects.append(object_struct)
+    
+    return objects
+
 
 class COCOParse():
     def __init__(self, anno_file, classes=['']):
