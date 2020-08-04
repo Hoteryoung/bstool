@@ -129,7 +129,7 @@ if __name__ == '__main__':
     src_version = 'v1'
     dst_version = 'v2'
 
-    imagesets = ['val']
+    imagesets = ['val', 'train']
     
     subimage_size = 1024
     gap = subimage_size // 2
