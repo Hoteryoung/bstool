@@ -68,7 +68,7 @@ class Urban3D2COCO(bstool.Convert2COCO):
     def __json_parse__(self, label_file, image_file):
         objects = []
         if self.groundtruth:
-            objects = bstool.bs_json_parse(label_file)
+            objects = bstool.urban3d_json_parse(label_file)
             
         else:
             object_struct = {}
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'urban3d'
-    imagesets = ['train', 'val']
+    imagesets = ['val', 'train']
     release_version = 'v2'
 
     groundtruth = True
