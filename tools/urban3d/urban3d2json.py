@@ -216,9 +216,11 @@ class Urban3D():
 
 
 if __name__ == '__main__':
-    imagesets = ['val', 'train']
+    # imagesets = ['val', 'train']
+    imagesets = ['train']
     for imageset in imagesets:
-        folds = ['JAX', 'OMA']
+        # folds = ['JAX', 'OMA']
+        folds = ['ATL']
 
         for fold in folds:
             if imageset == 'val':
