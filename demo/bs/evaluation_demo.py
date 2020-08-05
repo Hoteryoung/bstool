@@ -11,6 +11,8 @@ if __name__ == '__main__':
     cities = ['dalian', 'xian', 'xian_fixed']
     cities = ['dalian', 'xian']
 
+    with_only_vis = True
+
     for model in models:
         version = model.split('_')[1]
         if 'v006' in model:
@@ -72,12 +74,13 @@ if __name__ == '__main__':
                                         show=True)
 
             title = city + version
-
-            evaluation.segmentation()
-            evaluation.offset_length_classification(title=title)
-            evaluation.offset_angle_classification(title=title)
-            evaluation.offset_error_vector(title=title)
-            if city == 'xian':
-                continue
-            evaluation.height(percent=100, title=title)
-            evaluation.visualization(image_dir=image_dir, vis_dir=vis_dir)
+            if with_only_vis is False:
+                evaluation.segmentation()
+                evaluation.offset_length_classification(title=title)
+                evaluation.offset_angle_classification(title=title)
+                evaluation.offset_error_vector(title=title)
+                if city == 'xian':
+                    continue
+                evaluation.height(percent=100, title=title)
+            else:
+                evaluation.visualization(image_dir=image_dir, vis_dir=vis_dir)
