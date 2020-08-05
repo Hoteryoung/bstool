@@ -44,9 +44,9 @@ if __name__ == '__main__':
                 gt_footprint_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
             elif city == 'urban3d':
                 imageset = 'val'
-                anno_file = f'./data/urban3d/v1/coco/annotations/buildchange_v1_{imageset}_xian_fine.json'
-                gt_roof_csv_file = './data/urban3d/v0/xian_fine/xian_fine_2048_roof_gt_fixed.csv'
-                gt_footprint_csv_file = './data/urban3d/v0/xian_fine/xian_fine_2048_footprint_gt_fixed.csv'
+                anno_file = f'./data/urban3d/v1/coco/annotations/urban3d_v1_val_JAX_OMA.json'
+                gt_roof_csv_file = './data/urban3d/v0/val/urban3d_2048_JAX_OMA_roof_gt.csv'
+                gt_footprint_csv_file = './data/urban3d/v0/val/urban3d_2048_JAX_OMA_footprint_gt.csv'
             else:
                 imageset = 'train'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}.json'
