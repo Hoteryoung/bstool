@@ -59,7 +59,7 @@ class SplitImage():
     def split_image(self, json_file):
         file_name = bstool.get_basename(json_file)
 
-        image_file = os.path.join(self.image_dir, file_name.replace('JSON', 'RGB') + '.png')
+        image_file = os.path.join(self.image_dir, file_name + '.png')
         
         objects = self.parse_json(json_file)
         if len(objects) == 0:

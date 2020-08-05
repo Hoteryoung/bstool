@@ -209,7 +209,7 @@ class Urban3D():
             image_file_name = f'{self.fold}_Tile_{file_idx}_RGB_{self.camera_view}.png'
             cv2.imwrite(os.path.join(self.dst_image_dir, image_file_name), rgb)
             
-            save_json_file_name = f'{self.fold}_Tile_{file_idx}_JSON_{self.camera_view}.json'
+            save_json_file_name = f'{self.fold}_Tile_{file_idx}_RGB_{self.camera_view}.json'
             json_file = os.path.join(self.dst_label_dir, save_json_file_name)
             with open(json_file, "w") as jsonfile:
                 json.dump(json_data, jsonfile, indent=4)

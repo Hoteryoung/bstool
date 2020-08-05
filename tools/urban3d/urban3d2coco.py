@@ -125,16 +125,20 @@ if __name__ == "__main__":
     for imageset in imagesets:
         for dataset in datasets:
             print(f"Begin to process {imageset} data!")
+            
             anno_name = [core_dataset_name, release_version, imageset]
             
             imgpath = f'./data/{core_dataset_name}/{release_version}/{imageset}/images'
             annopath = f'./data/{core_dataset_name}/{release_version}/{imageset}/labels'
             save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
+
+            imageset_file = f'./data/{core_dataset_name}/{release_version}/{imageset}/{dataset}_imageset_file.txt'
             
             bstool.mkdir_or_exist(save_path)
 
             dataset2coco = Urban3D2COCO(imgpath=imgpath,
                                         annopath=annopath,
+                                        imageset_file=imageset_file,
                                         image_format=image_format,
                                         anno_format=anno_format,
                                         data_categories=converted_class,

@@ -68,13 +68,13 @@ if __name__ == '__main__':
                     gt_offsets.append(gt_offset)
                     gt_heights.append(gt_height)
 
-                roof_csv_image = pandas.DataFrame({'ImageId': base_name.replace('JSON', 'RGB'),
+                roof_csv_image = pandas.DataFrame({'ImageId': base_name,
                                                 'BuildingId': range(len(roof_gt_polygons)),
                                                 'PolygonWKT_Pix': roof_gt_polygons,
                                                 'Confidence': 1,
                                                 'Offset': gt_offsets,
                                                 'Height': gt_heights})
-                footprint_csv_image = pandas.DataFrame({'ImageId': base_name.replace('JSON', 'RGB'),
+                footprint_csv_image = pandas.DataFrame({'ImageId': base_name,
                                                 'BuildingId': range(len(footprint_gt_polygons)),
                                                 'PolygonWKT_Pix': footprint_gt_polygons,
                                                 'Confidence': 1,
