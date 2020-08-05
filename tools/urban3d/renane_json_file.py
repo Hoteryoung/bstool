@@ -4,7 +4,7 @@ import os
 if __name__ == '__main__':
     versions = ['v1', 'v2']
     imagesets = ['val', 'train']
-    folds = ['lables', 'images']
+    folds = ['labels', 'images']
     
     root_dir = './data/urban3d'
 
