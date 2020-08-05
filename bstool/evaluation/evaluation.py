@@ -665,6 +665,7 @@ class Evaluation():
             if image_basename not in objects:
                 continue
 
+            print(objects.keys())
             building = objects[image_basename]
 
             for idx, gt_polygon in enumerate(building['gt_polygons']):
