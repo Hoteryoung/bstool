@@ -665,7 +665,7 @@ class Evaluation():
             building = objects[image_basename]
 
             for idx, gt_polygon in enumerate(building['gt_polygons']):
-                iou = buildings['gt_iou'][idx]
+                iou = building['gt_iou'][idx]
                 if idx in building['gt_TP_indexes']:
                     color = colors['gt_TP'][::-1]
                 else:
