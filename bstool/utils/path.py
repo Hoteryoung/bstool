@@ -43,6 +43,7 @@ def get_info_splitted_imagename(img_name):
     base_name = get_basename(img_name)
     if base_name.count('__') == 1:
         # urban3d
+        sub_fold = None
         ori_image_fn = base_name.split("__")[0]
         coord_x, coord_y = base_name.split("__")[1].split('_')    # top left corner
         coord_x, coord_y = int(coord_x), int(coord_y)
