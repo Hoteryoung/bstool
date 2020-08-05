@@ -9,7 +9,7 @@ if __name__ == '__main__':
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['xian']
+    cities = ['xian', 'dalian']
 
     with_only_vis = True
 
