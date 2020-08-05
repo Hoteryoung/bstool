@@ -2,8 +2,8 @@ import os
 
 
 if __name__ == '__main__':
-    versions = ['v1', 'v2']
-    imagesets = ['train', 'val']
+    versions = ['v2', 'v1']
+    imagesets = ['val', 'train']
     datasets = ['JAX_OMA', 'ATL']
     
     root_dir = './data/urban3d'

@@ -115,8 +115,10 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'urban3d'
     imagesets = ['val', 'train']
+    # imagesets = ['val']
     datasets = ['JAX_OMA', 'ATL']
-    release_version = 'v1'
+    # datasets = ['JAX_OMA']
+    release_version = 'v2'
 
     groundtruth = True
     min_height = 100
@@ -126,7 +128,7 @@ if __name__ == "__main__":
         for dataset in datasets:
             print(f"Begin to process {imageset} data!")
             
-            anno_name = [core_dataset_name, release_version, imageset]
+            anno_name = [core_dataset_name, release_version, imageset, dataset]
             
             imgpath = f'./data/{core_dataset_name}/{release_version}/{imageset}/images'
             annopath = f'./data/{core_dataset_name}/{release_version}/{imageset}/labels'
