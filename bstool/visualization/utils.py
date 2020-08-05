@@ -107,3 +107,14 @@ def draw_confusion_matrix_on_image(img, image_basename, confusion_matrix, color=
         img = cv2.putText(img, "{}: {}".format(name, num), (0, height - 10 - 50 * idx), cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 2.0, color = color, thickness = 2, lineType = 8)
 
     return img
+
+def draw_offset_arrow(img, start_point, end_point, point_size=3, color=(0, 0, 255)):
+    start_point = tuple([int(_) for _ in start_point])
+    end_point = tuple([int(_) for _ in end_point])
+
+    cv2.arrowedLine(img, start_point, end_point, color, 2)
+
+    cv2.circle(img, start_point, point_size, color)
+    cv2.circle(img, end_point, point_size, color)
+
+    return img

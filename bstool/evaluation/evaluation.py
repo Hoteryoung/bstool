@@ -10,6 +10,7 @@ from pycocotools.cocoeval import COCOeval
 import pycocotools.mask as maskUtils
 import tqdm
 from terminaltables import AsciiTable
+from shapely import affinity
 
 import bstool
 
@@ -725,11 +726,14 @@ class Evaluation():
 
                 cv2.imwrite(output_file, img)
 
-    def visualization_offset(self, image_dir, vis_dir):
-        colors = {'gt_TP':   (0, 255, 0),
-                'pred_TP': (255, 255, 0),
-                'FP':      (0, 255, 255),
-                'FN':      (255, 0, 0)}
+    def visualization_offset(self, image_dir, vis_dir, with_footprint=True):
+        if with_footprint:
+            image_dir = os.path.join(vis_dir, '..', 'boundary', 'footprint')
+            vis_dir = vis_dir + '_with_footprint'
+        colors = {'gt_matched':   (0, 255, 0),
+                  'pred_matched': (255, 255, 0),
+                  'pred_un_matched': (0, 255, 255),
+                  'gt_un_matched': (255, 0, 0)}
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         for image_name in os.listdir(image_dir):
@@ -745,25 +749,34 @@ class Evaluation():
 
             building = objects[image_basename]
 
-            for gt_polygon, pred_polygon in zip(building['gt_polygons_matched'], building['pred_polygons_matched']):
-                pass
+            for gt_polygon, gt_offset, pred_polygon, pred_offset in zip(building['gt_polygons_matched'], building['gt_offsets'], building['pred_polygons_matched'], building['pred_offsets']):
+                gt_roof_centroid = list(gt_polygon.centroid.coords)[0]
+                pred_roof_centroid = list(pred_polygon.centroid.coords)[0]
 
-            for idx, gt_polygon in enumerate(building['gt_polygons']):
-                iou = building['gt_iou'][idx]
-                if idx in building['gt_TP_indexes']:
-                    color = colors['gt_TP'][::-1]
+                gt_footprint_centroid = [coordinate - offset for coordinate, offset in zip(gt_roof_centroid, gt_offset)]
+                pred_footprint_centroid = [coordinate - offset for coordinate, offset in zip(pred_roof_centroid, pred_offset)]
+
+                xoffset, yoffset = gt_offset
+                transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
+                gt_footprint_polygon = affinity.affine_transform(gt_polygon, transform_matrix)
+
+                xoffset, yoffset = pred_offset
+                transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
+                pred_footprint_polygon = affinity.affine_transform(pred_polygon, transform_matrix)
+
+                intersection = gt_footprint_polygon.intersection(pred_footprint_polygon).area
+                union = gt_footprint_polygon.union(pred_footprint_polygon).area
+
+                iou = intersection / union
+
+                if iou >= 0.5:
+                    gt_color = colors['gt_matched'][::-1]
+                    pred_color = colors['pred_matched'][::-1]
                 else:
-                    color = colors['FN'][::-1]
+                    gt_color = colors['gt_un_matched'][::-1]
+                    pred_color = colors['pred_un_matched'][::-1]
 
-                img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
-                img = bstool.draw_iou(img, gt_polygon, iou, color=color)
-
-            for idx, pred_polygon in enumerate(building['pred_polygons']):
-                if idx in building['pred_TP_indexes']:
-                    color = colors['pred_TP'][::-1]
-                else:
-                    color = colors['FP'][::-1]
-
-                img = bstool.draw_mask_boundary(img, bstool.polygon2mask(pred_polygon), color=color)
+                img = bstool.draw_offset_arrow(img, gt_roof_centroid, gt_footprint_centroid, color=gt_color)
+                img = bstool.draw_offset_arrow(img, pred_roof_centroid, pred_footprint_centroid, color=pred_color)
 
             cv2.imwrite(output_file, img)
