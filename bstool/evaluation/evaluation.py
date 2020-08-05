@@ -253,10 +253,17 @@ class Evaluation():
         np.set_printoptions(precision=2, floatmode='maxprec')
         np.set_printoptions(suppress=True)
         print("Each length class error (full): ", length_error_each_class)
-        
+
+        region_mean = []
         for idx in range(0, self.offset_class_num + 1, 5):
             _ = length_error_each_class[idx : idx + 5]
             print(f"{idx}: ", np.mean(_[~np.isnan(_)]))
+            region_mean.append(np.mean(_[~np.isnan(_)]))
+
+        eval_results = {'classify_interval': self.classify_interval,
+                         'length_error_each_class': length_error_each_class.tolist(),
+                         'region_mean': region_mean}
+        
 
         for i in range(bins):
             for j in range(bins):
@@ -277,6 +284,10 @@ class Evaluation():
             fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_length_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
             plt.clf()
+
+        return eval_results
+
+        
 
     def offset_angle_classification(self, title='demo', interval=1, bins=18):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
@@ -307,6 +318,8 @@ class Evaluation():
         np.set_printoptions(suppress=True)
         print("Each angle class error (full): ", angle_error_each_class)
 
+        eval_results = {'angle_error_each_class': angle_error_each_class.tolist()}
+
         for i in range(bins):
             for j in range(bins):
                 confusion_matrix_small[i, j] = np.sum(confusion_matrix[interval * i : interval * (i + 1), interval * j : interval * (j + 1)])
@@ -327,6 +340,8 @@ class Evaluation():
             fig.savefig(os.path.join(self.output_dir, '{}_offset_confusion_matrix_angle_probability.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
             fig.clf()
+
+        return eval_results
 
     def cosine_distance(self, a, b):
         a_norm = np.linalg.norm(a, axis=1, keepdims=True)
@@ -365,6 +380,9 @@ class Evaluation():
 
         print(f"Offset AEPE: {aEPE}, aAE: {aAE}, cos distance: ", {average_cos_distance})
 
+        eval_results = {'aEPE': aEPE,
+                        'aAE': aAE}
+
         if self.show:
             r = np.sqrt(error_vectors[:, 0] ** 2 + error_vectors[:, 1] ** 2)
             angle = np.arctan2(error_vectors[:, 1], error_vectors[:, 0]) * 180.0 / np.pi
@@ -389,7 +407,10 @@ class Evaluation():
 
             plt.clf()
 
+        return eval_results
+
     def segmentation(self, mask_types = ['roof', 'footprint']):
+        eval_results = dict()
         for mask_type in mask_types:
             print(f"========== Processing {mask_type} segmentation ==========")
             objects = self.get_confusion_matrix_indexes(mask_type=mask_type)
@@ -426,6 +447,15 @@ class Evaluation():
             print("Recall: ", Recall)
 
             print("F1 score: ", F1_score)
+
+            eval_results[mask_type] = {'F1_score': F1_score,
+                                        'Precision': Precision,
+                                        'Recall': Recall,
+                                        'TP': TP,
+                                        'FN': FN,
+                                        'FP': FP}
+        
+        return eval_results
 
     def offset_angle(self, title='dalian'):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
