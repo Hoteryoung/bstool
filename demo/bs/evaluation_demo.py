@@ -37,15 +37,28 @@ def write_results2csv(results, meta_info=None):
         csv_writer.writerow([''])
 
 
+ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0',
+            'bc_v005.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0_test_nms',
+            'bc_v005.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_5.0',
+            'bc_v005.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_conv10',
+            'bc_v005.04_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_weight_2.0', 
+            'bc_v005.05_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1',
+            'bc_v005.06_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 'bc_v005.06.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10_no_ignore', 'bc_v005.06.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 'bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 
+            'bc_v005.08_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar', 
+            'bc_v005.08.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_direct', 
+            'bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 
+            'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
+
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
-    models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
+    # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
+    models = [model for model in ALL_MODELS if 'v005' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['xian']
+    cities = ['dalian', 'xian', 'urban3d']
 
     with_only_vis = False
 
