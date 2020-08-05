@@ -730,6 +730,8 @@ class Evaluation():
         if with_footprint:
             image_dir = os.path.join(vis_dir, '..', 'boundary', 'footprint')
             vis_dir = vis_dir + '_with_footprint'
+            bstool.mkdir_or_exist(vis_dir)
+            
         colors = {'gt_matched':   (0, 255, 0),
                   'pred_matched': (255, 255, 0),
                   'pred_un_matched': (0, 255, 255),
