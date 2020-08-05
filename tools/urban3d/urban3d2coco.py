@@ -115,7 +115,7 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'urban3d'
     imagesets = ['val', 'train']
-    release_version = 'v2'
+    release_version = 'v1'
 
     groundtruth = True
     min_height = 100
