@@ -41,12 +41,19 @@ def get_dir_name(file_path):
 
 def get_info_splitted_imagename(img_name):
     base_name = get_basename(img_name)
-    if base_name.count('__') == 2:
+    if base_name.count('__') == 1:
+        # urban3d
+        ori_image_fn = base_name.split("__")[0]
+        coord_x, coord_y = base_name.split("__")[1].split('_')    # top left corner
+        coord_x, coord_y = int(coord_x), int(coord_y)
+    elif base_name.count('__') == 2:
+        # xian_fine
         sub_fold = base_name.split("__")[0].split('_')[1]
         ori_image_fn = base_name.split("__")[1]
         coord_x, coord_y = base_name.split("__")[2].split('_')    # top left corner
         coord_x, coord_y = int(coord_x), int(coord_y)
-    else:
+    elif base_name.count('__') > 2:
+        # dalian_fine
         sub_fold = None
         ori_image_fn = base_name.split("__")[1] + '__' + base_name.split("__")[2]
         coord_x, coord_y = base_name.split("__")[3].split('_')    # top left corner
