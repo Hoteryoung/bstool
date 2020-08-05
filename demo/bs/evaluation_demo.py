@@ -74,8 +74,8 @@ if __name__ == '__main__':
             output_dir = f'./data/buildchange/v0/statistic/models/{model}'
             vis_dir = f'./data/buildchange/vis/{model}/{city}'
             bstool.mkdir_or_exist(vis_dir)
-            summary_file = f'./data/buildchange/summary/{model}/{city}/eval_summary.csv'
-            bstool.mkdir_or_exist(f'./data/buildchange/summary/{model}/{city}')
+            summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary.csv'
+            bstool.mkdir_or_exist(f'./data/buildchange/summary/{model}')
             
             if city == 'xian':
                 imageset = 'val'
