@@ -115,6 +115,7 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'urban3d'
     imagesets = ['val', 'train']
+    datasets = ['JAX_OMA', 'ATL']
     release_version = 'v1'
 
     groundtruth = True
@@ -122,35 +123,36 @@ if __name__ == "__main__":
     image_size = 1024
 
     for imageset in imagesets:
-        print(f"Begin to process {imageset} data!")
-        anno_name = [core_dataset_name, release_version, imageset]
-        
-        imgpath = f'./data/{core_dataset_name}/{release_version}/{imageset}/images'
-        annopath = f'./data/{core_dataset_name}/{release_version}/{imageset}/labels'
-        save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
-        
-        bstool.mkdir_or_exist(save_path)
+        for dataset in datasets:
+            print(f"Begin to process {imageset} data!")
+            anno_name = [core_dataset_name, release_version, imageset]
+            
+            imgpath = f'./data/{core_dataset_name}/{release_version}/{imageset}/images'
+            annopath = f'./data/{core_dataset_name}/{release_version}/{imageset}/labels'
+            save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
+            
+            bstool.mkdir_or_exist(save_path)
 
-        dataset2coco = Urban3D2COCO(imgpath=imgpath,
-                                annopath=annopath,
-                                image_format=image_format,
-                                anno_format=anno_format,
-                                data_categories=converted_class,
-                                data_info=info,
-                                data_licenses=licenses,
-                                data_type="instances",
-                                groundtruth=groundtruth,
-                                small_object_area=10,
-                                image_size=(image_size, image_size))
+            dataset2coco = Urban3D2COCO(imgpath=imgpath,
+                                        annopath=annopath,
+                                        image_format=image_format,
+                                        anno_format=anno_format,
+                                        data_categories=converted_class,
+                                        data_info=info,
+                                        data_licenses=licenses,
+                                        data_type="instances",
+                                        groundtruth=groundtruth,
+                                        small_object_area=10,
+                                        image_size=(image_size, image_size))
 
-        images, annotations = dataset2coco.get_image_annotation_pairs()
+            images, annotations = dataset2coco.get_image_annotation_pairs()
 
-        json_data = {"info" : dataset2coco.info,
-                    "images" : images,
-                    "licenses" : dataset2coco.licenses,
-                    "type" : dataset2coco.type,
-                    "annotations" : annotations,
-                    "categories" : dataset2coco.categories}
+            json_data = {"info" : dataset2coco.info,
+                        "images" : images,
+                        "licenses" : dataset2coco.licenses,
+                        "type" : dataset2coco.type,
+                        "annotations" : annotations,
+                        "categories" : dataset2coco.categories}
 
-        with open(os.path.join(save_path, "_".join(anno_name) + ".json"), "w") as jsonfile:
-            json.dump(json_data, jsonfile, sort_keys=True, indent=4)
+            with open(os.path.join(save_path, "_".join(anno_name) + ".json"), "w") as jsonfile:
+                json.dump(json_data, jsonfile, sort_keys=True, indent=4)
