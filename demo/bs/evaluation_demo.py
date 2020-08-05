@@ -82,5 +82,6 @@ if __name__ == '__main__':
                 if city == 'xian':
                     continue
                 evaluation.height(percent=100, title=title)
+                evaluation.visualization(image_dir=image_dir, vis_dir=vis_dir)
             else:
                 evaluation.visualization(image_dir=image_dir, vis_dir=vis_dir)
