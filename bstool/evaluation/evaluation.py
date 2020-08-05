@@ -621,6 +621,9 @@ class Evaluation():
 
             gt_polygons = [gt_building['polygon'] for gt_building in gt_buildings]
             pred_polygons = [pred_building['polygon'] for pred_building in pred_buildings]
+
+            gt_polygons_origin = gt_polygons[:]
+            pred_polygons_origin = pred_polygons[:]
             
             if len(gt_polygons) == 0 or len(pred_polygons) == 0:
                 continue
@@ -673,11 +676,56 @@ class Evaluation():
             buildings['gt_polygons'] = gt_polygons
             buildings['pred_polygons'] = pred_polygons
 
+            buildings['gt_polygons_matched'] = np.array(gt_polygons_origin)[gt_TP_indexes].tolist()
+            buildings['pred_polygons_matched'] = np.array(pred_polygons_origin)[pred_TP_indexes].tolist()
+
             objects[ori_image_name] = buildings
 
         return objects
 
-    def visualization(self, image_dir, vis_dir):
+    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint']):
+        colors = {'gt_TP':   (0, 255, 0),
+                'pred_TP': (255, 255, 0),
+                'FP':      (0, 255, 255),
+                'FN':      (255, 0, 0)}
+        for mask_type in mask_types:
+            objects = self.get_confusion_matrix_indexes(mask_type=mask_type)
+
+            for image_name in os.listdir(image_dir):
+                image_basename = bstool.get_basename(image_name)
+                image_file = os.path.join(image_dir, image_name)
+
+                output_file = os.path.join(vis_dir, mask_type, image_name)
+                bstool.mkdir_or_exist(os.path.join(vis_dir, mask_type))
+
+                img = cv2.imread(image_file)
+
+                if image_basename not in objects:
+                    continue
+
+                building = objects[image_basename]
+
+                for idx, gt_polygon in enumerate(building['gt_polygons']):
+                    iou = building['gt_iou'][idx]
+                    if idx in building['gt_TP_indexes']:
+                        color = colors['gt_TP'][::-1]
+                    else:
+                        color = colors['FN'][::-1]
+
+                    img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
+                    img = bstool.draw_iou(img, gt_polygon, iou, color=color)
+
+                for idx, pred_polygon in enumerate(building['pred_polygons']):
+                    if idx in building['pred_TP_indexes']:
+                        color = colors['pred_TP'][::-1]
+                    else:
+                        color = colors['FP'][::-1]
+
+                    img = bstool.draw_mask_boundary(img, bstool.polygon2mask(pred_polygon), color=color)
+
+                cv2.imwrite(output_file, img)
+
+    def visualization_offset(self, image_dir, vis_dir):
         colors = {'gt_TP':   (0, 255, 0),
                 'pred_TP': (255, 255, 0),
                 'FP':      (0, 255, 255),
@@ -696,6 +744,9 @@ class Evaluation():
                 continue
 
             building = objects[image_basename]
+
+            for gt_polygon, pred_polygon in zip(building['gt_polygons_matched'], building['pred_polygons_matched']):
+                pass
 
             for idx, gt_polygon in enumerate(building['gt_polygons']):
                 iou = building['gt_iou'][idx]
