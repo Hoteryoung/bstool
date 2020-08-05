@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
             output_dir = f'./data/buildchange/v0/statistic/models/{model}'
             vis_dir = f'./data/buildchange/vis/{model}/{city}'
+            bstool.mkdir_or_exist(vis_dir)
             image_dir = f'./data/buildchange/v0/{city}_fine/images'
 
             if city == 'xian':
