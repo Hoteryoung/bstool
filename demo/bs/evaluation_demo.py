@@ -42,11 +42,17 @@ if __name__ == '__main__':
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
+            elif city == 'urban3d':
+                imageset = 'val'
+                anno_file = f'./data/urban3d/v1/coco/annotations/buildchange_v1_{imageset}_xian_fine.json'
+                gt_roof_csv_file = './data/urban3d/v0/xian_fine/xian_fine_2048_roof_gt_fixed.csv'
+                gt_footprint_csv_file = './data/urban3d/v0/xian_fine/xian_fine_2048_footprint_gt_fixed.csv'
             else:
                 imageset = 'train'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}.json'
                 gt_roof_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_roof_gt.csv'
                 gt_footprint_csv_file = f'./data/buildchange/v0/{city}/{city}_2048_footprint_gt.csv'
+                
 
             if 'xian' in city:
                 pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_xian_coco_results.pkl'

@@ -118,7 +118,7 @@ if __name__ == "__main__":
     # imagesets = ['val']
     datasets = ['JAX_OMA', 'ATL']
     # datasets = ['JAX_OMA']
-    release_version = 'v2'
+    release_version = 'v1'
 
     groundtruth = True
     min_height = 100
