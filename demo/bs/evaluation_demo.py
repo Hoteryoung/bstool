@@ -25,28 +25,31 @@ if __name__ == '__main__':
             output_dir = f'./data/buildchange/v0/statistic/models/{model}'
             vis_dir = f'./data/buildchange/vis/{model}/{city}'
             bstool.mkdir_or_exist(vis_dir)
-            image_dir = f'./data/buildchange/v0/{city}_fine/images'
 
             if city == 'xian':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
+                image_dir = f'./data/buildchange/v0/{city}_fine/images'
             elif city == 'xian_fixed':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_xian_fine.json'
                 gt_roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt_fixed.csv'
                 gt_footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt_fixed.csv'
+                image_dir = f'./data/buildchange/v0/{city}_fine/images'
             elif city == 'dalian':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
+                image_dir = f'./data/buildchange/v0/{city}_fine/images'
             elif city == 'urban3d':
                 imageset = 'val'
                 anno_file = f'./data/urban3d/v2/coco/annotations/urban3d_v2_val_JAX_OMA.json'
                 gt_roof_csv_file = './data/urban3d/v0/val/urban3d_2048_JAX_OMA_roof_gt.csv'
                 gt_footprint_csv_file = './data/urban3d/v0/val/urban3d_2048_JAX_OMA_footprint_gt.csv'
+                image_dir = f'./data/urban3d/v1/val/images'
             else:
                 imageset = 'train'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}.json'
