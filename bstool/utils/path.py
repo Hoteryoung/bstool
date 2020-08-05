@@ -41,6 +41,7 @@ def get_dir_name(file_path):
 
 def get_info_splitted_imagename(img_name):
     base_name = get_basename(img_name)
+    print(base_name)
     if base_name.count('__') == 1:
         # urban3d
         sub_fold = None
