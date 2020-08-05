@@ -13,7 +13,7 @@ if __name__ == '__main__':
             for dataset in datasets:
                 image_dir = os.path.join(root_dir, version, imageset, 'images')
                 save_file = os.path.join(root_dir, version, imageset, f'{dataset}_imageset_file.txt')
-                if save_file.exists():
+                if os.path.exists(save_file):
                     os.remove(save_file)
                 with open(save_file, 'w+') as f:
                     for image_name in os.listdir(image_dir):
