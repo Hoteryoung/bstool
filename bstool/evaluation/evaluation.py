@@ -662,6 +662,9 @@ class Evaluation():
 
             img = cv2.imread(image_file)
 
+            if image_basename not in objects:
+                continue
+
             building = objects[image_basename]
 
             for idx, gt_polygon in enumerate(building['gt_polygons']):
