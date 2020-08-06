@@ -58,7 +58,7 @@ if __name__ == '__main__':
         models = [args.model]
     
     cities = ['dalian', 'xian', 'urban3d']
-    # cities = ['xian']
+    cities = ['urban3d']
 
     with_only_vis = True
 
