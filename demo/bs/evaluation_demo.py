@@ -37,8 +37,7 @@ def write_results2csv(results, meta_info=None):
         csv_writer.writerow([''])
 
 
-ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0',
-            'bc_v005.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0_test_nms',
+ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_2.0'
             'bc_v005.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offsetweight_5.0',
             'bc_v005.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_conv10',
             'bc_v005.04_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_weight_2.0', 
