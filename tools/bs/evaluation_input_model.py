@@ -60,7 +60,7 @@ if __name__ == '__main__':
     cities = ['dalian', 'xian', 'urban3d']
     cities = ['urban3d']
 
-    with_only_vis = True
+    with_only_vis = False
 
     for model in models:
         version = model.split('_')[1]
