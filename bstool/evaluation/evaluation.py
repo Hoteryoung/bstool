@@ -11,6 +11,7 @@ import pycocotools.mask as maskUtils
 import tqdm
 from terminaltables import AsciiTable
 from shapely import affinity
+import math
 
 import bstool
 
@@ -370,7 +371,11 @@ class Evaluation():
 
         EPE = np.sqrt(error_vectors[..., 0] ** 2 + error_vectors[..., 1] ** 2)
         gt_angle = np.arctan2(dataset_gt_offsets[..., 1], dataset_gt_offsets[..., 0])
+        gt_length = np.sqrt(dataset_gt_offsets[..., 1] ** 2 + dataset_gt_offsets[..., 0] ** 2)
+        
         pred_angle = np.arctan2(dataset_pred_offsets[..., 1], dataset_pred_offsets[..., 0])
+        pred_length = np.sqrt(dataset_pred_offsets[..., 1] ** 2 + dataset_pred_offsets[..., 0] ** 2)
+
         AE = np.abs(gt_angle - pred_angle)
 
         aEPE = EPE.mean()
@@ -385,8 +390,8 @@ class Evaluation():
                         'aAE': aAE}
 
         if self.show:
-            r = np.sqrt(error_vectors[:, 0] ** 2 + error_vectors[:, 1] ** 2)
-            angle = np.arctan2(error_vectors[:, 1], error_vectors[:, 0]) * 180.0 / np.pi
+            r = np.abs(gt_length - pred_length)
+            angle = ((gt_angle - pred_angle) % np.pi) * 180.0 / np.pi
             max_r = np.percentile(r, 95)
 
             fig = plt.figure(figsize=(7, 7))
@@ -635,6 +640,14 @@ class Evaluation():
             gt_heights = [gt_building['height'] for gt_building in gt_buildings]
             pred_heights = [pred_building['height'] for pred_building in pred_buildings]
 
+            angles = []
+            for gt_offset, gt_height in zip(gt_offsets, gt_heights):
+                offset_x, offset_y = gt_offset
+                angle = math.atan2(math.sqrt(offset_x ** 2 + offset_y ** 2) * 0.6, gt_height)
+                angles.append(angle)
+
+            height_angle = np.array(angles).mean()
+
             gt_polygons = geopandas.GeoSeries(gt_polygons)
             pred_polygons = geopandas.GeoSeries(pred_polygons)
 
@@ -679,6 +692,8 @@ class Evaluation():
 
             buildings['gt_polygons_matched'] = np.array(gt_polygons_origin)[gt_TP_indexes].tolist()
             buildings['pred_polygons_matched'] = np.array(pred_polygons_origin)[pred_TP_indexes].tolist()
+
+            buildings['height_angle'] = height_angle
 
             objects[ori_image_name] = buildings
 
@@ -753,7 +768,11 @@ class Evaluation():
 
             building = objects[image_basename]
 
-            for gt_polygon, gt_offset, pred_polygon, pred_offset in zip(building['gt_polygons_matched'], building['gt_offsets'], building['pred_polygons_matched'], building['pred_offsets']):
+            height_angle = building['height_angle']
+
+            img = bstool.draw_height_angle(img, height_angle)
+
+            for gt_polygon, gt_offset, pred_polygon, pred_offset, gt_height in zip(building['gt_polygons_matched'], building['gt_offsets'], building['pred_polygons_matched'], building['pred_offsets'], building['gt_heights']):
                 gt_roof_centroid = list(gt_polygon.centroid.coords)[0]
                 pred_roof_centroid = list(pred_polygon.centroid.coords)[0]
 

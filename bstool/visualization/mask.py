@@ -135,3 +135,12 @@ def draw_iou(img, polygon, iou, color=(0, 0, 255)):
     img = cv2.putText(img, "{:.2f}".format(iou), centroid, cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 1.0, color = color, thickness = 2, lineType = 8)
 
     return img
+
+def draw_height_angle(img, angle, color=(0, 0, 255)):
+    img_height, img_width = img.shape[0], img.shape[1]
+
+    coord = (int(img_height // 2), int(img_width // 2))
+
+    img = cv2.putText(img, "{:.2f}".format(angle * 180.0 / np.pi), coord, cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 1.0, color = color, thickness = 2, lineType = 8)
+
+    return img

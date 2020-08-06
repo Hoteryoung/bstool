@@ -59,7 +59,7 @@ if __name__ == '__main__':
     cities = ['dalian', 'xian', 'xian_fixed']
     cities = ['dalian', 'xian', 'urban3d']
     cities = ['dalian', 'xian_fixed']
-    cities = ['urban3d']
+    cities = ['xian']
 
     with_only_vis = True
 
@@ -72,7 +72,8 @@ if __name__ == '__main__':
         for city in cities:
             print(f"========== {model} ========== {city} ==========")
 
-            output_dir = f'./data/buildchange/v0/statistic/models/{model}'
+            output_dir = f'./data/buildchange/statistic/{model}/{city}'
+            bstool.mkdir_or_exist(output_dir)
             vis_boundary_dir = f'./data/buildchange/vis/{model}/{city}/boundary'
             bstool.mkdir_or_exist(vis_boundary_dir)
             vis_offset_dir = f'./data/buildchange/vis/{model}/{city}/offset'
@@ -156,6 +157,7 @@ if __name__ == '__main__':
                 write_results2csv([segmentation_eval_results, offset_eval_results, angle_eval_results, error_vector_results], meta_info)
 
             else:
+                error_vector_results = evaluation.offset_error_vector(title=title)
                 evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir)
                 for with_footprint in [True, False]:
                     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
