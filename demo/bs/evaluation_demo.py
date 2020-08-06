@@ -7,11 +7,11 @@ def write_results2csv(results, meta_info=None):
     with open(meta_info['summary_file'], 'w') as summary:
         csv_writer = csv.writer(summary, delimiter=',')
         csv_writer.writerow(['Meta Info'])
-        csv_writer.writerow(['model', model])
-        csv_writer.writerow(['anno_file', anno_file])
-        csv_writer.writerow(['gt_roof_csv_file', gt_roof_csv_file])
-        csv_writer.writerow(['gt_footprint_csv_file', gt_footprint_csv_file])
-        csv_writer.writerow(['vis_dir', vis_dir])
+        csv_writer.writerow(['model', meta_info['model']])
+        csv_writer.writerow(['anno_file', meta_info['anno_file']])
+        csv_writer.writerow(['gt_roof_csv_file', meta_info['gt_roof_csv_file']])
+        csv_writer.writerow(['gt_footprint_csv_file', meta_info['gt_footprint_csv_file']])
+        csv_writer.writerow(['vis_dir', meta_info['vis_dir']])
         csv_writer.writerow([''])
         for mask_type in ['roof', 'footprint']:
             csv_writer.writerow([segmentation_eval_results[mask_type]])

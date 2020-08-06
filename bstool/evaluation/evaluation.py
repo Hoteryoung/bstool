@@ -390,8 +390,8 @@ class Evaluation():
                         'aAE': aAE}
 
         if self.show:
-            r = np.abs(gt_length - pred_length)
-            angle = ((gt_angle - pred_angle) % np.pi) * 180.0 / np.pi
+            r = gt_length - pred_length
+            angle = ((gt_angle - pred_angle))
             max_r = np.percentile(r, 95)
 
             fig = plt.figure(figsize=(7, 7))
