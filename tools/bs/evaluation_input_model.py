@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     for model in models:
         version = model.split('_')[1]
-        if 'v006' in model:
+        if 'v006' in model or 'v008.03' in model:
             with_height = True
         else:
             with_height = False
@@ -84,19 +84,19 @@ if __name__ == '__main__':
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
-                image_dir = f'./data/buildchange/v0/{city}_fine/images'
+                image_dir = f'./data/buildchange/v0/xian_fine/images'
             elif city == 'xian_fixed':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_xian_fine.json'
                 gt_roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt_fixed.csv'
                 gt_footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt_fixed.csv'
-                image_dir = f'./data/buildchange/v0/{city}_fine/images'
+                image_dir = f'./data/buildchange/v0/xian_fine/images'
             elif city == 'dalian':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
-                image_dir = f'./data/buildchange/v0/{city}_fine/images'
+                image_dir = f'./data/buildchange/v0/dalian_fine/images'
             elif city == 'urban3d':
                 imageset = 'val'
                 anno_file = f'./data/urban3d/v2/coco/annotations/urban3d_v2_val_JAX_OMA.json'
