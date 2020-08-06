@@ -684,7 +684,7 @@ class Evaluation():
 
         return objects
 
-    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint']):
+    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint'], with_iou=False):
         colors = {'gt_TP':   (0, 255, 0),
                 'pred_TP': (255, 255, 0),
                 'FP':      (0, 255, 255),
@@ -714,7 +714,8 @@ class Evaluation():
                         color = colors['FN'][::-1]
 
                     img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
-                    img = bstool.draw_iou(img, gt_polygon, iou, color=color)
+                    if with_iou:
+                        img = bstool.draw_iou(img, gt_polygon, iou, color=color)
 
                 for idx, pred_polygon in enumerate(building['pred_polygons']):
                     if idx in building['pred_TP_indexes']:
