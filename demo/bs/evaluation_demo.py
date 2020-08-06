@@ -42,7 +42,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v005.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_conv10',
             'bc_v005.04_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_weight_2.0', 
             'bc_v005.05_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1',
-            'bc_v005.06_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 'bc_v005.06.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10_no_ignore', 'bc_v005.06.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 'bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 
+            'bc_v005.06_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 'bc_v005.06.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 'bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10', 
             'bc_v005.08_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar', 
             'bc_v005.08.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_direct', 
             'bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 
@@ -58,13 +58,14 @@ if __name__ == '__main__':
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     cities = ['dalian', 'xian', 'xian_fixed']
     cities = ['dalian', 'xian', 'urban3d']
-    # cities = ['xian']
+    cities = ['dalian', 'xian_fixed']
+    cities = ['urban3d']
 
     with_only_vis = True
 
     for model in models:
         version = model.split('_')[1]
-        if 'v006' in model:
+        if 'v006' in model or 'v008.03' in model:
             with_height = True
         else:
             with_height = False
@@ -84,19 +85,19 @@ if __name__ == '__main__':
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt.csv'
-                image_dir = f'./data/buildchange/v0/{city}_fine/images'
+                image_dir = f'./data/buildchange/v0/xian_fine/images'
             elif city == 'xian_fixed':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_xian_fine.json'
                 gt_roof_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_roof_gt_fixed.csv'
                 gt_footprint_csv_file = './data/buildchange/v0/xian_fine/xian_fine_2048_footprint_gt_fixed.csv'
-                image_dir = f'./data/buildchange/v0/{city}_fine/images'
+                image_dir = f'./data/buildchange/v0/xian_fine/images'
             elif city == 'dalian':
                 imageset = 'val'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}_fine.json'
                 gt_roof_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_roof_gt.csv'
                 gt_footprint_csv_file = f'./data/buildchange/v0/dalian_fine/dalian_fine_2048_footprint_gt.csv'
-                image_dir = f'./data/buildchange/v0/{city}_fine/images'
+                image_dir = f'./data/buildchange/v0/dalian_fine/images'
             elif city == 'urban3d':
                 imageset = 'val'
                 anno_file = f'./data/urban3d/v2/coco/annotations/urban3d_v2_val_JAX_OMA.json'
