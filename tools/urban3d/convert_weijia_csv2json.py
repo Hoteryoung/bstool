@@ -10,6 +10,7 @@ if __name__ == "__main__":
         json_dir = f'./data/urban3d/v1/{imageset}/weijia_labels'
         bstool.mkdir_or_exist(json_dir)
         for fold in folds:
+            print(f"========== processing {imageset} {fold} ==========")
             csv_file = f'./data/urban3d/weijia/instance_gt_val/urban3d_{fold}_{imageset}_roof_offset_gt_subcsv_merge.csv'
             csv_parser = bstool.CSVParse(csv_file)
             image_name_list = csv_parser.image_name_list
