@@ -4,10 +4,10 @@ import bstool
 
 
 if __name__ == '__main__':
-    image_dir = './data/buildchange/v1/shanghai/images'
-    anno_file = './data/buildchange/v1/coco/annotations/buildchange_v1_train_shanghai_oriented_line.json'
-    # anno_file = '/data/hrsc/v1/coco/annotations/hrsc_v1_trainval.json'
-    # image_dir = '/data/hrsc/v1/trainval/images'
+    # image_dir = '/data/plane/v1/train/images'
+    # anno_file = '/data/plane/v1/coco/annotations/plane_train.json'
+    anno_file = '/data/urban3d/v2/coco/annotations/urban3d_v2_val_JAX_OMA.json'
+    image_dir = '/data/urban3d/v2/val/images'
 
     coco_parser = bstool.COCOParse(anno_file)
 

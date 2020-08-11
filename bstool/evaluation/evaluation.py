@@ -35,7 +35,8 @@ class Evaluation():
                  with_height=False,
                  output_dir=None,
                  out_file_format='png',
-                 show=True):
+                 show=True,
+                 replace_pred_roof=False):
         self.gt_roof_csv_file = gt_roof_csv_file
         self.gt_footprint_csv_file = gt_footprint_csv_file
         self.roof_csv_file = roof_csv_file
@@ -58,7 +59,9 @@ class Evaluation():
                                         score_threshold=score_threshold,
                                         min_area=min_area,
                                         with_offset=with_offset, 
-                                        with_height=with_height)
+                                        with_height=with_height,
+                                        gt_roof_csv_file=gt_roof_csv_file,
+                                        replace_pred_roof=replace_pred_roof)
 
         merged_objects = pkl_parser.merged_objects
         
@@ -393,13 +396,14 @@ class Evaluation():
             r = gt_length - pred_length
             angle = ((gt_angle - pred_angle))
             max_r = np.percentile(r, 95)
+            min_r = np.percentile(r, 0.01)
 
             fig = plt.figure(figsize=(7, 7))
             ax = plt.gca(projection='polar')
             ax.set_thetagrids(np.arange(0.0, 360.0, 15.0))
             ax.set_thetamin(0.0)
             ax.set_thetamax(360.0)
-            ax.set_rgrids(np.arange(0, max_r, max_r / 10))
+            ax.set_rgrids(np.arange(min_r, max_r, max_r / 10))
             ax.set_rlabel_position(0.0)
             ax.set_rlim(0, max_r)
             plt.setp(ax.get_yticklabels(), fontsize=6)
@@ -743,6 +747,7 @@ class Evaluation():
                 cv2.imwrite(output_file, img)
 
     def visualization_offset(self, image_dir, vis_dir, with_footprint=True):
+        print("========== generation vis images with offset ==========")
         if with_footprint:
             image_dir = os.path.join(vis_dir, '..', 'boundary', 'footprint')
             vis_dir = vis_dir + '_with_footprint'
@@ -790,7 +795,7 @@ class Evaluation():
                 intersection = gt_footprint_polygon.intersection(pred_footprint_polygon).area
                 union = gt_footprint_polygon.union(pred_footprint_polygon).area
 
-                iou = intersection / union
+                iou = intersection / (union - intersection + 1.0)
 
                 if iou >= 0.5:
                     gt_color = colors['gt_matched'][::-1]

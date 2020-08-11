@@ -21,12 +21,16 @@ class SplitImage():
                  subimage_size=1024,
                  gap=512,
                  multi_processing=False,
-                 num_processor=8):
+                 num_processor=8,
+                 use_weijia_labels=False):
         self.subimage_size = subimage_size
         self.gap = gap
 
         self.image_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/images'
-        self.label_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/labels'
+        if use_weijia_labels:
+            self.label_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/weijia_labels'
+        else:
+            self.label_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/labels'
 
 
         self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{imageset}/images'
@@ -142,6 +146,7 @@ if __name__ == '__main__':
                                 subimage_size=subimage_size,
                                 gap=gap,
                                 multi_processing=True,
-                                num_processor=4)
+                                num_processor=4,
+                                use_weijia_labels=True)
         split_image.core()
         print(f"Finish processing {imageset} set.")

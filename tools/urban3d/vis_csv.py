@@ -8,7 +8,7 @@ import cv2
 if __name__ == '__main__':
 
     image_dir = '/data/urban3d/v1/val/images'
-    csv_df = pandas.read_csv('/data/urban3d/v0/val/urban3d_2048_footprint_gt.csv')
+    csv_df = pandas.read_csv('/data/urban3d/weijia/instance_gt_val/urban3d_jax_val_roof_offset_gt_subcsv_merge.csv')
 
     for image_name in os.listdir(image_dir):
         image_file = os.path.join(image_dir, image_name)
@@ -22,8 +22,6 @@ if __name__ == '__main__':
                 roof_polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
             else:
                 roof_polygon = row.PolygonWKT_Pix
-
-            print(roof_polygon)
 
             roof_mask = bstool.polygon2mask(roof_polygon)
             roof_masks.append(roof_mask)

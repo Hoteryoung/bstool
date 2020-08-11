@@ -116,9 +116,9 @@ if __name__ == "__main__":
     core_dataset_name = 'urban3d'
     imagesets = ['val', 'train']
     # imagesets = ['val']
-    datasets = ['JAX_OMA', 'ATL']
-    # datasets = ['JAX_OMA']
-    release_version = 'v1'
+    # datasets = ['JAX_OMA', 'ATL']
+    datasets = ['JAX_OMA']
+    release_version = 'v2'
 
     groundtruth = True
     min_height = 100
