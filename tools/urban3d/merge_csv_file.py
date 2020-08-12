@@ -4,7 +4,7 @@ import bstool
 
 
 if __name__ == '__main__':
-    csv_dir = '/data/urban3d/weijia/instance_gt_val'
+    csv_dir = './data/urban3d/weijia/instance_gt_val'
 
     csv_fns = ['urban3d_jax_val_orgfootprint_offset_gt_subcsv_merge.csv',
                'urban3d_oma_val_orgfootprint_offset_gt_subcsv_merge.csv']
