@@ -68,6 +68,7 @@ if __name__ == '__main__':
 
     with_only_vis = False
     replace_pred_roof = False
+    offset_model = 'roof2footprint'
 
     for model in models:
         version = model.split('_')[1]
@@ -117,6 +118,7 @@ if __name__ == '__main__':
                 gt_roof_csv_file = './data/urban3d/weijia/urban3d_jax_oma_val_roof_offset_gt_simple_subcsv_merge.csv'
                 gt_footprint_csv_file = './data/urban3d/weijia/urban3d_jax_oma_val_orgfootprint_offset_gt_simple_subcsv_merge.csv'
                 image_dir = f'./data/urban3d/v1/val/images'
+                offset_model = 'roof2footprint'
             else:
                 imageset = 'train'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}.json'
@@ -148,7 +150,8 @@ if __name__ == '__main__':
                                         with_height=with_height,
                                         show=True,
                                         replace_pred_roof=replace_pred_roof,
-                                        with_only_offset=with_only_offset)
+                                        with_only_offset=with_only_offset,
+                                        offset_model=offset_model)
 
             title = city + version
             if with_only_vis is False:

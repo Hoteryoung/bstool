@@ -260,12 +260,14 @@ class BSPklParser():
                  with_offset=False,
                  with_height=False,
                  gt_roof_csv_file=None,
-                 replace_pred_roof=False):
+                 replace_pred_roof=False,
+                 offset_model='footprint2roof'):
         self.iou_threshold = iou_threshold
         self.score_threshold = score_threshold
         self.min_area = min_area
         self.with_offset = with_offset
         self.with_height = with_height
+        self.offset_model = offset_model
 
         self.replace_pred_roof = replace_pred_roof
 
@@ -503,8 +505,13 @@ class BSPklParser():
 
             if roof_polygon.area < self.min_area:
                 continue
-
-            transform_matrix = [1, 0, 0, 1,  -1.0 * offset[0], -1.0 * offset[1]]
+            
+            if self.offset_model == 'footprint2roof':
+                transform_matrix = [1, 0, 0, 1,  -1.0 * offset[0], -1.0 * offset[1]]
+            elif self.offset_model == 'roof2footprint':
+                transform_matrix = [1, 0, 0, 1,  1.0 * offset[0], 1.0 * offset[1]]
+            else:
+                raise NotImplementedError
             footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
 
             building['bbox'] = bbox.tolist()

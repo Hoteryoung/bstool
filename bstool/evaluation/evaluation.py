@@ -37,7 +37,8 @@ class Evaluation():
                  out_file_format='png',
                  show=True,
                  replace_pred_roof=False,
-                 with_only_offset=False):
+                 with_only_offset=False,
+                 offset_model='footprint2roof'):
         self.gt_roof_csv_file = gt_roof_csv_file
         self.gt_footprint_csv_file = gt_footprint_csv_file
         self.roof_csv_file = roof_csv_file
@@ -64,7 +65,8 @@ class Evaluation():
                                             with_offset=with_offset, 
                                             with_height=with_height,
                                             gt_roof_csv_file=gt_roof_csv_file,
-                                            replace_pred_roof=replace_pred_roof)
+                                            replace_pred_roof=replace_pred_roof,
+                                            offset_model=offset_model)
         else:
             pkl_parser = bstool.BSPklParser(anno_file, 
                                             pkl_file, 
@@ -74,7 +76,8 @@ class Evaluation():
                                             with_offset=with_offset, 
                                             with_height=with_height,
                                             gt_roof_csv_file=gt_roof_csv_file,
-                                            replace_pred_roof=replace_pred_roof)
+                                            replace_pred_roof=replace_pred_roof,
+                                            offset_model=offset_model)
 
         merged_objects = pkl_parser.merged_objects
         
