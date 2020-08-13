@@ -8,7 +8,7 @@ import cv2
 if __name__ == '__main__':
 
     image_dir = '/data/urban3d/v1/val/images'
-    csv_df = pandas.read_csv('/data/urban3d/weijia/instance_gt_val/urban3d_jax_val_roof_offset_gt_subcsv_merge.csv')
+    csv_df = pandas.read_csv('/data/urban3d/weijia/urban3d_jax_oma_val_roof_offset_gt_simple_subcsv_merge.csv')
 
     for image_name in os.listdir(image_dir):
         image_file = os.path.join(image_dir, image_name)
