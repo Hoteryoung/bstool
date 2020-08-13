@@ -63,9 +63,9 @@ if __name__ == '__main__':
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['dalian', 'xian']
+    # cities = ['dalian', 'xian']
     # cities = ['dalian', 'xian_fixed']
-    # cities = ['urban3d']
+    cities = ['urban3d']
 
     with_only_vis = False
     replace_pred_roof = False
