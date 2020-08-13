@@ -612,7 +612,8 @@ class CSVParse():
                 building['mask'] = bstool.polygon2mask(polygon)
 
                 if check_valid and not bstool.single_valid_polygon(building['polygon']):
-                    building['polygon'] = building['polygon'].Buffer(0.0)
+                    # building['polygon'] = building['polygon'].buffer(0.0)
+                    continue
                 
                 building['score'] = row.Confidence
                 if 'Offset' in obj_keys:

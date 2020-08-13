@@ -65,11 +65,11 @@ if __name__ == '__main__':
     cities = ['dalian', 'xian', 'xian_fixed']
     cities = ['dalian', 'xian']
     # cities = ['dalian', 'xian_fixed']
-    cities = ['urban3d']
+    # cities = ['urban3d']
 
     with_only_vis = False
     replace_pred_roof = False
-    offset_model = 'roof2footprint'
+    offset_model = 'footprint2roof'
 
     for model in models:
         version = model.split('_')[1]
@@ -171,11 +171,11 @@ if __name__ == '__main__':
                 write_results2csv([segmentation_eval_results, offset_eval_results, angle_eval_results, error_vector_results], meta_info)
 
                 # vis
-                if with_height:
-                    evaluation.height(percent=100, title=title)
-                evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir)
-                for with_footprint in [True, False]:
-                    evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
+                # if with_height:
+                #     evaluation.height(percent=100, title=title)
+                # evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir)
+                # for with_footprint in [True, False]:
+                #     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
 
             else:
                 # error_vector_results = evaluation.offset_error_vector(title=title)
