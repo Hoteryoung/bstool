@@ -7,10 +7,12 @@ import bstool
 
 
 if __name__ == '__main__':
-    image_dir = './data/urban3d/v2/val/images'
-    label_dir = './data/urban3d/v2/val/labels'
+    image_dir = './data/urban3d/v1/val/images'
+    label_dir = '/data/urban3d/v1/val/labels'
 
     for image_name in os.listdir(image_dir):
+        if image_name != 'JAX_Tile_163_RGB_001.png':
+            continue
         file_name = bstool.get_basename(image_name)
         rgb_file = os.path.join(image_dir, image_name)
         json_file = os.path.join(label_dir, file_name + '.json')

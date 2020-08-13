@@ -365,3 +365,57 @@ def roof2footprint(roof_polygons, properties):
             print("Runtime Warming: This processing do not support {}".format(type(roof_polygon)))
 
     return footprint_polygons
+
+def roof2footprint_single(roof_polygon, offset, offset_model='roof2footprint'):
+    """transform roof to footprint
+
+    Args:
+        roof_polygon (Polygon): shapely.Polygon
+        offset (list): offset
+        offset_model (str): 'roof2footprint' or 'footprint2roof
+
+    Returns:
+        [type]: [description]
+    """
+    xoffset, yoffset = offset
+    if offset_model == 'roof2footprint':
+        transform_matrix = [1, 0, 0, 1, xoffset, yoffset]
+    elif offset_model == 'footprint2roof':
+        transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
+    else:
+        raise NotImplementedError
+
+    footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
+
+    return footprint_polygon
+
+def mask_flip(masks, transform_flag='h', image_size=(1024, 1024)):
+    img_height, img_width = image_size
+    results = []
+    for mask in masks:
+        mask = np.array(mask)
+        if transform_flag == 'h':
+            mask[0::2] = img_width - mask[0::2]
+        elif transform_flag == 'v':
+            mask[1::2] = img_height - mask[1::2]
+        else:
+            raise NotImplementedError
+
+        results.append(mask.tolist())
+
+    return results
+
+def mask_rotate(masks, angle=0, center=(512, 512)):
+    """rotate mask
+
+    Args:
+        masks (list): list of masks
+        angle (int, optional): rotation angle. Defaults to 0.
+        center (tuple, optional): rotation center. Defaults to (512, 512).
+
+    Returns:
+        list: list of masks
+    """
+    masks = [bstool.polygon2mask(affinity.rotate(bstool.mask2polygon(mask), angle, origin=center, use_radians=True)) for mask in masks]
+
+    return masks

@@ -532,9 +532,61 @@ class BSPklParser():
                 print("{} is not in pkl".format(image_fn))
                 return []
 
+class BSPklParser_Only_Offset(BSPklParser):
+    def _convert_items(self, result):
+        buildings = []
+        det, offset = result
+
+        bboxes = np.vstack(det)
+
+        if isinstance(offset, tuple):
+            offsets = offset[0]
+        else:
+            offsets = offset
+
+        for i in range(bboxes.shape[0]):
+            building = dict()
+            score = bboxes[i][4]
+            if score < self.score_threshold:
+                continue
+        
+            bbox = bboxes[i][0:4]
+            bbox = bbox.tolist()
+            offset = offsets[i]
+
+            w = bbox[2] - bbox[0]
+            h = bbox[3] - bbox[1]
+
+            if w < 2 or h < 2:
+                continue
+
+            if bbox[0] < 0 or bbox[1] > 1023 or bbox[2] < 0 or bbox[3] > 1023:
+                continue
+
+            roof = bstool.bbox2pointobb(bbox)   # fake roof
+
+            roof_polygon = bstool.mask2polygon(roof)
+
+            valid_flag = bstool.single_valid_polygon(roof_polygon)
+            if not valid_flag:
+                continue
+
+            if roof_polygon.area < self.min_area:
+                continue
+
+            building['bbox'] = bbox
+            building['offset'] = offset.tolist()
+            building['height'] = 0.0
+            building['score'] = score
+            building['roof_polygon'] = roof_polygon
+            building['footprint_polygon'] = roof_polygon
+
+            buildings.append(building)
+        
+        return buildings
 
 class CSVParse():
-    def __init__(self, csv_file, min_area=0):
+    def __init__(self, csv_file, min_area=0, check_valid=True):
         csv_df = pandas.read_csv(csv_file)
         self.image_name_list = list(set(csv_df.ImageId.unique()))
 
@@ -552,7 +604,7 @@ class CSVParse():
                 building['polygon'] = polygon
                 building['mask'] = bstool.polygon2mask(polygon)
 
-                if not bstool.single_valid_polygon(building['polygon']):
+                if check_valid and not bstool.single_valid_polygon(building['polygon']):
                     continue
                 
                 building['score'] = row.Confidence

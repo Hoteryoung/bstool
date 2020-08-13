@@ -3,6 +3,7 @@ import cv2
 from shapely.geometry import Polygon, MultiPolygon
 import geopandas
 import matplotlib.pyplot as plt
+import mmcv
 
 import bstool
 
@@ -144,3 +145,28 @@ def drop_subimage(subimages,
             return True
         else:
             return False
+
+def image_flip(img, transform_flag='h'):
+    if transform_flag == 'h':
+        img = cv2.flip(img, 1)
+    elif transform_flag == 'v':
+        img = cv2.flip(img, 0)
+    else:
+        raise NotImplementedError
+
+    return img
+
+def image_rotate(img, angle=0):
+    """rotate image
+
+    Args:
+        img (np.array): 
+        angle (int, optional): rotate angle. Defaults to 0. (rad/s)
+
+    Returns:
+        np.array: rotated image
+    """
+    angle = angle * 180.0 / np.pi
+    img = mmcv.imrotate(img, angle)
+
+    return img

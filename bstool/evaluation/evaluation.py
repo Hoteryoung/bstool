@@ -36,7 +36,8 @@ class Evaluation():
                  output_dir=None,
                  out_file_format='png',
                  show=True,
-                 replace_pred_roof=False):
+                 replace_pred_roof=False,
+                 with_only_offset=False):
         self.gt_roof_csv_file = gt_roof_csv_file
         self.gt_footprint_csv_file = gt_footprint_csv_file
         self.roof_csv_file = roof_csv_file
@@ -46,6 +47,7 @@ class Evaluation():
         self.show = show
         self.classify_interval=[0,2,4,6,8,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,130,140,150,160,170,180,190,200,220,240,260,280,300,340,380]
         self.offset_class_num = len(self.classify_interval)
+        self.with_only_offset = with_only_offset
 
         self.out_file_format = out_file_format
 
@@ -53,15 +55,26 @@ class Evaluation():
         if output_dir:
             bstool.mkdir_or_exist(self.output_dir)
 
-        pkl_parser = bstool.BSPklParser(anno_file, 
-                                        pkl_file, 
-                                        iou_threshold=iou_threshold, 
-                                        score_threshold=score_threshold,
-                                        min_area=min_area,
-                                        with_offset=with_offset, 
-                                        with_height=with_height,
-                                        gt_roof_csv_file=gt_roof_csv_file,
-                                        replace_pred_roof=replace_pred_roof)
+        if self.with_only_offset:
+            pkl_parser = bstool.BSPklParser_Only_Offset(anno_file, 
+                                            pkl_file, 
+                                            iou_threshold=iou_threshold, 
+                                            score_threshold=score_threshold,
+                                            min_area=min_area,
+                                            with_offset=with_offset, 
+                                            with_height=with_height,
+                                            gt_roof_csv_file=gt_roof_csv_file,
+                                            replace_pred_roof=replace_pred_roof)
+        else:
+            pkl_parser = bstool.BSPklParser(anno_file, 
+                                            pkl_file, 
+                                            iou_threshold=iou_threshold, 
+                                            score_threshold=score_threshold,
+                                            min_area=min_area,
+                                            with_offset=with_offset, 
+                                            with_height=with_height,
+                                            gt_roof_csv_file=gt_roof_csv_file,
+                                            replace_pred_roof=replace_pred_roof)
 
         merged_objects = pkl_parser.merged_objects
         
@@ -292,8 +305,6 @@ class Evaluation():
 
         return eval_results
 
-        
-
     def offset_angle_classification(self, title='demo', interval=1, bins=18):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
@@ -356,7 +367,7 @@ class Evaluation():
         dist = 1.0 - similiarity
         return dist
 
-    def offset_error_vector(self, title='demo'):
+    def offset_error_vector(self, title='demo', show_polar=False):
         objects = self.get_confusion_matrix_indexes(mask_type='roof')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []
@@ -394,7 +405,7 @@ class Evaluation():
 
         if self.show:
             r = gt_length - pred_length
-            angle = ((gt_angle - pred_angle))
+            angle = np.abs((gt_angle - pred_angle))
             max_r = np.percentile(r, 95)
             min_r = np.percentile(r, 0.01)
 
@@ -414,6 +425,30 @@ class Evaluation():
             plt.title(title + ' offset error distribution', fontsize=10)
 
             plt.savefig(os.path.join(self.output_dir, '{}_offset_error_polar_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+            plt.clf()
+            
+            max_r = np.percentile(r, 99.99)
+            min_r = np.percentile(r, 0.01)
+            plt.hist(r, bins=np.arange(min_r, max_r, (int(max_r) - int(min_r)) // 40), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+            plt.title(title + ' Length Error Distribution', fontsize=10)
+            plt.xlim([min_r - 5, max_r + 5])
+            plt.xlabel('Error')
+            plt.ylabel('Num')
+            plt.yscale('log')
+            plt.savefig(os.path.join(self.output_dir, '{}_offset_error_length_hist_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
+
+            plt.clf()
+            
+            max_angle = angle.max() * 180.0 / np.pi
+            min_angle = angle.min() * 180.0 / np.pi
+            plt.hist(r, bins=np.arange(min_angle, max_angle, (max_angle - min_angle) // 80), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+            plt.title(title + ' Angle Error Distribution', fontsize=10)
+            plt.xlim([min_angle - 20, max_angle])
+            plt.xlabel('Error')
+            plt.ylabel('Num')
+            plt.yscale('log')
+            plt.savefig(os.path.join(self.output_dir, '{}_offset_error_angle_hist_evaluation.{}'.format(title, self.out_file_format)), bbox_inches='tight', dpi=600, pad_inches=0.1)
 
             plt.clf()
 
