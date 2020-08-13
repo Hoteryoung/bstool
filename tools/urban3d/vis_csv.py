@@ -8,7 +8,9 @@ import cv2
 if __name__ == '__main__':
 
     image_dir = '/data/urban3d/v1/val/images'
-    csv_df = pandas.read_csv('/data/urban3d/weijia/urban3d_jax_oma_val_roof_offset_gt_simple_subcsv_merge.csv')
+    # csv_df = pandas.read_csv('/data/urban3d/weijia/urban3d_jax_oma_val_orgfootprint_offset_gt_simple_subcsv_merge.csv')
+    csv_df = pandas.read_csv('/home/jwwangchn/Documents/100-Work/170-Codes/mmdetv2-bc/results/buildchange/bc_v008.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d/bc_v008.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d_footprint_merged.csv')
+
 
     for image_name in os.listdir(image_dir):
         image_file = os.path.join(image_dir, image_name)
