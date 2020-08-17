@@ -180,6 +180,6 @@ if __name__ == '__main__':
         install_requires=['numpy', 'matplotlib', 'six', 'terminaltables',
             'pycocotools', 'shapely', 'geojson', 'scikit-image', 'geopandas', 'rasterio', 'networkx'
         ],
-        ext_modules=ext_modules,
+        # ext_modules=ext_modules,
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
