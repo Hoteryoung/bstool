@@ -146,7 +146,7 @@ if __name__ == '__main__':
                                 subimage_size=subimage_size,
                                 gap=gap,
                                 multi_processing=True,
-                                num_processor=4,
+                                num_processor=8,
                                 use_weijia_labels=True)
         split_image.core()
         print(f"Finish processing {imageset} set.")
