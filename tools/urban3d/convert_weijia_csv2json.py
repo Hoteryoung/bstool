@@ -16,9 +16,9 @@ if __name__ == "__main__":
             image_name_list = csv_parser.image_name_list
 
             for image_name in image_name_list:
-                # if image_name != 'JAX_Tile_163_RGB_001':
-                #     continue
-                # print(f'instance_gt_{imageset}/urban3d_{fold}_{imageset}_roof_offset_gt_subcsv_merge.csv')
+                if image_name != 'JAX_Tile_163_RGB_001':
+                    continue
+                print(f'instance_gt_{imageset}/urban3d_{fold}_{imageset}_roof_offset_gt_subcsv_merge.csv')
                 json_file = os.path.join(json_dir, f'{image_name}.json')
                 image_info = {"ori_filename": f'{image_name}.tif',
                               "width": 2048,
@@ -38,7 +38,7 @@ if __name__ == "__main__":
                     roof_polygons.append(roof_polygon)
                     properties.append(data)
 
-                # bstool.show_polygon(roof_polygons)
+                bstool.show_polygon(roof_polygons)
 
                 bstool.urban3d_json_dump(roof_polygons, properties, image_info, json_file)
 

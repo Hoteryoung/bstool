@@ -6,6 +6,6 @@ from .utils import *
 from .ops import *
 from .evaluation import *
 from .structures import *
-from .csrc import *
+# from .csrc import *
 
 from .version import __version__
