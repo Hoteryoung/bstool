@@ -125,6 +125,9 @@ def drop_subimage(subimages,
 
         plt.show()
 
+    subimage_polygon_df = subimage_polygon_df.loc[~subimage_polygon_df.geometry.is_empty]
+    center_line_df = center_line_df.loc[~center_line_df.geometry.is_empty]
+    
     res_intersection = geopandas.overlay(subimage_polygon_df, center_line_df, how='intersection')
     inter_dict = res_intersection.to_dict()
     ignore_indexes = list(set(inter_dict['submask_df'].values()))

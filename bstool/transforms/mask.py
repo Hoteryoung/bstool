@@ -191,6 +191,9 @@ def get_ignored_polygon_idx(origin_polygons, ignore_polygons):
     origin_df = geopandas.GeoDataFrame({'geometry': origin_polygons, 'foot_df':range(len(origin_polygons))})
     ignore_df = geopandas.GeoDataFrame({'geometry': ignore_polygons, 'ignore_df':range(len(ignore_polygons))})
 
+    origin_df = origin_df.loc[~origin_df.geometry.is_empty]
+    ignore_df = ignore_df.loc[~ignore_df.geometry.is_empty]
+
     res_intersection = geopandas.overlay(origin_df, ignore_df, how='intersection')
     inter_dict = res_intersection.to_dict()
     ignore_indexes = list(set(inter_dict['foot_df'].values()))

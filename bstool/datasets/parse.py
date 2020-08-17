@@ -330,6 +330,10 @@ class BSPklParser():
             gt_df = geopandas.GeoDataFrame({'geometry': gt_polygons, 'gt_df':range(len(gt_polygons))})
             pred_df = geopandas.GeoDataFrame({'geometry': pred_polygons, 'pred_df':range(len(pred_polygons))})
 
+
+            gt_df = gt_df.loc[~gt_df.geometry.is_empty]
+            pred_df = pred_df.loc[~pred_df.geometry.is_empty]
+            
             res_intersection = geopandas.overlay(gt_df, pred_df, how='intersection')
 
             iou = np.zeros((len(pred_polygons), len(gt_polygons)))
@@ -593,7 +597,7 @@ class BSPklParser_Only_Offset(BSPklParser):
         return buildings
 
 class CSVParse():
-    def __init__(self, csv_file, min_area=0, check_valid=True):
+    def __init__(self, csv_file, min_area=10, check_valid=True):
         csv_df = pandas.read_csv(csv_file)
         self.image_name_list = list(set(csv_df.ImageId.unique()))
 

@@ -696,6 +696,9 @@ class Evaluation():
             gt_df = geopandas.GeoDataFrame({'geometry': gt_polygons, 'gt_df':range(len(gt_polygons))})
             pred_df = geopandas.GeoDataFrame({'geometry': pred_polygons, 'pred_df':range(len(pred_polygons))})
 
+            gt_df = gt_df.loc[~gt_df.geometry.is_empty]
+            pred_df = pred_df.loc[~pred_df.geometry.is_empty]
+
             res_intersection = geopandas.overlay(gt_df, pred_df, how='intersection')
 
             iou = np.zeros((len(pred_polygons), len(gt_polygons)))

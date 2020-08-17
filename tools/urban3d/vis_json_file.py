@@ -8,7 +8,7 @@ import bstool
 
 if __name__ == '__main__':
     image_dir = './data/urban3d/v1/val/images'
-    label_dir = '/data/urban3d/v1/val/labels'
+    label_dir = '/data/urban3d/v1/val/weijia_labels'
 
     for image_name in os.listdir(image_dir):
         if image_name != 'JAX_Tile_163_RGB_001.png':
