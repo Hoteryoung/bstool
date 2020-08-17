@@ -65,7 +65,8 @@ if __name__ == '__main__':
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['dalian', 'xian']
+    # cities = ['dalian', 'xian']
+    cities = ['xian']
     # cities = ['dalian', 'xian_fixed']
     # cities = ['urban3d']
 

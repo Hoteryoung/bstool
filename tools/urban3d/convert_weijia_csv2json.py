@@ -38,7 +38,7 @@ if __name__ == "__main__":
                     roof_polygons.append(roof_polygon)
                     properties.append(data)
 
-                bstool.show_polygon(roof_polygons)
+                # bstool.show_polygon(roof_polygons)
 
                 bstool.urban3d_json_dump(roof_polygons, properties, image_info, json_file)
 
