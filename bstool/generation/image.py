@@ -26,7 +26,14 @@ def generate_subclass_mask(mask_image,
         gray_mask_image = mask_image[:, :, 0]
     
     if isinstance(subclasses, (list, tuple)):
-        keep_bool = np.logical_or(gray_mask_image == subclasses[0], gray_mask_image == subclasses[1])
+        if len(subclasses) == 2:
+            keep_bool = np.logical_or(gray_mask_image == subclasses[0], gray_mask_image == subclasses[1])
+        else:
+            keep = []
+            for subclass in subclasses:
+                keep.append(gray_mask_image == subclass)
+
+            keep_bool = np.logical_or.reduce(tuple(keep))
     else:
         keep_bool = (gray_mask_image == subclasses)
 
