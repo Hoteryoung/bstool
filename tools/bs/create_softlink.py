@@ -17,4 +17,7 @@ if __name__ == '__main__':
             dst_root_path = f'/mnt/lustre/wangjinwang/data/buildchange/v0/{city}'
             dst_path = os.path.join(dst_root_path, f"{sub_fold}/offset_field")
 
+            if os.path.exists(dst_path):
+                continue
+
             os.symlink(src_path, dst_path)
