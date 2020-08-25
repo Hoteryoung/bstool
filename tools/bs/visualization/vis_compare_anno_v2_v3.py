@@ -5,7 +5,7 @@ import bstool
 
 
 if __name__ == '__main__':
-    v3_anno_dir = './data/buildchange/v0/shanghai/arg/anno_v3/final_label'
+    v3_anno_dir = './data/buildchange/v0/shanghai/arg/anno_v3'
     vis_dir = './data/buildchange/vis/anno_v3/shanghai/arg'
 
     bstool.mkdir_or_exist(vis_dir)
