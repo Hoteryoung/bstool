@@ -6,7 +6,7 @@ import bstool
 
 if __name__ == '__main__':
 
-    offset_field_dir = '/data/buildchange/v0/shanghai/arg/offset_field'
+    offset_field_dir = './data/buildchange/v0/shanghai/arg/offset_field/Npy'
 
     for fn in os.listdir(offset_field_dir):
         basename = bstool.get_basename(fn)
@@ -23,8 +23,6 @@ if __name__ == '__main__':
         offset_field = np.load(os.path.join(offset_field_dir, fn))
 
         offset_x, offset_y = offset_field[..., 0].astype(np.int), offset_field[..., 1].astype(np.int)
-
-        print(type(offset_y))
 
         XX, YY = np.meshgrid(np.arange(0, rgb.shape[1]), np.arange(0, rgb.shape[0]))
         x_moved_coordinate = offset_x + XX
