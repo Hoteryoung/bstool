@@ -81,7 +81,7 @@ def shp_parse(shp_file,
 def mask_parse(mask_file,
                subclasses=(1, 3),
                clean_polygon_flag=False,
-               with_opencv=False):
+               with_opencv=True):
     """parse mask image
 
     Args:
