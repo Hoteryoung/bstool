@@ -24,6 +24,8 @@ if __name__ == '__main__':
 
         offset_x, offset_y = offset_field[..., 0].astype(np.int), offset_field[..., 1].astype(np.int)
 
+        print(type(offset_y))
+
         XX, YY = np.meshgrid(np.arange(0, rgb.shape[1]), np.arange(0, rgb.shape[0]))
         x_moved_coordinate = offset_x + XX
         y_moved_coordinate = offset_y + YY
