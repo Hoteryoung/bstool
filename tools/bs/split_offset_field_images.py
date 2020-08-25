@@ -27,12 +27,12 @@ class SplitImage():
         self.subimage_size = subimage_size
         self.gap = gap
 
-        self.edge_image_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/final_edge5c_label'
+        self.offset_field_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/offset_field/Npy'
 
         wrong_file = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/wrongShpFile.txt'
         self.skip_filenames = self.read_wrong_file(wrong_file)
 
-        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/edge_labels'
+        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/offset_field'
         bstool.mkdir_or_exist(self.label_save_dir)
 
         self.multi_processing = multi_processing
@@ -53,7 +53,9 @@ class SplitImage():
         if file_name in self.skip_filenames:
             return
 
-        subimages = bstool.split_image(image_file, 
+        img = np.load(image_file)
+
+        subimages = bstool.split_image(img, 
                                         subsize=self.subimage_size, 
                                         gap=self.gap)
         subimage_coordinates = list(subimages.keys())
@@ -62,27 +64,21 @@ class SplitImage():
 
             subimage = subimages[subimage_coordinate]
 
-            save_mask = bstool.generate_image(self.subimage_size, self.subimage_size, 0)
-            for subclass, converted_class in zip([5, 6, 7, 8], [1, 2, 3, 4]):
-                sub_mask = bstool.generate_subclass_mask(subimage,
-                                                         subclasses=subclass)
-                save_mask += sub_mask * converted_class
+            subimage_file = os.path.join(self.label_save_dir, f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.npy')
 
-            subimage_file = os.path.join(self.label_save_dir, f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png')
-
-            cv2.imwrite(subimage_file, save_mask)
+            np.save(subimage_file, subimage)
 
     def core(self):
-        image_file_list = glob.glob("{}/*.png".format(self.edge_image_dir))
-        num_image = len(image_file_list)
+        offset_field_list = glob.glob("{}/*.npy".format(self.offset_field_dir))
+        num_image = len(offset_field_list)
         if self.multi_processing:
             worker = partial(self.split_image)
-            ret = list(tqdm.tqdm(self.pool.imap(worker, image_file_list), total=num_image))
+            ret = list(tqdm.tqdm(self.pool.imap(worker, offset_field_list), total=num_image))
             self.pool.close()
             self.pool.join()
         else:
-            image_file_list = glob.glob("{}/*.png".format(self.edge_image_dir))
-            for image_file in tqdm.tqdm(image_file_list):
+            offset_field_list = glob.glob("{}/*.npy".format(self.offset_field_dir))
+            for image_file in tqdm.tqdm(offset_field_list):
                 self.split_image(image_file)
 
     def __getstate__(self):
