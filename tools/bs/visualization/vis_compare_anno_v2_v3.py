@@ -21,7 +21,7 @@ if __name__ == '__main__':
             continue
 
         v3_anno_file = os.path.join(v3_anno_dir, image_fn)
-        objects = bstool.mask_parse(v3_anno_file, 1)
+        objects = bstool.mask_parse(v3_anno_file, (1, 3))
         v3_masks = [obj['mask'] for obj in objects]
 
         img = cv2.imread(rgb_file)
