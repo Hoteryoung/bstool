@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     for city in cities:
         for sub_fold in sub_folds[city]:
-            src_root_path = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18'
+            src_root_path = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_L18'
             src_path = os.path.join(src_root_path, f"{sub_fold}/annoV2/OffsetField")
             
             dst_root_path = f'/mnt/lustre/wangjinwang/data/buildchange/v0/{city}'
