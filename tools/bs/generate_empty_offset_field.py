@@ -20,7 +20,7 @@ if __name__ == '__main__':
         for image_name in image_list:
             if image_name not in offset_field_list:
                 empty_offset_field = bstool.generate_image(1024, 1024, 0)
-                offset_field_file = os.path.join(offset_field_list, image_name)
+                offset_field_file = os.path.join(offset_field_dir, image_name)
                 print(f"generate empty edge image: {offset_field_file}")
                 # cv2.imwrite(offset_field_file, empty_offset_field)
             
