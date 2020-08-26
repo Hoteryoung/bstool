@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     src_version = 'v1'
 
+    counter = 0
     for city in cities:
         image_dir = f'./data/{core_dataset_name}/{src_version}/{city}/images'
         offset_field_dir = f'./data/{core_dataset_name}/{src_version}/{city}/offset_field'
@@ -21,6 +22,9 @@ if __name__ == '__main__':
             if image_name not in offset_field_list:
                 empty_offset_field = bstool.generate_image(1024, 1024, 0)
                 offset_field_file = os.path.join(offset_field_dir, image_name)
+                counter += 1
                 print(f"generate empty edge image: {offset_field_file}")
                 # cv2.imwrite(offset_field_file, empty_offset_field)
+
+    print("empty offset field", counter)
             
