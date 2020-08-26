@@ -26,7 +26,7 @@ if __name__ == '__main__':
                 offset_field_file = os.path.join(offset_field_dir, image_name)
                 counter += 1
                 
-                original_fn = bstool.get_info_splitted_imagename(image_name)[0]
+                original_fn = bstool.get_info_splitted_imagename(image_name)[1]
                 fn_list.append(original_fn)
                 print(f"generate empty edge image: {offset_field_file}")
                 
