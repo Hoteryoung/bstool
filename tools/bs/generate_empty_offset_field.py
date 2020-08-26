@@ -19,7 +19,7 @@ if __name__ == '__main__':
         image_list = os.listdir(image_dir)
 
         for image_name in image_list:
-            if image_name not in offset_field_list:
+            if bstool.get_basename(image_name) + '.npy' not in offset_field_list:
                 empty_offset_field = bstool.generate_image(1024, 1024, 0)
                 offset_field_file = os.path.join(offset_field_dir, image_name)
                 counter += 1
