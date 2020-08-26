@@ -1,5 +1,6 @@
 import os
 import cv2
+import numpy as np
 import bstool
 
 
@@ -22,13 +23,15 @@ if __name__ == '__main__':
 
         for image_name in image_list:
             if bstool.get_basename(image_name) + '.npy' not in offset_field_list:
-                empty_offset_field = bstool.generate_image(1024, 1024, 0)
-                offset_field_file = os.path.join(offset_field_dir, image_name)
+                empty_offset_field = bstool.generate_image(1024, 1024, (0, 0, 0))
+                offset_field_file = os.path.join(offset_field_dir, bstool.get_basename(image_name) + '.npy' )
                 counter += 1
                 
                 original_fn = bstool.get_info_splitted_imagename(image_name)[1]
                 fn_list.append(original_fn)
                 print(f"generate empty edge image: {offset_field_file}")
+
+                np.save(offset_field_file, empty_offset_field)
                 
                 # cv2.imwrite(offset_field_file, empty_offset_field)
 
