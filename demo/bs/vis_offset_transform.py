@@ -35,7 +35,7 @@ if __name__ == '__main__':
             footprint_masks = [bstool.polygon2mask(bstool.roof2footprint_single(bstool.mask2polygon(roof_mask), offset, offset_model='footprint2roof')) for roof_mask, offset in zip(roof_masks, offsets)]
         
         if with_rotate:
-            angle = np.random.choice([0, 90, 180, 270]) * np.pi / 180.0
+            angle = np.random.choice([0, 45, 90, 135, 180, 225, 270]) * np.pi / 180.0
             img = bstool.image_rotate(img, angle=angle)
             offsets = bstool.offset_rotate(offsets, angle=angle)
             roof_masks = bstool.mask_rotate(roof_masks, angle=angle)
