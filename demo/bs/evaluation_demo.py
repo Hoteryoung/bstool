@@ -60,18 +60,19 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v008.06_mask_rcnn_r50_1x_v1_5city_trainval_footprint_mask_building_bbox_urban3d',
             'bc_v009_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_only_offset',
             'bc_v009.01_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10_only_offset',
-            'bc_v011.01_offset_rcnn_r50_1x_v1_with_edge']
+            'bc_v011.01_offset_rcnn_r50_1x_v1_with_edge',
+            'bc_v012.01.01_r50_1x_v1_offset_field']
 
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v005.09.04' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v012.01.01' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
-    cities = ['dalian', 'xian', 'xian_fixed']
-    # cities = ['dalian', 'xian']
+    # cities = ['dalian', 'xian', 'xian_fixed']
+    cities = ['dalian', 'xian']
     # cities = ['dalian', 'xian']
     # cities = ['dalian', 'xian_fixed']
     # cities = ['urban3d']
@@ -173,6 +174,8 @@ if __name__ == '__main__':
                 offset_eval_results = evaluation.offset_length_classification(title=title)
                 angle_eval_results = evaluation.offset_angle_classification(title=title)
                 error_vector_results = evaluation.offset_error_vector(title=title)
+                if with_height:
+                    evaluation.height(percent=100, title=title)
 
                 meta_info = dict(summary_file=summary_file,
                                 model=model,
@@ -183,8 +186,6 @@ if __name__ == '__main__':
                 write_results2csv([segmentation_eval_results, offset_eval_results, angle_eval_results, error_vector_results], meta_info)
 
                 # vis
-                # if with_height:
-                #     evaluation.height(percent=100, title=title)
                 # evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir)
                 # for with_footprint in [True, False]:
                 #     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
