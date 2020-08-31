@@ -51,7 +51,10 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v005.09_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_offset_augmentation',
             'bc_v005.09.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm_augmentation',
             'bc_v005.09.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm_rotate_augmentation',
+            'bc_v005.09.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm_any_angle_rotate_augmentation',
             'bc_v005.09.04_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm_rotate_augmentation_4_angles',
+            'bc_v005.09.05_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_x_y_rotate_augmentation_4_angles',
+            'bc_v005.09.06_offset_rcnn_r50_3x_v1_5city_trainval_roof_mask_building_bbox_x_y_rotate_augmentation_4_angles',
             'bc_v008.01_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d',
             'bc_v008.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d',
             'bc_v008.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d_height',
@@ -60,13 +63,16 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v008.06_mask_rcnn_r50_1x_v1_5city_trainval_footprint_mask_building_bbox_urban3d',
             'bc_v009_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_only_offset',
             'bc_v009.01_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10_only_offset',
+            'bc_v010.01_semi_supervised_offset_rcnn_r50_1x_v1',
+            'bc_v010.02_semi_supervised_offset_rcnn_r50_1x_v1_lr_0.02',
+            'bc_v010.03_semi_supervised_offset_rcnn_r50_1x_v1_without_footprint',
             'bc_v011.01_offset_rcnn_r50_1x_v1_with_edge',
             'bc_v012.01.01_r50_1x_v1_offset_field']
 
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v012.01.01' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v005.09.05' in model or 'v005.09.06' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
@@ -78,6 +84,7 @@ if __name__ == '__main__':
     # cities = ['urban3d']
 
     with_only_vis = False
+    with_offset = True
     replace_pred_roof = False
     offset_model = 'footprint2roof'
 
@@ -89,6 +96,9 @@ if __name__ == '__main__':
             with_height = True
         if 'v009' in model:
             with_only_offset = True
+
+        if 'v008.01' in model or 'v008.04' in model:
+            with_offset = False
 
         for city in cities:
             print(f"========== {model} ========== {city} ==========")
@@ -160,7 +170,7 @@ if __name__ == '__main__':
                                         iou_threshold=0.1,
                                         score_threshold=0.4,
                                         output_dir=output_dir,
-                                        with_offset=True,
+                                        with_offset=with_offset,
                                         with_height=with_height,
                                         show=True,
                                         replace_pred_roof=replace_pred_roof,

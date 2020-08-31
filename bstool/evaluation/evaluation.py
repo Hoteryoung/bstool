@@ -68,7 +68,19 @@ class Evaluation():
                                             replace_pred_roof=replace_pred_roof,
                                             offset_model=offset_model)
         else:
-            pkl_parser = bstool.BSPklParser(anno_file, 
+            if with_offset:
+                pkl_parser = bstool.BSPklParser(anno_file, 
+                                            pkl_file, 
+                                            iou_threshold=iou_threshold, 
+                                            score_threshold=score_threshold,
+                                            min_area=min_area,
+                                            with_offset=with_offset, 
+                                            with_height=with_height,
+                                            gt_roof_csv_file=gt_roof_csv_file,
+                                            replace_pred_roof=replace_pred_roof,
+                                            offset_model=offset_model)
+            else:
+                pkl_parser = bstool.BSPklParser_Without_Offset(anno_file, 
                                             pkl_file, 
                                             iou_threshold=iou_threshold, 
                                             score_threshold=score_threshold,

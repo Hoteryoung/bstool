@@ -596,6 +596,104 @@ class BSPklParser_Only_Offset(BSPklParser):
         
         return buildings
 
+class BSPklParser_Without_Offset(BSPklParser):
+    def _convert_items(self, result):
+        buildings = []
+        det, seg = result
+
+        bboxes = np.vstack(det)
+        segms = mmcv.concat_list(seg)
+
+        for i in range(bboxes.shape[0]):
+            building = dict()
+            score = bboxes[i][4]
+            if score < self.score_threshold:
+                continue
+
+            if isinstance(segms[i]['counts'], bytes):
+                segms[i]['counts'] = segms[i]['counts'].decode()
+            mask = maskUtils.decode(segms[i]).astype(np.bool)
+            gray = np.array(mask * 255, dtype=np.uint8)
+
+            contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = contours[0] if len(contours) == 2 else contours[1]
+            
+            if contours != []:
+                cnt = max(contours, key = cv2.contourArea)
+                if cv2.contourArea(cnt) < 5:
+                    continue
+                mask = np.array(cnt).reshape(1, -1).tolist()[0]
+                if len(mask) < 8:
+                    continue
+
+                valid_flag = bstool.single_valid_polygon(bstool.mask2polygon(mask))
+                if not valid_flag:
+                    continue
+            else:
+                continue
+        
+            bbox = bboxes[i][0:4]
+            bbox = bbox.tolist()
+            roof = mask
+
+            w = bbox[2] - bbox[0]
+            h = bbox[3] - bbox[1]
+
+            if w < 2 or h < 2:
+                continue
+
+            if bbox[0] < 0 or bbox[1] > 1023 or bbox[2] < 0 or bbox[3] > 1023:
+                continue
+
+            roof = bstool.bbox2pointobb(bbox)   # fake roof
+
+            roof_polygon = bstool.mask2polygon(roof)
+
+            valid_flag = bstool.single_valid_polygon(roof_polygon)
+            if not valid_flag:
+                continue
+
+            if roof_polygon.area < self.min_area:
+                continue
+
+            building['bbox'] = bbox
+            building['height'] = 0.0
+            building['score'] = score
+            building['roof_polygon'] = roof_polygon
+
+            buildings.append(building)
+        
+        return buildings
+
+    def _merge_buildings(self):
+        self.ori_image_name_list = list(self.building_with_coord.keys())
+
+        merged_objects = dict()
+        for ori_image_name in self.ori_image_name_list:
+            subimage_coordinates = self.building_with_coord[ori_image_name]
+
+            merged_buildings = []
+            polygons_merged, scores_merged = [], []
+            for subimage_coordinate in subimage_coordinates:
+                buildings = self.building_with_coord[ori_image_name][subimage_coordinate]
+
+                if len(buildings) == 0:
+                    continue
+
+                merged_buildings += buildings
+
+                roof_polygons = [building['roof_polygon'] for building in buildings]
+                scores = [building['score'] for building in buildings]
+
+                polygons_merged += roof_polygons
+                scores_merged += scores
+
+            keep = self._mask_nms(polygons_merged, np.array(scores_merged), iou_threshold=self.iou_threshold)
+
+            merged_objects[ori_image_name] = np.array(merged_buildings)[keep].tolist()
+
+        return merged_objects
+
 class CSVParse():
     def __init__(self, csv_file, min_area=10, check_valid=True):
         csv_df = pandas.read_csv(csv_file)
