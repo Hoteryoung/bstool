@@ -11,6 +11,7 @@ if __name__ == '__main__':
     bstool.mkdir_or_exist(vis_dir)
 
     for image_name in os.listdir(image_dir):
+        print(image_name)
         file_name = bstool.get_basename(image_name)
         rgb_file = os.path.join(image_dir, image_name)
         json_file = os.path.join(label_dir, file_name + '.json')
@@ -25,8 +26,8 @@ if __name__ == '__main__':
         bboxes = [bstool.xywh2xyxy(bbox) for bbox in bboxes]
         # bstool.show_bboxs_on_image(rgb_file, bboxes, win_name='footprint bbox')
         fusion = bstool.show_masks_on_image(rgb_file, masks, win_name='footprint mask', show=False)
-        cv.imwrite(os.path.join(vis_dir, file_name + '_footprint.png'), fusion)
+        cv2.imwrite(os.path.join(vis_dir, file_name + '_footprint.png'), fusion)
 
         masks = [obj['roof_mask'] for obj in objects]
         fusion = bstool.show_masks_on_image(rgb_file, masks, win_name='roof mask', show=False)
-        cv.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), fusion)
+        cv2.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), fusion)
