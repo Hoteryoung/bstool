@@ -22,13 +22,22 @@ if __name__ == '__main__':
         if len(objects) == 0:
             continue
 
-        masks = [obj['footprint_mask'] for obj in objects]
+        footprint_masks = [obj['footprint_mask'] for obj in objects]
+        footprint_polygons = [bstool.mask2polygon(obj['footprint_mask']) for obj in objects]
+
         bboxes = [obj['footprint_bbox'] for obj in objects]
         bboxes = [bstool.xywh2xyxy(bbox) for bbox in bboxes]
         # bstool.show_bboxs_on_image(rgb_file, bboxes, win_name='footprint bbox')
-        fusion = bstool.show_masks_on_image(rgb_file, masks, win_name='footprint mask', show=False)
+
+        fusion = bstool.show_masks_on_image(rgb_file, footprint_masks, win_name='footprint mask', show=False)
         cv2.imwrite(os.path.join(vis_dir, file_name + '_footprint.png'), fusion)
 
-        masks = [obj['roof_mask'] for obj in objects]
-        fusion = bstool.show_masks_on_image(rgb_file, masks, win_name='roof mask', show=False)
+
+        offsets = [obj['offset'] for obj in objects]
+        roof_polygons = [bstool.roof2footprint_single(footprint_polygon, offset, 'footprint2roof') for footprint_polygon, offset in zip(footprint_polygons, offsets)]
+        roof_masks = [bstool.polygon2mask(roof_polygon) for roof_polygon in roof_polygons]
+        
+
+        # masks = [obj['roof_mask'] for obj in objects]
+        fusion = bstool.show_masks_on_image(rgb_file, roof_masks, win_name='roof mask', show=False)
         cv2.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), fusion)
