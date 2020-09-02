@@ -173,3 +173,20 @@ def image_rotate(img, angle=0):
     img = mmcv.imrotate(img, angle)
 
     return img
+
+def image_translation(img, offset_x, offset_y, border_value=0):
+    """translate image
+
+    Args:
+        img (np.array): input image
+        offset_x (int or float): translation distance in the x
+        offset_y (int or float): translation distance in the y
+        border_value (int, optional): [description]. Defaults to 0.
+    """
+    h, w = img.shape[:2]
+
+    matrix = np.float32([[1, 0, offset_x], [0, 1, offset_y]])
+
+    translated = cv2.warpAffine(img, matrix, (w, h), borderValue=border_value)
+    
+    return translated
