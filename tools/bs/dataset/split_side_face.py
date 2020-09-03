@@ -60,7 +60,7 @@ class SplitImage():
             subimages = bstool.split_image(image_file, 
                                         subsize=self.subimage_size, 
                                         gap=self.gap)
-                                        
+
         subimage_coordinates = list(subimages.keys())
         
         for subimage_coordinate in subimage_coordinates:
@@ -109,6 +109,13 @@ if __name__ == '__main__':
 
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
+                 'chengdu':  ['arg', 'google', 'ms', 'tdt'],
+                 'haerbin':  ['arg', 'google', 'ms'],
+                 'jinan':    ['arg', 'google', 'ms', 'tdt'],
+                 'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
+
+    cities = ['beijing', 'jinan', 'haerbin', 'chengdu']
+    sub_folds = {'beijing':  ['tdt'],
                  'chengdu':  ['arg', 'google', 'ms', 'tdt'],
                  'haerbin':  ['arg', 'google', 'ms'],
                  'jinan':    ['arg', 'google', 'ms', 'tdt'],
