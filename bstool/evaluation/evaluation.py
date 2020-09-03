@@ -785,6 +785,9 @@ class Evaluation():
                     else:
                         color = colors['FN'][::-1]
 
+                    if gt_polygon.geom_type != 'Polygon':
+                        continue
+
                     img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
                     if with_iou:
                         img = bstool.draw_iou(img, gt_polygon, iou, color=color)
@@ -794,6 +797,9 @@ class Evaluation():
                         color = colors['pred_TP'][::-1]
                     else:
                         color = colors['FP'][::-1]
+
+                    if gt_polygon.geom_type != 'Polygon':
+                        continue
 
                     img = bstool.draw_mask_boundary(img, bstool.polygon2mask(pred_polygon), color=color)
 
