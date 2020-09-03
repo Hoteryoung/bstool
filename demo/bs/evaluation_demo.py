@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # cities = ['dalian', 'xian_fixed']
     cities = ['urban3d']
 
-    with_only_vis = False
+    with_only_vis = True
     with_offset = True
     replace_pred_roof = False
     offset_model = 'footprint2roof'
