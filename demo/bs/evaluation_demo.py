@@ -74,14 +74,14 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v012.02.01' in model]
+    models = [model for model in ALL_MODELS[1:] if 'bc_v010.05.01' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['dalian', 'xian']
+    # cities = ['dalian', 'xian']
     # cities = ['dalian', 'xian_fixed']
-    # cities = ['urban3d']
+    cities = ['urban3d']
 
     with_only_vis = False
     with_offset = True
@@ -142,7 +142,7 @@ if __name__ == '__main__':
                 gt_roof_csv_file = './data/urban3d/weijia/urban3d_jax_oma_val_roof_offset_gt_simple_subcsv_merge.csv'
                 gt_footprint_csv_file = './data/urban3d/weijia/urban3d_jax_oma_val_orgfootprint_offset_gt_simple_subcsv_merge.csv'
                 image_dir = f'./data/urban3d/v1/val/images'
-                offset_model = 'roof2footprint'
+                # offset_model = 'roof2footprint'
             else:
                 imageset = 'train'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}.json'
