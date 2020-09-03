@@ -15,6 +15,10 @@ def split_image(img,
                 expand_boundary=True):
     if isinstance(img, str):
         img = cv2.imread(img)
+
+    if img is None:
+        print("This image is empty")
+        return None
     
     img_height, img_width = img.shape[0], img.shape[1]
 

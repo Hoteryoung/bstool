@@ -55,6 +55,12 @@ class SplitImage():
         subimages = bstool.split_image(image_file, 
                                         subsize=self.subimage_size, 
                                         gap=self.gap)
+        if subimages is None:
+            image_file = bstool.generate_image(2028, 2048, 0)
+            subimages = bstool.split_image(image_file, 
+                                        subsize=self.subimage_size, 
+                                        gap=self.gap)
+                                        
         subimage_coordinates = list(subimages.keys())
         
         for subimage_coordinate in subimage_coordinates:
