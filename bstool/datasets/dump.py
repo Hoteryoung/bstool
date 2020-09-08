@@ -5,6 +5,33 @@ import pandas
 
 import bstool
 
+def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file):
+    annos = []
+    for roof_polygon, footprint_polygon, offset in roof_polygons, footprint_polygons, offsets:
+        object_struct = dict()
+        if roof_polygon.geom_type == 'MultiPolygon':
+            for roof_polygon_ in roof_polygon:
+                if roof_polygon_.area < 20:
+                    continue
+                else:
+                    object_struct['roof'] = bstool.polygon2mask(roof_polygon_)
+                    object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
+                    object_struct['offset'] = offset
+                    annos.append(object_struct)
+        elif roof_polygon.geom_type == 'Polygon':
+            object_struct['roof'] = bstool.polygon2mask(roof_polygon)
+            object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
+            object_struct['offset'] = offset
+        
+            annos.append(object_struct)
+        else:
+            continue
+
+    json_data = {"annotations": annos}
+
+    with open(json_file, "w") as jsonfile:
+        json.dump(json_data, jsonfile, indent=4)
+
 
 def bs_json_dump(polygons, properties, image_info, json_file):
     """dump json file designed for building segmentation
