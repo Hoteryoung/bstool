@@ -8,6 +8,7 @@ import bstool
 def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file):
     annos = []
     for roof_polygon, footprint_polygon, offset in zip(roof_polygons, footprint_polygons, offsets):
+        offset = [float(_) for _ in offset]
         object_struct = dict()
         if roof_polygon.geom_type == 'MultiPolygon':
             for roof_polygon_ in roof_polygon:
