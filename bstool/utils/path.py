@@ -61,3 +61,27 @@ def get_info_splitted_imagename(img_name):
         coord_x, coord_y = int(coord_x), int(coord_y)
 
     return sub_fold, ori_image_fn, (coord_x, coord_y)
+
+def get_files_recursion(root_dir):
+    all_files = []
+    fns = os.listdir(root_dir)
+    for fn in fns:
+        next_file = os.path.join(root_dir, fn)
+        if not os.path.isdir(next_file):
+            all_files.append(next_file)
+        else:
+            all_files += get_files_recursion(next_file)
+    
+    return all_files
+
+def get_file_names_recursion(root_dir):
+    all_fns = []
+    fns = os.listdir(root_dir)
+    for fn in fns:
+        next_fn = os.path.join(root_dir, fn)
+        if not os.path.isdir(next_fn):
+            all_fns.append(get_basename(next_fn))
+        else:
+            all_fns += get_file_names_recursion(next_fn)
+    
+    return all_fns
