@@ -69,22 +69,23 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v010.05.01_real_semi_supervised_offset_rcnn_r50_1x_v1_semi_urban3d_bc',
             'bc_v011.01_offset_rcnn_r50_1x_v1_with_edge',
             'bc_v012.01.01_r50_1x_v1_offset_field',
-            'bc_v012.02.01_r50_1x_v1_pixel_offset']
+            'bc_v012.02.01_r50_1x_v1_pixel_offset',
+            'bc_v013.01.01_offset_rcnn_with_side_face_reweight']
 
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v005.09.04' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v013.01.01' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['dalian', 'xian', 'xian_fixed']
-    # cities = ['dalian', 'xian']
-    cities = ['xian']
+    cities = ['dalian', 'xian']
+    # cities = ['xian']
     # cities = ['dalian', 'xian_fixed']
     # cities = ['urban3d']
 
-    with_only_vis = True
+    with_only_vis = False
     with_offset = True
     replace_pred_roof = False
     offset_model = 'footprint2roof'
