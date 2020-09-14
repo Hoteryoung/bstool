@@ -87,10 +87,10 @@ if __name__ == '__main__':
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['dalian', 'xian', 'xian_fixed']
-    # cities = ['dalian', 'xian']
+    cities = ['dalian', 'xian']
     # cities = ['xian']
     # cities = ['dalian', 'xian_fixed']
-    cities = ['urban3d']
+    # cities = ['urban3d']
 
     with_only_vis = False
     with_offset = True
