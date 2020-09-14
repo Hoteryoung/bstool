@@ -17,6 +17,7 @@ if __name__ == '__main__':
         side_face_image_list = os.listdir(side_face_image_dir)
         image_list = os.listdir(image_dir)
 
+        counter = 0
         for image_name in side_face_image_list:
             # empty_edge_map = bstool.generate_image(1024, 1024, 0)
             
@@ -24,7 +25,8 @@ if __name__ == '__main__':
             side_face = cv2.imread(side_face_file)
 
             if side_face.sum() == 0:
-                print(f"generate empty side face image: {side_face_file}")
+                counter += 1
+                print(f"{counter} generate empty side face image: {side_face_file}")
             
             # cv2.imwrite(side_face_file, empty_edge_map)
             
