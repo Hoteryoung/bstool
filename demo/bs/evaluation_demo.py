@@ -106,7 +106,7 @@ if __name__ == '__main__':
         version = model.split('_')[1]
         with_height = False
         with_only_offset = False
-        if 'v006' in model or 'v008.03' in model:
+        if 'v006' in model or 'v008.03' in model or v010.14.01' in model:
             with_height = True
         if 'v009' in model:
             with_only_offset = True
