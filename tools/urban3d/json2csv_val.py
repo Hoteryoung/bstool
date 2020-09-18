@@ -31,8 +31,8 @@ def parse_json(json_file):
 
 
 if __name__ == '__main__':
-    imagesets = ['val', 'train']
-    datasets = ['JAX_OMA', 'ATL']
+    imagesets = ['trainval']
+    datasets = ['ATL']
     for imageset in imagesets:
         for dataset in datasets:
             roof_csv_file = f'./data/urban3d/v0/{imageset}/urban3d_2048_{dataset}_roof_gt.csv'
