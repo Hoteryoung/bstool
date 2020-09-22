@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     if idx == 0 or row[0] in imageset_names:
                         save_items.append(row)
 
-            print(f"{src_csv_file} {imageset} {dst_csv_file} item length: ", len(save_items) - 1)
+            print(f"{src_csv_file} {imageset} {dst_csv_file} item length: ", len(save_items) - 1, idx)
             with open(dst_csv_file, 'w', newline='') as f:
                 csv_writer = csv.writer(f)
                 for item in save_items:
