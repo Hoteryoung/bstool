@@ -27,16 +27,16 @@ class SplitImage():
         self.subimage_size = subimage_size
         self.gap = gap
 
-        self.image_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/images'
+        self.image_dir = f'./data/{core_dataset_name}/{src_version}/{fold}/{imageset}/images'
         if use_weijia_labels:
-            self.label_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/weijia_labels'
+            self.label_dir = f'./data/{core_dataset_name}/{src_version}/{fold}/{imageset}/weijia_labels'
         else:
-            self.label_dir = f'./data/{core_dataset_name}/{src_version}/{imageset}/labels'
+            self.label_dir = f'./data/{core_dataset_name}/{src_version}/{fold}/{imageset}/labels'
 
 
-        self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{imageset}/images'
+        self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{fold}/{imageset}/images'
         bstool.mkdir_or_exist(self.image_save_dir)
-        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{imageset}/labels'
+        self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{fold}/{imageset}/labels'
         bstool.mkdir_or_exist(self.label_save_dir)
 
         self.multi_processing = multi_processing

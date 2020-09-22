@@ -10,12 +10,11 @@ if __name__ == "__main__":
         for fold in folds:
             print(f"========== processing {imageset} {fold} ==========")
 
-            root_dir = f'./data/urban3d/v1/{imageset}/{fold}'
+            root_dir = f'./data/urban3d/v1/{fold}/{imageset}'
             json_dir = os.path.join(root_dir, 'weijia_labels')
             bstool.mkdir_or_exist(json_dir)
             
-            csv_file = os.path.join(root_dir, f'urban3d_{fold.lower()}_orgfootprint_offset_gt_simple_subcsv_merge.csv')
-            f'./data/urban3d/weijia/instance_gt_{imageset}/urban3d_{fold}_{imageset}_roof_offset_gt_simple_subcsv_merge.csv'
+            csv_file = os.path.join(root_dir, f'urban3d_{fold.lower()}_roof_offset_gt_simple_subcsv_merge_{imageset}.csv')
             csv_parser = bstool.CSVParse(csv_file, check_valid=False)
             image_name_list = csv_parser.image_name_list
 
@@ -25,8 +24,8 @@ if __name__ == "__main__":
                 # print(f'instance_gt_{imageset}/urban3d_{fold}_{imageset}_roof_offset_gt_subcsv_merge.csv')
                 json_file = os.path.join(json_dir, f'{image_name}.json')
                 image_info = {"ori_filename": f'{image_name}.tif',
-                              "width": 2048,
-                              "height": 2048}
+                              "width": 1024,
+                              "height": 1024}
                 objects = csv_parser(image_name)
                 if len(objects) == 0:
                     continue
