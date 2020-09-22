@@ -261,6 +261,7 @@ class BSPklParser():
                  with_height=False,
                  gt_roof_csv_file=None,
                  replace_pred_roof=False,
+                 replace_pred_offset=False,
                  offset_model='footprint2roof'):
         self.iou_threshold = iou_threshold
         self.score_threshold = score_threshold
@@ -270,6 +271,7 @@ class BSPklParser():
         self.offset_model = offset_model
 
         self.replace_pred_roof = replace_pred_roof
+        self.replace_pred_offset = replace_pred_offset
 
         if not self.with_offset:
             if self.with_height:
@@ -301,6 +303,10 @@ class BSPklParser():
         if self.replace_pred_roof:
             print('========== replace roof prediction with groundtruth ==========')
             self._replace_pred_roof_with_gt_roof(gt_roof_csv_file)
+        
+        if self.replace_pred_offset:
+            print('========== replace roof prediction with groundtruth ==========')
+            self._replace_pred_offset_with_gt_offset(gt_roof_csv_file)
 
         print("Finish init the pkl parser")
 
@@ -355,6 +361,63 @@ class BSPklParser():
                 self.merged_objects[ori_image_name][index]['roof_polygon'] = new_pred_polygons[index]
             
             for idx, (offset, roof_polygon) in enumerate(zip(offsets, new_pred_polygons)):
+                transform_matrix = [1, 0, 0, 1,  -1.0 * offset[0], -1.0 * offset[1]]
+                footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
+
+                self.merged_objects[ori_image_name][idx]['footprint_polygon'] = footprint_polygon
+
+    def _replace_pred_offset_with_gt_offset(self, gt_roof_csv_file):
+        gt_csv_parser = bstool.CSVParse(gt_roof_csv_file)
+        gt_objects = gt_csv_parser.objects
+        ori_image_name_list = gt_csv_parser.image_name_list
+
+        for ori_image_name in self.ori_image_name_list:
+            buildings = dict()
+            
+            gt_buildings = gt_objects[ori_image_name]
+            pred_buildings = self.merged_objects[ori_image_name]
+
+            gt_polygons = [gt_building['polygon'] for gt_building in gt_buildings]
+            gt_offsets = [gt_building['offset'] for gt_building in gt_buildings]
+            pred_polygons = [building['roof_polygon'] for building in pred_buildings]
+            offsets = [building['offset'] for building in pred_buildings]
+
+            gt_polygons_origin = gt_polygons[:]
+
+            if len(gt_polygons) == 0 or len(pred_polygons) == 0:
+                continue
+
+            gt_polygons = geopandas.GeoSeries(gt_polygons)
+            pred_polygons = geopandas.GeoSeries(pred_polygons)
+
+            gt_df = geopandas.GeoDataFrame({'geometry': gt_polygons, 'gt_df':range(len(gt_polygons))})
+            pred_df = geopandas.GeoDataFrame({'geometry': pred_polygons, 'pred_df':range(len(pred_polygons))})
+
+            gt_df = gt_df.loc[~gt_df.geometry.is_empty]
+            pred_df = pred_df.loc[~pred_df.geometry.is_empty]
+            
+            res_intersection = geopandas.overlay(gt_df, pred_df, how='intersection')
+
+            iou = np.zeros((len(pred_polygons), len(gt_polygons)))
+            for idx, row in res_intersection.iterrows():
+                gt_idx = row.gt_df
+                pred_idx = row.pred_df
+
+                inter = row.geometry.area
+                union = pred_polygons[pred_idx].area + gt_polygons[gt_idx].area
+
+                iou[pred_idx, gt_idx] = inter / (union - inter + 1.0)
+
+            replace_index = np.argmax(iou, axis=-1)
+            new_pred_polygons = np.array(gt_polygons_origin)[replace_index].tolist()
+            new_pred_offsets = np.array(gt_offsets)[replace_index].tolist()
+
+            buildings = self.merged_objects[ori_image_name]
+            num_buildings = len(buildings)
+            # for index in range(num_buildings):
+            #     self.merged_objects[ori_image_name][index]['roof_polygon'] = new_pred_polygons[index]
+            
+            for idx, (offset, roof_polygon) in enumerate(zip(new_pred_offsets, pred_polygons)):
                 transform_matrix = [1, 0, 0, 1,  -1.0 * offset[0], -1.0 * offset[1]]
                 footprint_polygon = affinity.affine_transform(roof_polygon, transform_matrix)
 

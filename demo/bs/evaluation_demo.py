@@ -84,24 +84,27 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v012.02.01_r50_1x_v1_pixel_offset',
             'bc_v013.01.01_offset_rcnn_with_side_face_reweight',
             'bc_v014.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_coordconv',
-            'bc_v015.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_non_local']
+            'bc_v015.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_non_local',
+            'bc_v010.16.01_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn',
+            'bc_v010.16.02_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn_pretrain']
 
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v010.15.01' in model or 'v010.15.02' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v010.16.01' in model or 'v010.16.01' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['dalian', 'xian', 'xian_fixed']
-    # cities = ['dalian', 'xian']
+    cities = ['dalian', 'xian']
     # cities = ['xian']
     # cities = ['dalian', 'xian_fixed']
-    cities = ['urban3d']
+    # cities = ['urban3d']
 
     with_only_vis = False
     with_offset = True
     replace_pred_roof = False
+    replace_pred_offset = False
     offset_model = 'footprint2roof'
 
     for model in models:
@@ -129,7 +132,11 @@ if __name__ == '__main__':
                 vis_offset_dir = f'./data/buildchange/vis/{model}/{city}/offset'
             bstool.mkdir_or_exist(vis_offset_dir)
             if replace_pred_roof:
-                summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary_replace.csv'
+                summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary_replace_roof.csv'
+            else:
+                summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary.csv'
+            if replace_pred_offset:
+                summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary_replace_offset.csv'
             else:
                 summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary.csv'
             bstool.mkdir_or_exist(f'./data/buildchange/summary/{model}')
@@ -190,6 +197,7 @@ if __name__ == '__main__':
                                         with_height=with_height,
                                         show=True,
                                         replace_pred_roof=replace_pred_roof,
+                                        replace_pred_offset=replace_pred_offset,
                                         with_only_offset=with_only_offset,
                                         offset_model=offset_model)
 

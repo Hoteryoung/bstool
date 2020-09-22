@@ -37,6 +37,7 @@ class Evaluation():
                  out_file_format='png',
                  show=True,
                  replace_pred_roof=False,
+                 replace_pred_offset=False,
                  with_only_offset=False,
                  offset_model='footprint2roof'):
         self.gt_roof_csv_file = gt_roof_csv_file
@@ -78,6 +79,7 @@ class Evaluation():
                                             with_height=with_height,
                                             gt_roof_csv_file=gt_roof_csv_file,
                                             replace_pred_roof=replace_pred_roof,
+                                            replace_pred_offset=replace_pred_offset,
                                             offset_model=offset_model)
             else:
                 pkl_parser = bstool.BSPklParser_Without_Offset(anno_file, 
