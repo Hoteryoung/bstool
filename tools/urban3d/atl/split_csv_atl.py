@@ -7,7 +7,7 @@ import bstool
 
 
 if __name__ == '__main__':
-    root_dir = '/mnt/lustre/wangjinwang/data/urban3d/v1/train/ATL'
+    root_dir = '/mnt/lustre/wangjinwang/data/urban3d/v1/ATL'
     src_csv_files = ['urban3d_atl_orgfootprint_offset_gt_simple_subcsv_merge.csv', 
                      'urban3d_atl_roof_offset_gt_simple_subcsv_merge.csv']
     
@@ -38,4 +38,4 @@ if __name__ == '__main__':
             with open(dst_csv_file, 'w', newline='') as f:
                 csv_writer = csv.writer(f)
                 for item in save_items:
-                    csv_writer.writerow(row)
+                    csv_writer.writerow(item)
