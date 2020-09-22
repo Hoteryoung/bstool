@@ -14,7 +14,7 @@ if __name__ == "__main__":
             json_dir = os.path.join(root_dir, 'weijia_labels')
             bstool.mkdir_or_exist(json_dir)
             
-            csv_file = os.path.join(root_dir, f'urban3d_{fold.lower()}_roof_offset_gt_simple_subcsv_merge_{imageset}.csv')
+            csv_file = os.path.join(root_dir, '..', f'urban3d_{fold.lower()}_roof_offset_gt_simple_subcsv_merge_{imageset}.csv')
             csv_parser = bstool.CSVParse(csv_file, check_valid=False)
             image_name_list = csv_parser.image_name_list
 
