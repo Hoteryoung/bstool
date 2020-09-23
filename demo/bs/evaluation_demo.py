@@ -81,7 +81,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v010.15.02_real_semi_supervised_offset_rcnn_r50_1x_v1_semi_urban3d_bc_wo_building_bbox_rpn_pretrain',
             'bc_v010.15.03_real_semi_supervised_offset_rcnn_r50_1x_v1_semi_urban3d_bc_wo_building_bbox_rpn_pretrain_lr0.04',
             'bc_v010.16.01_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn',
-            'bc_v010.16.02_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn_pretrain'
+            'bc_v010.16.02_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn_pretrain',
             'bc_v010.16.03_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn_pretrain_lr0.04',
             'bc_v011.01_offset_rcnn_r50_1x_v1_with_edge',
             'bc_v012.01.01_r50_1x_v1_offset_field',
