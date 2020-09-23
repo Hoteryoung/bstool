@@ -21,7 +21,7 @@ class Urban3D2COCO(bstool.Convert2COCO):
         
         coco_annotations = []
 
-        for object_struct in objects:
+        for idx, object_struct in enumerate(objects):
             bbox = object_struct['bbox']
             segmentation = object_struct['segmentation']
             label = object_struct['label']
@@ -41,11 +41,13 @@ class Urban3D2COCO(bstool.Convert2COCO):
             footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
             if footprint_bbox_width * footprint_bbox_height <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
-                continue
+                if idx > 1:
+                    continue
 
             if area <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
-                continue
+                if idx > 1:
+                    continue
 
             coco_annotation = {}
             coco_annotation['bbox'] = bbox
