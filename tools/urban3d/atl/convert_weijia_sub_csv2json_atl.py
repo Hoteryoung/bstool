@@ -21,7 +21,6 @@ if __name__ == "__main__":
                 image_basename = bstool.get_basename(image_name)
                 csv_file = os.path.join(csv_dir, image_basename + '.csv')
                 csv_parser = bstool.CSVParse(csv_file, check_valid=False)
-                image_name_list = csv_parser.image_name_list
 
                 json_file = os.path.join(json_dir, f'{image_basename}.json')
                 image_info = {"ori_filename": f'{image_basename}.tif',
