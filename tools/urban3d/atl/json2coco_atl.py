@@ -134,7 +134,7 @@ if __name__ == "__main__":
             annopath = f'./data/{core_dataset_name}/{release_version}/dataset/{imageset}/labels'
             save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
 
-            imageset_file = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/{fold}.txt'
+            imageset_file = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/{imageset}.txt'
             
             bstool.mkdir_or_exist(save_path)
 
