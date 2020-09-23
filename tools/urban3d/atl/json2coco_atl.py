@@ -117,7 +117,7 @@ if __name__ == "__main__":
     imagesets = ['val', 'train']
     # imagesets = ['val']
     # datasets = ['JAX_OMA', 'ATL']
-    datasets = ['ATL']
+    folds = ['ATL']
     release_version = 'v2'
 
     groundtruth = True
@@ -125,17 +125,16 @@ if __name__ == "__main__":
     image_size = 1024
 
     for imageset in imagesets:
-        for dataset in datasets:
+        for fold in folds:
             print(f"Begin to process {imageset} data!")
             
-            anno_name = [core_dataset_name, release_version, imageset, dataset]
+            anno_name = [core_dataset_name, release_version, imageset, fold]
             
-            imgpath = f'./data/{core_dataset_name}/{release_version}/{dataset}/{imageset}/images'
+            imgpath = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/images'
             annopath = f'./data/{core_dataset_name}/{release_version}/dataset/{imageset}/labels'
             save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
 
-            # imageset_file = f'./data/{core_dataset_name}/{release_version}/{imageset}/{dataset}_imageset_file.txt'
-            imageset_file = None
+            imageset_file = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/{fold}.txt'
             
             bstool.mkdir_or_exist(save_path)
 
