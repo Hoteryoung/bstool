@@ -131,7 +131,7 @@ if __name__ == "__main__":
             anno_name = [core_dataset_name, release_version, imageset, fold]
             
             imgpath = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/images'
-            annopath = f'./data/{core_dataset_name}/{release_version}/dataset/{imageset}/labels'
+            annopath = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/labels'
             save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
 
             imageset_file = f'./data/{core_dataset_name}/{release_version}/{fold}/{imageset}/{imageset}.txt'
