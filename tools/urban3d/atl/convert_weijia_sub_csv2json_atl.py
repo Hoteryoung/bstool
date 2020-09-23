@@ -1,4 +1,5 @@
 import os
+import tqdm
 import bstool
 
 
@@ -17,7 +18,7 @@ if __name__ == "__main__":
             json_dir = os.path.join(root_dir, 'weijia_labels')
             bstool.mkdir_or_exist(json_dir)
             
-            for image_name in os.listdir(image_dir):
+            for image_name in tqdm.tqdm(os.listdir(image_dir)):
                 image_basename = bstool.get_basename(image_name)
                 csv_file = os.path.join(csv_dir, image_basename + '.csv')
                 csv_parser = bstool.CSVParse(csv_file, check_valid=False)
