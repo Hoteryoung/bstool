@@ -83,6 +83,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v010.16.01_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn',
             'bc_v010.16.02_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn_pretrain',
             'bc_v010.16.03_real_semi_supervised_offset_rcnn_r50_1x_v1_bc_wo_building_bbox_rpn_pretrain_lr0.04',
+            'bc_v010.17.02_real_semi_supervised_offset_rcnn_r50_1x_v1_semi_urban3d_bc_wo_building_bbox_rpn_semi_angle',
             'bc_v011.01_offset_rcnn_r50_1x_v1_with_edge',
             'bc_v012.01.01_r50_1x_v1_offset_field',
             'bc_v012.02.01_r50_1x_v1_pixel_offset',
@@ -94,15 +95,15 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v010.16.03' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v010.17.02' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['dalian', 'xian']
+    # cities = ['dalian', 'xian']
     # cities = ['xian']
     # cities = ['dalian', 'xian_fixed']
-    # cities = ['urban3d']
+    cities = ['urban3d']
 
     with_only_vis = False
     with_offset = True
