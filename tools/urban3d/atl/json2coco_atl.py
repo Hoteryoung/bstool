@@ -44,9 +44,8 @@ class Urban3D2COCO(bstool.Convert2COCO):
                 continue
 
             # if area <= self.small_object_area and self.groundtruth:
-            #    self.small_object_idx += 1
-            #    if idx > 1:
-            #        continue
+            #     self.small_object_idx += 1
+            #     continue
 
             coco_annotation = {}
             coco_annotation['bbox'] = bbox
