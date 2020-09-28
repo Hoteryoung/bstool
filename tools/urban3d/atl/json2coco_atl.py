@@ -33,6 +33,8 @@ class Urban3D2COCO(bstool.Convert2COCO):
             footprint_mask = object_struct['footprint_mask']
             offset = object_struct['offset']
             building_height = object_struct['building_height']
+            if building_height < 3.0:
+                building_height = 3.0
 
             width = bbox[2]
             height = bbox[3]
