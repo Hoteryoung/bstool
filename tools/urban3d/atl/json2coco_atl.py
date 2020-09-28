@@ -41,13 +41,11 @@ class Urban3D2COCO(bstool.Convert2COCO):
             footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
             if footprint_bbox_width * footprint_bbox_height <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
-                if idx > 1:
-                    continue
+                continue
 
-            if area <= self.small_object_area and self.groundtruth:
-                self.small_object_idx += 1
-                if idx > 1:
-                    continue
+            # if area <= self.small_object_area and self.groundtruth:
+            #     self.small_object_idx += 1
+            #     continue
 
             coco_annotation = {}
             coco_annotation['bbox'] = bbox
@@ -150,7 +148,7 @@ if __name__ == "__main__":
                                         data_licenses=licenses,
                                         data_type="instances",
                                         groundtruth=groundtruth,
-                                        small_object_area=10,
+                                        small_object_area=50,
                                         image_size=(image_size, image_size))
 
             images, annotations = dataset2coco.get_image_annotation_pairs()
