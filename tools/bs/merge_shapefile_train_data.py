@@ -42,7 +42,7 @@ class MergeShapefile():
             return
             
         geo_file = os.path.join(self.geo_path, file_name + '.png')
-
+        print(shp_file)
         objects = bstool.shp_parse(shp_file, 
                                     geo_file,
                                     src_coord='4326',

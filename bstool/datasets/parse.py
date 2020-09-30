@@ -47,7 +47,6 @@ def shp_parse(shp_file,
     for idx, row_data in shp.iterrows():
         src_polygon = row_data.geometry
         src_property = row_data[:-1]
-        print(src_property, src_property.to_dict())
 
         if src_polygon.geom_type == 'Polygon':
             dst_polygons.append(bstool.polygon_coordinate_convert(src_polygon, geo_img, src_coord, dst_coord, keep_polarity))
