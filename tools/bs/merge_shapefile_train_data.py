@@ -88,7 +88,7 @@ class MergeShapefile():
 if __name__ == '__main__':
     core_dataset_name = 'buildchange'
     src_version = 'v0'
-    cities = ["shanghai"]
+    cities = ["shanghai", "beijing"]
 
     for city in cities:
         print("Begin processing {} set.".format(city))
