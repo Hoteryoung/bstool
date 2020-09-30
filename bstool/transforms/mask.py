@@ -112,6 +112,7 @@ def merge_polygons(polygons,
             elif 'half_H' in single_property.keys():
                 floors.append(single_property['half_H'])
             else:
+                print(properties)
                 raise(RuntimeError("No Floor key in property, keys = {}".format(single_property.keys())))
 
         merged_polygons = []
