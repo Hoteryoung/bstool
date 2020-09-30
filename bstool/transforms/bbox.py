@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 import bstool
 
@@ -131,7 +132,7 @@ def bboxes_rotate(bboxes, img_shape, rotate_angle):
 
     corners = corners.reshape(-1, 2)
     corners = np.hstack((corners, np.ones((corners.shape[0], 1), dtype = type(corners[0][0]))))
-    angle = rotate_angle
+    angle = rotate_angle * 180 / np.pi
     h, w, _ = img_shape
     cx, cy = w / 2, h / 2
     M = cv2.getRotationMatrix2D((cx, cy), -angle, 1.0)

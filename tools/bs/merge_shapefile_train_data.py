@@ -18,12 +18,12 @@ class MergeShapefile():
                 multi_processing=False,
                 num_processor=8):
         self.image_path = './data/{}/{}/{}/images'.format(core_dataset_name, src_version, city)
-        self.anno_path = './data/{}/{}/{}/shp_4326'.format(core_dataset_name, src_version, city)
+        self.anno_path = './data/{}/{}/{}/footprint_shp_4326'.format(core_dataset_name, src_version, city)
         self.geo_path = './data/{}/{}/{}/geo_info'.format(core_dataset_name, src_version, city)
 
         self.bad_shapefile = './data/{}/{}/{}/bad_shapefile.txt'.format(core_dataset_name, src_version, city)
 
-        self.merged_shapefile_save_path = './data/{}/{}/{}/merged_shp'.format(core_dataset_name, src_version, city)
+        self.merged_shapefile_save_path = './data/{}/{}/{}/merged_shp_20200930'.format(core_dataset_name, src_version, city)
         bstool.mkdir_or_exist(self.merged_shapefile_save_path)
 
         self.core_dataset_name = core_dataset_name
