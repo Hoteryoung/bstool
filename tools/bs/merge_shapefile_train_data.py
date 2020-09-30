@@ -95,7 +95,7 @@ if __name__ == '__main__':
         merge_shapefile = MergeShapefile(core_dataset_name=core_dataset_name,
                                          src_version=src_version,
                                          city=city,
-                                         multi_processing=False,
+                                         multi_processing=True,
                                          num_processor=8)
         merge_shapefile.core()
         print("Finish processing {} set.".format(city))
