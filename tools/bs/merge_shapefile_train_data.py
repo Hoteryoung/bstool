@@ -51,7 +51,7 @@ class MergeShapefile():
             with open(self.bad_shapefile, 'a') as f:
                 f.write("{} {}\n".format(self.city, file_name + '.shp'))
             return
-        print(objects)
+
         polygons = [obj['polygon'] for obj in objects]
         properties = [obj['property'] for obj in objects]
 
