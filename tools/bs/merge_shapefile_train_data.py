@@ -47,7 +47,7 @@ class MergeShapefile():
                                     geo_file,
                                     src_coord='4326',
                                     dst_coord='4326')
-        if objects == []:
+        if len(objects) == 0:
             with open(self.bad_shapefile, 'a') as f:
                 f.write("{} {}\n".format(self.city, file_name + '.shp'))
             return
