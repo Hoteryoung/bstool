@@ -59,7 +59,7 @@ class Urban3D2COCO(bstool.Convert2COCO):
             coco_annotation['building_bbox'] = building_bbox
             # coco_annotation['roof_mask'] = roof_mask
             coco_annotation['footprint_bbox'] = footprint_bbox
-            coco_annotation['footprint_mask'] = footprint_mask
+            # coco_annotation['footprint_mask'] = footprint_mask
             coco_annotation['offset'] = offset
             coco_annotation['building_height'] = building_height
 

@@ -28,14 +28,15 @@ def plot_space_feat(feature_maps, output_file=None):
             space_feat = feature_map
         else:
             raise NotImplementedError
-        ax[x, y].matshow(space_feat)
+        handle = ax[x, y].matshow(space_feat)
         ax[x, y].set_title(str(angle))
+        plt.colorbar(handle)
         
         x, y = axis_coord(x, y)
 
     fig.suptitle('space vis with different angle')
     plt.savefig(os.path.join(output_file, 'space_vis_4_angles.png'), bbox_inches='tight', pad_inches=0.1)
-    plt.show()
+    plt.clf()
 
 def plot_same_gap_feat(feature_maps, output_file=None):    
     gap_angles = [90, 180, 270]
@@ -46,12 +47,45 @@ def plot_same_gap_feat(feature_maps, output_file=None):
                 if abs(angle1 - angle2) != gap_angle:
                     continue
                 fig, ax = plt.subplots(figsize=(8, 6))
-                channel_feat1, channel_feat2 = np.mean(feature_maps[angle1], axis=0), np.mean(feature_maps[angle2], axis=0)
+                feature_maps[angle1] = np.rot90(feature_maps[angle1], k=angle1/90, axes=(1, 2))
+                feature_maps[angle2] = np.rot90(feature_maps[angle2], k=angle2/90, axes=(1, 2))
+                space_feat1, space_feat2 = np.mean(feature_maps[angle1], axis=0), np.mean(feature_maps[angle2], axis=0)
                 
-                ax.matshow(channel_feat1 - channel_feat2)
+                handle = ax.matshow(space_feat1 - space_feat2)
                 ax.set_title(str(angle1) + " - " + str(angle2))
+                plt.colorbar(handle)
 
-                plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_space.png'), bbox_inches='tight', pad_inches=0.1)
+                plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_space_reverse.png'), bbox_inches='tight', pad_inches=0.1)
+                plt.clf()
+
+def plot_max_channel_space_feat(feature_maps, output_file=None, argmax=True):    
+    gap_angles = [90, 180, 270]
+    
+    for gap_angle in gap_angles:
+        for angle1 in [0, 90, 180, 270]:
+            for angle2 in [0, 90, 180, 270]:
+                if abs(angle1 - angle2) != gap_angle:
+                    continue
+                fig, ax = plt.subplots(figsize=(8, 6))
+                feature_maps[angle1] = np.rot90(feature_maps[angle1], k=angle1/90, axes=(1, 2))
+                feature_maps[angle2] = np.rot90(feature_maps[angle2], k=angle2/90, axes=(1, 2))
+                space_feat1, space_feat2 = np.mean(feature_maps[angle1], axis=0), np.mean(feature_maps[angle2], axis=0)
+                
+                channel_feat1, channel_feat2 = np.mean(np.mean(feature_maps[angle1], axis=1), axis=1), np.mean(np.mean(feature_maps[angle2], axis=1), axis=1)
+                if argmax:
+                    vis_index = np.argmax(np.abs(channel_feat1 - channel_feat2))
+                    info = 'max'
+                else:
+                    vis_index = np.argmin(np.abs(channel_feat1 - channel_feat2))
+                    info = 'min'
+
+                space_feat1, space_feat2 = feature_maps[angle1][vis_index, :, :], feature_maps[angle2][vis_index, :, :]
+
+                handle = ax.matshow(space_feat1 - space_feat2)
+                ax.set_title(str(angle1) + " - " + str(angle2) + f" channel: {vis_index + 1}")
+                plt.colorbar(handle)
+
+                plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_{info}_channel_{vis_index + 1}_space_reverse.png'), bbox_inches='tight', pad_inches=0.1)
                 plt.clf()
 
 if __name__ == '__main__':
@@ -67,4 +101,5 @@ if __name__ == '__main__':
     
     plot_space_feat(feature_maps, vis_dir)
     plot_same_gap_feat(feature_maps, vis_dir)
+    plot_max_channel_space_feat(feature_maps, vis_dir)
         

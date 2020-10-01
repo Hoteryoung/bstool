@@ -54,7 +54,9 @@ def plot_same_gap_feat(feature_maps, output_file=None):
                 else:
                     raise NotImplementedError
                 
-                ax.plot(channel_feat1 - channel_feat2)
+                gap_feature = channel_feat1 - channel_feat2
+                print(f"The channel of max output (angle1: {angle1}, angle2: {angle2}): ", np.argmax(np.abs(gap_feature)))
+                ax.plot(gap_feature)
                 ax.set_title(str(angle1) + " - " + str(angle2))
 
                 plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_channel.png'), bbox_inches='tight', pad_inches=0.1)
