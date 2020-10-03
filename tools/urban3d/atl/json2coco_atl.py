@@ -41,13 +41,13 @@ class Urban3D2COCO(bstool.Convert2COCO):
             area = height * width
 
             footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
-            if footprint_bbox_width * footprint_bbox_height <= self.small_object_area and self.groundtruth:
+            if (footprint_bbox_width * footprint_bbox_height <= self.small_object_area or footprint_bbox_height < 3 or footprint_bbox_width < 3) and self.groundtruth:
                 self.small_object_idx += 1
                 continue
 
-            # if area <= self.small_object_area and self.groundtruth:
-            #     self.small_object_idx += 1
-            #     continue
+            if (area <= self.small_object_area or height < 3 or width < 3) and self.groundtruth:
+                # self.small_object_idx += 1
+                continue
 
             coco_annotation = {}
             coco_annotation['bbox'] = bbox
@@ -80,7 +80,7 @@ class Urban3D2COCO(bstool.Convert2COCO):
             object_struct['building_bbox'] = [0, 0, 0, 0]
 
             # object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
-            object_struct['footprint_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            # object_struct['footprint_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
             object_struct['offset'] = [0, 0]
             object_struct['building_height'] = 0
             
@@ -150,7 +150,7 @@ if __name__ == "__main__":
                                         data_licenses=licenses,
                                         data_type="instances",
                                         groundtruth=groundtruth,
-                                        small_object_area=50,
+                                        small_object_area=100,
                                         image_size=(image_size, image_size))
 
             images, annotations = dataset2coco.get_image_annotation_pairs()
