@@ -72,7 +72,7 @@ class Convert2COCO():
             annotations_coco = self.__generate_coco_annotation__(annotpath, imgpath)
 
             # if annotation is empty, skip this annotation
-            if len(annotations_coco) > 10 or self.groundtruth == False:
+            if len(annotations_coco) != 0 or self.groundtruth == False:
                 if self.image_size is None:
                     img = cv2.imread(imgpath)
                     height, width, _ = img.shape
