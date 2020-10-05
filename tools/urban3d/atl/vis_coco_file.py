@@ -14,6 +14,8 @@ if __name__ == '__main__':
 
     for image_name in os.listdir(image_dir):
         print(image_name)
+        if image_name not in coco_parser.anno_info.keys():
+            continue
         anns = coco_parser(image_name)
 
         image_file = os.path.join(image_dir, image_name)
