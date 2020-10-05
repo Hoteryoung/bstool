@@ -150,7 +150,7 @@ if __name__ == "__main__":
                                         data_licenses=licenses,
                                         data_type="instances",
                                         groundtruth=groundtruth,
-                                        small_object_area=100,
+                                        small_object_area=10,
                                         image_size=(image_size, image_size))
 
             images, annotations = dataset2coco.get_image_annotation_pairs()
