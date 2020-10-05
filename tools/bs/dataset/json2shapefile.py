@@ -84,8 +84,8 @@ if __name__ == "__main__":
                 basename = bstool.get_basename(json_file_name)
 
                 json_file = os.path.join(json_dir, basename + '.json')
-                geo_file = os.path.join(json_dir, basename + '.png')
-                shp_file = os.path.join(json_dir, basename + '.shp')
+                geo_file = os.path.join(geo_dir, basename + '.png')
+                shp_file = os.path.join(shp_dir, basename + '.shp')
 
                 objects = json_parser(json_file)
                 shapefile_dump(objects, geo_file, shp_file)
