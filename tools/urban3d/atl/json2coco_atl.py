@@ -28,7 +28,7 @@ class Urban3D2COCO(bstool.Convert2COCO):
 
             roof_bbox = object_struct['roof_bbox']
             building_bbox = object_struct['building_bbox']
-            # roof_mask = object_struct['roof_mask']
+            roof_mask = object_struct['roof_mask']
             footprint_bbox = object_struct['footprint_bbox']
             footprint_mask = object_struct['footprint_mask']
             offset = object_struct['offset']
