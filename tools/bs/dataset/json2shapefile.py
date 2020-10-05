@@ -75,6 +75,7 @@ if __name__ == "__main__":
             bstool.mkdir_or_exist(shp_dir)
 
             for json_file_name in os.listdir(json_dir):
+                print(f'Processing {city} {sub_fold} {json_file_name}')
                 basename = bstool.get_basename(json_file_name)
 
                 json_file = os.path.join(json_dir, basename + '.json')
