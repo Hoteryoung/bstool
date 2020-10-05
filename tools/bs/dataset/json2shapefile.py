@@ -35,23 +35,28 @@ def json_parser(json_file):
     
     return objects
 
-def coord_transform(geo_file, polygon):
+def coord_transform(geo_file, polygons):
     dataset = gdal.Open(geo_file)
     transform = dataset.GetGeoTransform()
 
-    converted_polygon = []
-    for c in polygon.exterior.coords:
-        converted_polygon.append(transform[0] + transform[1] * c[0] + c[1] * transform[2])
-        converted_polygon.append(transform[3] + transform[4] * c[0] + c[1] * transform[5])
+    converted_polygons = []
+    for polygon in polygons:
+        converted_polygon = []
+        for c in polygon.exterior.coords:
+            converted_polygon.append(transform[0] + transform[1] * c[0] + c[1] * transform[2])
+            converted_polygon.append(transform[3] + transform[4] * c[0] + c[1] * transform[5])
+        converted_polygon = bstool.mask2polygon(converted_polygon)
+
+        converted_polygons.append(converted_polygon)
     
-    return bstool.mask2polygon(converted_polygon)
+    return converted_polygons
 
 def shapefile_dump(objects, geo_file, shp_file):
     polygons = [obj['polygon'] for obj in objects]
     properties = [obj['property'] for obj in objects]
     
     # converted_polygons = [bstool.polygon_coordinate_convert(polygon, geo_file, src_coord='pixel', dst_coord='4326') for polygon in polygons]
-    converted_polygons = [coord_transform(geo_file, polygon) for polygon in polygons]
+    converted_polygons = coord_transform(geo_file, polygons)
 
     df = pandas.DataFrame(properties)
     gdf = geopandas.GeoDataFrame(df, geometry=converted_polygons, crs='EPSG:4326')
@@ -59,7 +64,7 @@ def shapefile_dump(objects, geo_file, shp_file):
 
 
 if __name__ == "__main__":
-    cities = ['haerbin', 'shanghai', 'beijing', 'jinan', 'chengdu']
+    cities = ['shanghai', 'beijing', 'jinan', 'chengdu', 'haerbin']
     sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
                  'chengdu':  ['arg', 'google', 'ms', 'tdt'],
                  'haerbin':  ['arg', 'google', 'ms'],
