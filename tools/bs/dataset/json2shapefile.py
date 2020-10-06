@@ -70,8 +70,8 @@ def shapefile_dump(objects, geo_file, shp_file):
 
 
 if __name__ == "__main__":
-    # cities = ['shanghai', 'beijing', 'jinan', 'chengdu', 'haerbin']
-    cities = ['jinan', 'chengdu', 'haerbin']
+    cities = ['shanghai', 'beijing', 'jinan', 'chengdu', 'haerbin']
+    # cities = ['jinan', 'chengdu', 'haerbin']
     sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
                  'chengdu':  ['arg', 'google', 'ms', 'tdt'],
                  'haerbin':  ['arg', 'google', 'ms'],
@@ -80,7 +80,10 @@ if __name__ == "__main__":
     
     for city in cities:
         for sub_fold in sub_folds[city]:
-            json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18/{sub_fold}/anno_20200924/OffsetField/TXT'
+            if city == 'chengdu':
+                json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_L18/{sub_fold}/anno_20200924/OffsetField/TXT'
+            else:
+                json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18/{sub_fold}/anno_20200924/OffsetField/TXT'
             geo_dir = f'/mnt/lustre/wangjinwang/buildchange/codes/bstool/data/buildchange/v0/{city}/{sub_fold}/geo_info'
             shp_dir = f'/mnt/lustre/wangjinwang/buildchange/codes/bstool/data/buildchange/v0/{city}/{sub_fold}/footprint_shp_4326_20200924'
 
