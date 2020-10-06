@@ -98,10 +98,12 @@ if __name__ == "__main__":
 
                 if os.path.exists(shp_file):
                     continue
+
                 print(f'Processing {city} {sub_fold} {json_file_name}')
 
                 objects = json_parser(json_file)
                 if len(objects) == 0:
                     continue
+                
                 shapefile_dump(objects, geo_file, shp_file)
     
