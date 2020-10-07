@@ -126,13 +126,13 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'buildchange'
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
     # cities = ['xian_fine_origin']
-    cities = ['xian_fine_samples']
-    release_version = 'v1'
+    # cities = ['xian_fine_samples']
+    release_version = 'v2'
 
-    groundtruth = False
+    groundtruth = True
     with_height_sample = False
     min_height = 100
 
