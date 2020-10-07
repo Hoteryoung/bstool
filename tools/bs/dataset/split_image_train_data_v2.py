@@ -15,7 +15,7 @@ class SplitImage():
     def __init__(self,
                  core_dataset_name='buildchange',
                  src_version='v0',
-                 dst_version='v1',
+                 dst_version='v2',
                  city='shanghai',
                  sub_fold=None,
                  subimage_size=1024,

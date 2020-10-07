@@ -151,7 +151,7 @@ def bs_json_dump_v2(polygons, properties, image_info, json_file):
             xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
             offset = [xoffset, yoffset]
             if not (isinstance(xoffset, float) and isinstance(yoffset, float)):
-                print("offset: ", offset)
+                print("offset: ", offset, type(xoffset), type(yoffset))
                 return None
                 # continue
             roof_polygon = bstool.footprint2roof_single(footprint_polygon, offset, offset_model='footprint2roof')
