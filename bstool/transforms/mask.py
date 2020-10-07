@@ -393,6 +393,29 @@ def roof2footprint_single(roof_polygon, offset, offset_model='roof2footprint'):
 
     return footprint_polygon
 
+def footprint2roof_single(footprint_polygon, offset, offset_model='roof2footprint'):
+    """transform footprint to roof
+
+    Args:
+        footprint_polygon (Polygon): shapely.Polygon
+        offset (list): offset
+        offset_model (str): 'roof2footprint' or 'footprint2roof
+
+    Returns:
+        [type]: [description]
+    """
+    xoffset, yoffset = offset
+    if offset_model == 'roof2footprint':
+        transform_matrix = [1, 0, 0, 1, -xoffset, -yoffset]
+    elif offset_model == 'footprint2roof':
+        transform_matrix = [1, 0, 0, 1, xoffset, yoffset]
+    else:
+        raise NotImplementedError
+
+    roof_polygon = affinity.affine_transform(footprint_polygon, transform_matrix)
+
+    return roof_polygon
+
 def mask_flip(masks, transform_flag='h', image_size=(1024, 1024)):
     img_height, img_width = image_size
     results = []

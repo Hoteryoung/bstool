@@ -89,8 +89,6 @@ if __name__ == "__main__":
 
             bstool.mkdir_or_exist(shp_dir)
 
-            
-
             for json_file_name in os.listdir(json_dir):
                 
                 basename = bstool.get_basename(json_file_name)

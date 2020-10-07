@@ -107,6 +107,78 @@ def bs_json_dump(polygons, properties, image_info, json_file):
     with open(json_file, "w") as jsonfile:
         json.dump(json_data, jsonfile, indent=4)
 
+def bs_json_dump_v2(polygons, properties, image_info, json_file):
+    """dump json file designed for building segmentation (for lingxuan)
+
+    Args:
+        polygons (list): list of polygons (footprint polygons)
+        properties (list): list of property
+        image_info (dict): image information
+        json_file (str): json file name
+    """
+    annos = []
+    for idx, (footprint_polygon, single_property) in enumerate(zip(polygons, properties)):
+        object_struct = dict()
+        if footprint_polygon.geom_type == 'MultiPolygon':
+            for footprint_polygon_ in footprint_polygon:
+                if footprint_polygon_.area < 20:
+                    continue
+                else:
+                    object_struct['footprint'] = bstool.polygon2mask(footprint_polygon_)
+                    xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
+                    offset = [xoffset, yoffset]
+                    roof_polygon = bstool.footprint2roof_single(footprint_polygon_, offset, offset_model='footprint2roof')
+                    if 'Floor' in single_property.keys():
+                        if single_property['Floor'] is None:
+                            building_height = 0.0
+                        else:
+                            building_height = 3 * single_property['Floor']
+                    elif 'half_H' in single_property.keys():
+                        if single_property['half_H'] is None:
+                            building_height = 0.0
+                        else:
+                            building_height = single_property['half_H']
+                    else:
+                        raise(RuntimeError("No Floor key in property, keys = {}".format(single_property.keys())))    
+                    object_struct['roof'] = bstool.polygon2mask(roof_polygon)
+                    object_struct['offset'] = [xoffset, yoffset]
+                    object_struct['ignore'] = single_property['ignore']
+                    object_struct['building_height'] = building_height
+
+                    annos.append(object_struct)
+        elif footprint_polygon.geom_type == 'Polygon':
+            object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
+            xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
+            offset = [xoffset, yoffset]
+            roof_polygon = bstool.footprint2roof_single(footprint_polygon, offset, offset_model='footprint2roof')
+            if 'Floor' in single_property.keys():
+                if single_property['Floor'] is None:
+                    building_height = 0.0
+                else:
+                    building_height = 3 * single_property['Floor']
+            elif 'half_H' in single_property.keys():
+                if single_property['half_H'] is None:
+                    building_height = 0.0
+                else:
+                    building_height = single_property['half_H']
+            else:
+                raise(RuntimeError("No Floor key in property, keys = {}".format(single_property.keys())))
+            object_struct['roof'] = bstool.polygon2mask(roof_polygon)
+            object_struct['offset'] = [xoffset, yoffset]
+            object_struct['ignore'] = single_property['ignore']
+            object_struct['building_height'] = building_height
+        
+            annos.append(object_struct)
+        else:
+            continue
+            # print("Runtime Warming: This processing do not support {}".format(type(roof_polygon)))
+
+    json_data = {"image": image_info,
+                "annotations": annos
+                }
+
+    with open(json_file, "w") as jsonfile:
+        json.dump(json_data, jsonfile, indent=4)
 
 def urban3d_json_dump(polygons, properties, image_info, json_file):
     """dump json file designed for building segmentation
