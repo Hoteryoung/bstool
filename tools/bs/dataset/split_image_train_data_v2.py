@@ -96,7 +96,9 @@ class SplitImage():
                         "sub_fold": self.sub_fold,
                         "coordinate": [int(_) for _ in subimage_coordinate]}
 
-            bstool.bs_json_dump_v2(subimage_polygons.tolist(), subimage_properties.tolist(), image_info, json_file)
+            result = bstool.bs_json_dump_v2(subimage_polygons.tolist(), subimage_properties.tolist(), image_info, json_file)
+            if result is None:
+                print("file_name: ", file_name)
             cv2.imwrite(subimage_file, subimages[subimage_coordinate])
 
     def core(self):

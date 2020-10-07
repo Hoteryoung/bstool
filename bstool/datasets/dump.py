@@ -152,7 +152,8 @@ def bs_json_dump_v2(polygons, properties, image_info, json_file):
             offset = [xoffset, yoffset]
             if not (isinstance(xoffset, float) and isinstance(yoffset, float)):
                 print("offset: ", offset)
-                continue
+                return None
+                # continue
             roof_polygon = bstool.footprint2roof_single(footprint_polygon, offset, offset_model='footprint2roof')
             if 'Floor' in single_property.keys():
                 if single_property['Floor'] is None:
@@ -182,6 +183,8 @@ def bs_json_dump_v2(polygons, properties, image_info, json_file):
 
     with open(json_file, "w") as jsonfile:
         json.dump(json_data, jsonfile, indent=4)
+    
+    return True
 
 def urban3d_json_dump(polygons, properties, image_info, json_file):
     """dump json file designed for building segmentation
