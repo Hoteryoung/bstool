@@ -415,6 +415,7 @@ def footprint2roof_single(footprint_polygon, offset, offset_model='roof2footprin
         roof_polygon = affinity.affine_transform(footprint_polygon, transform_matrix)
     except:
         print("offset: ", offset, type(xoffset), type(yoffset), type(footprint_polygon), footprint_polygon)
+        roof_polygon = footprint_polygon
     return roof_polygon
 
 def mask_flip(masks, transform_flag='h', image_size=(1024, 1024)):
