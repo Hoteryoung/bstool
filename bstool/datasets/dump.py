@@ -125,7 +125,7 @@ def bs_json_dump_v2(polygons, properties, image_info, json_file):
                     continue
                 else:
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon_)
-                    xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
+                    xoffset, yoffset = float(single_property['xoffset']), float(single_property['yoffset'])
                     offset = [xoffset, yoffset]
                     roof_polygon = bstool.footprint2roof_single(footprint_polygon_, offset, offset_model='footprint2roof')
                     if 'Floor' in single_property.keys():
