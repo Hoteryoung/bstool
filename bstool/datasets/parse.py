@@ -94,7 +94,7 @@ def lingxuan_json_parser(json_file):
     building_num = len(content['foot'])
     for idx in range(building_num):
         object_struct = dict()
-        footprint_mask = content['foot'][str(idx)]
+        footprint_mask = content['foot_corner'][str(idx)]
         footprint_mask = np.array(footprint_mask).reshape(1, -1).tolist()[0]
         footprint_polygon = bstool.mask2polygon(footprint_mask)
 
