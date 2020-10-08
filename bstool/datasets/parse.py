@@ -104,7 +104,7 @@ def lingxuan_json_parser(json_file):
         yoffset = content['xyoffset'][str(idx)][1]
         ignore = content['ignoreFlag'][str(idx)]
 
-        if not (isinstance(xoffset, (float, int)) and isinstance(yoffset, (float, int)))
+        if not (isinstance(xoffset, (float, int)) and isinstance(yoffset, (float, int))):
             xoffset, yoffset = 0, 0
         object_struct['polygon'] = footprint_polygon
         object_struct['property'] = {"Id": idx, "Floor": building_height // 3, "xoffset": xoffset, "yoffset": yoffset, 'ignore': ignore}
