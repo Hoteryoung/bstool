@@ -31,8 +31,8 @@ class SplitImage():
         if city == 'chengdu':
             self.json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_L18/{sub_fold}/anno_20200924/OffsetField/TXT'
         else:
-            self.json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18/{sub_fold}/anno_20200924/OffsetField/TXT'
-            # self.json_dir = '/data/buildchange/v0/shanghai/arg/json_20200924'
+            # self.json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18/{sub_fold}/anno_20200924/OffsetField/TXT'
+            self.json_dir = '/data/buildchange/v0/shanghai/arg/json_20200924'
 
         self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/images'
         bstool.mkdir_or_exist(self.image_save_dir)

@@ -5,10 +5,10 @@ import bstool
 
 
 if __name__ == '__main__':
-    image_dir = '/data/buildchange/v3/shanghai/images'
-    label_dir = '/data/buildchange/v3/shanghai/labels'
+    image_dir = '/data/buildchange/v2/shanghai/images'
+    label_dir = '/data/buildchange/v2/shanghai/labels'
     
-    vis_dir = '/data/buildchange/v3/shanghai/vis'
+    vis_dir = '/data/buildchange/v2/shanghai/vis'
     bstool.mkdir_or_exist(vis_dir)
 
     for image_name in os.listdir(image_dir):
