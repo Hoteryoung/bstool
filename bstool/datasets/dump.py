@@ -126,8 +126,6 @@ def bs_json_dump_v2(polygons, properties, image_info, json_file):
                 else:
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon_)
                     xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
-                    if xoffset is None or yoffset is None:
-                        print("offset: ", xoffset, yoffset)
                     offset = [xoffset, yoffset]
                     roof_polygon = bstool.footprint2roof_single(footprint_polygon_, offset, offset_model='footprint2roof')
                     if 'Floor' in single_property.keys():
@@ -151,8 +149,6 @@ def bs_json_dump_v2(polygons, properties, image_info, json_file):
         elif footprint_polygon.geom_type == 'Polygon':
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
             xoffset, yoffset = single_property['xoffset'], single_property['yoffset']
-            if xoffset is None or yoffset is None:
-                print("offset: ", xoffset, yoffset)
             offset = [xoffset, yoffset]
             roof_polygon = bstool.footprint2roof_single(footprint_polygon, offset, offset_model='footprint2roof')
             if 'Floor' in single_property.keys():

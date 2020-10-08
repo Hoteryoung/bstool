@@ -414,7 +414,7 @@ def footprint2roof_single(footprint_polygon, offset, offset_model='roof2footprin
     try:
         roof_polygon = affinity.affine_transform(footprint_polygon, transform_matrix)
     except:
-        print("offset: ", offset, type(xoffset), type(yoffset), type(footprint_polygon), footprint_polygon)
+        print("footprint2roof: ", offset, type(xoffset), type(yoffset), type(footprint_polygon), footprint_polygon)
         roof_polygon = footprint_polygon
     return roof_polygon
 
