@@ -100,8 +100,24 @@ class BS2COCO(bstool.Convert2COCO):
 
         return objects
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='MMDet eval on semantic segmentation')
+    parser.add_argument(
+        '--city',
+        type=str,
+        default='None', 
+        help='dataset for evaluation')
+
+    args = parser.parse_args()
+    return args
 
 if __name__ == "__main__":
+    args = parse_args()
+    if args.city == 'None':
+        cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    else:
+        cities = [args.city]
     # basic dataset information
     info = {"year" : 2020,
             "version" : "1.0",
@@ -127,7 +143,7 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'buildchange'
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    cities = ['jinan', 'haerbin', 'chengdu']
+    # cities = ['jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
     # cities = ['xian_fine_origin']
     # cities = ['xian_fine_samples']
