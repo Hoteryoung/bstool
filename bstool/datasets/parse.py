@@ -98,8 +98,6 @@ def lingxuan_json_parser(json_file):
         footprint_mask = np.array(footprint_mask).reshape(1, -1).tolist()[0]
         footprint_polygon = bstool.mask2polygon(footprint_mask)
 
-        footprint_polygon = footprint_polygon.simplify(1.0, preserve_topology=False)
-
         building_height = content['buildHeight'][str(idx)]
         
         xoffset = content['xyoffset'][str(idx)][0]
