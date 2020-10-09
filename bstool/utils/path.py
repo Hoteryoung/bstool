@@ -59,7 +59,10 @@ def get_info_splitted_imagename(img_name):
         ori_image_fn = base_name.split("__")[1] + '__' + base_name.split("__")[2]
         coord_x, coord_y = base_name.split("__")[3].split('_')    # top left corner
         coord_x, coord_y = int(coord_x), int(coord_y)
-
+    elif base_name.count('__') == 0:
+        sub_fold = None 
+        ori_image_fn = base_name
+        coord_x, coord_y = 0, 0
     return sub_fold, ori_image_fn, (coord_x, coord_y)
 
 def get_files_recursion(root_dir):
