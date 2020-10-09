@@ -107,9 +107,9 @@ if __name__ == '__main__':
     # cities = ['dalian', 'xian', 'xian_fixed']
     # cities = ['dalian', 'xian']
     # cities = ['xian']
-    # cities = ['dalian', 'xian_fixed']
+    cities = ['dalian', 'xian_fixed']
     # cities = ['urban3d']
-    cities = ['atl']
+    # cities = ['atl']
 
     with_only_vis = False
     with_offset = True
