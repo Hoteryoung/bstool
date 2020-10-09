@@ -19,6 +19,7 @@ if __name__ == '__main__':
         json_file = os.path.join(label_dir, file_name + '.json')
 
         img = cv2.imread(rgb_file)
+        img_origin = img.copy()
         objects = bstool.bs_json_parse(json_file)
 
         if len(objects) == 0:
@@ -26,6 +27,7 @@ if __name__ == '__main__':
 
         offsets = [obj['offset'] for obj in objects]
         roof_masks = [obj['roof_mask'] for obj in objects]
+        roof_masks_origin = roof_masks[:]
         footprint_masks = [bstool.polygon2mask(bstool.roof2footprint_single(bstool.mask2polygon(roof_mask), offset, offset_model='footprint2roof')) for roof_mask, offset in zip(roof_masks, offsets)]
 
         if with_flip:
@@ -35,13 +37,17 @@ if __name__ == '__main__':
             footprint_masks = [bstool.polygon2mask(bstool.roof2footprint_single(bstool.mask2polygon(roof_mask), offset, offset_model='footprint2roof')) for roof_mask, offset in zip(roof_masks, offsets)]
         
         if with_rotate:
-            angle = np.random.choice([270, 290, 300, 350, 259]) * np.pi / 180.0
+            # angle = np.random.choice([270, 290, 300, 350, 259]) * np.pi / 180.0
+            angle = 45 * np.pi / 180.0
             img = bstool.image_rotate(img, angle=angle)
             offsets = bstool.offset_rotate(offsets, angle=angle)
+            
             roof_masks = bstool.mask_rotate(roof_masks, angle=angle)
             footprint_masks = [bstool.polygon2mask(bstool.roof2footprint_single(bstool.mask2polygon(roof_mask), offset, offset_model='footprint2roof')) for roof_mask, offset in zip(roof_masks, offsets)]
 
+        bstool.show_masks_on_image(img_origin, roof_masks_origin, win_name='roof mask origin')
         bstool.show_masks_on_image(img, roof_masks, win_name='roof mask')
+
         bstool.show_masks_on_image(img, footprint_masks, win_name='footprint mask')
         
         
