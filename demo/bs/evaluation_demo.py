@@ -181,6 +181,7 @@ if __name__ == '__main__':
                 gt_roof_csv_file = './data/urban3d/v1/ATL/urban3d_atl_roof_offset_gt_simple_subcsv_merge_val.csv'
                 gt_footprint_csv_file = './data/urban3d/v1/ATL/urban3d_atl_orgfootprint_offset_gt_simple_subcsv_merge_val.csv'
                 image_dir = f'./data/urban3d/v1/ATL/val/images'
+                offset_model = 'roof2footprint'
             else:
                 imageset = 'train'
                 anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_{imageset}_{city}.json'
