@@ -8,7 +8,7 @@ if __name__ == '__main__':
     image_dir = './data/buildchange/v1/xian_fine/images'
     label_dir = './data/buildchange/v1/xian_fine/labels'
     
-    vis_dir = './data/buildchange/v1/xian_fine/vis'
+    vis_dir = './data/buildchange/v1/xian_fine/vis/gt_footprint'
     bstool.mkdir_or_exist(vis_dir)
 
     for image_name in os.listdir(image_dir):
