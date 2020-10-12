@@ -35,7 +35,7 @@ def plot_channel_feat(feature_maps, output_file=None):
 
     fig.suptitle('channel vis with different angle')
     plt.savefig(os.path.join(output_file, 'channel_vis_4_angles.png'), bbox_inches='tight', pad_inches=0.1)
-    plt.show()
+    plt.clf()
 
 def plot_same_gap_feat(feature_maps, output_file=None):    
     gap_angles = [90, 180, 270]
@@ -62,6 +62,43 @@ def plot_same_gap_feat(feature_maps, output_file=None):
                 plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_channel.png'), bbox_inches='tight', pad_inches=0.1)
                 plt.clf()
 
+def plot_same_gap_feat_show_level(feature_maps, output_file=None):    
+    gap_angles = [90, 180, 270]
+    
+    for gap_angle in gap_angles:
+        for angle1 in [0, 90, 180, 270]:
+            for angle2 in [0, 90, 180, 270]:
+                if abs(angle1 - angle2) != gap_angle:
+                    continue
+                fig, ax = plt.subplots(4, 1, figsize=(8, 8))
+                if len(feature_map.shape) > 1:
+                    channel_feat1, channel_feat2 = np.mean(np.mean(np.abs(feature_maps[angle1]), axis=1), axis=1), np.mean(np.mean(np.abs(feature_maps[angle2]), axis=1), axis=1)
+                    # ax.set_ylim(-0.1, 0.1)
+                elif len(feature_map.shape) == 1:
+                    channel_feat1, channel_feat2 = feature_maps[angle1], feature_maps[angle2]
+                else:
+                    raise NotImplementedError
+                
+                gap_feature = channel_feat1 - channel_feat2
+                print(f"The channel of max output (angle1: {angle1}, angle2: {angle2}): ", np.argmax(np.abs(gap_feature)))
+                ax[0].plot(channel_feat1)
+                ax[0].set_ylim(0, 0.1)
+
+                ax[1].plot(channel_feat2)
+                ax[1].set_ylim(0, 0.1)
+
+                ax[2].plot(gap_feature)
+                ax[2].set_ylim(-0.1, 0.1)
+
+                ax[3].plot(np.sort(gap_feature)[::-1])
+                ax[3].set_ylim(-0.1, 0.1)
+
+                fig.suptitle(str(angle1) + " - " + str(angle2))
+
+                plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_channel_show_level.png'), bbox_inches='tight', pad_inches=0.1)
+                plt.clf()
+
+
 if __name__ == '__main__':
     feat_dir = '/data/buildchange/analysis/offset_features'
     vis_dir = '/data/buildchange/analysis/vis'
@@ -73,6 +110,7 @@ if __name__ == '__main__':
         feature_map = np.load(feat_file)
         feature_maps[angle] = feature_map
     
-    plot_channel_feat(feature_maps, vis_dir)
-    plot_same_gap_feat(feature_maps, vis_dir)
+    # plot_channel_feat(feature_maps, vis_dir)
+    # plot_same_gap_feat(feature_maps, vis_dir)
+    plot_same_gap_feat_show_level(feature_maps, vis_dir)
         
