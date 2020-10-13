@@ -14,7 +14,7 @@ def draw_rectangle_by_points(im, point, color=(0, 0, 255)):
     return im
 
 def show_bbox(im, bbox, color=(0, 0, 255)):
-    cv2.rectangle(im, (int(bbox[0]), int(bbox[1])), (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3])), color, 3)
+    cv2.rectangle(im, (int(bbox[0]), int(bbox[1])), (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3])), color, 2)
 
     return im
 
