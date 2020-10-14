@@ -837,6 +837,8 @@ class CSVParse():
             self.objects[image_name] = buildings
             self.dataset_buildings += buildings
 
+        self.image_fns = self.objects.keys()
+
     def __call__(self, image_fn):
         if image_fn in self.objects.keys():
             return self.objects[image_fn]

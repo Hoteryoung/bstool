@@ -688,6 +688,7 @@ class Evaluation():
             pred_polygons_origin = pred_polygons[:]
             
             if len(gt_polygons) == 0 or len(pred_polygons) == 0:
+                print(f"Skip this image: {ori_image_name}, because length gt_polygons or length pred_polygons is zero")
                 continue
 
             gt_offsets = [gt_building['offset'] for gt_building in gt_buildings]

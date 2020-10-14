@@ -116,7 +116,9 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'urban3d'
-    imagesets = ['val', 'train']
+    # imagesets = ['val', 'train']
+    imagesets = ['val']
+
     # imagesets = ['val']
     # datasets = ['JAX_OMA', 'ATL']
     folds = ['ATL']
