@@ -58,6 +58,52 @@ def plot_same_gap_feat(feature_maps, output_file=None):
                 plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_space_reverse.png'), bbox_inches='tight', pad_inches=0.1)
                 plt.clf()
 
+def plot_same_gap_feat_show_level(feature_maps, output_file=None):    
+    gap_angles = [90, 180, 270]
+    
+    for gap_angle in gap_angles:
+        for angle1 in [0, 90, 180, 270]:
+            for angle2 in [0, 90, 180, 270]:
+                if abs(angle1 - angle2) != gap_angle:
+                    continue
+                fig, ax = plt.subplots(3, 1, figsize=(16, 12))
+                feature_maps[angle1] = np.rot90(feature_maps[angle1], k=angle1/90, axes=(1, 2))
+                feature_maps[angle2] = np.rot90(feature_maps[angle2], k=angle2/90, axes=(1, 2))
+                space_feat1, space_feat2 = np.mean(np.abs(feature_maps[angle1]), axis=0), np.mean(np.abs(feature_maps[angle2]), axis=0)
+                
+                gap_feature = space_feat1 - space_feat2
+
+                handle = ax[0].matshow(space_feat1)
+                plt.colorbar(handle, ax=ax[0])
+
+                handle = ax[1].matshow(space_feat2)
+                plt.colorbar(handle, ax=ax[1])
+
+                handle = ax[2].matshow(gap_feature)
+                plt.colorbar(handle, ax=ax[2])
+
+                fig.suptitle(str(angle1) + " - " + str(angle2))
+                plt.savefig(os.path.join(output_file, f'same_gap_vis_{angle1}_{angle2}_space_reverse.png'), bbox_inches='tight', pad_inches=0.1)
+                plt.clf()
+
+def plot_same_gap_feat_show_each_channel(feature_maps, output_file=None):        
+    angle1, angle2 = 0, 90
+    # fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+    feature_maps[angle1] = np.rot90(feature_maps[angle1], k=angle1/90, axes=(1, 2))
+    feature_maps[angle2] = np.rot90(feature_maps[angle2], k=angle2/90, axes=(1, 2))
+    space_feat1, space_feat2 = feature_maps[angle1], feature_maps[angle2]
+
+    for channel_idx in range(256):
+        fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+        gap_feature = space_feat1[channel_idx, ...] - space_feat2[channel_idx, ...]
+
+        handle = ax.matshow(gap_feature)
+        colorbar = plt.colorbar(handle, ax=ax)
+        colorbar.set_clim(-0.1, 0.1)
+        fig.suptitle(str(angle1) + " - " + str(angle2) + ' : ' + str(channel_idx))
+        plt.savefig(os.path.join(output_file, 'each_channel', f'same_gap_vis_{angle1}_{angle2}_space_reverse_{channel_idx}.png'), bbox_inches='tight', pad_inches=0.1)
+        plt.close()
+
 def plot_max_channel_space_feat(feature_maps, output_file=None, argmax=True):    
     gap_angles = [90, 180, 270]
     
@@ -99,7 +145,9 @@ if __name__ == '__main__':
         feature_map = np.load(feat_file)
         feature_maps[angle] = feature_map
     
-    plot_space_feat(feature_maps, vis_dir)
-    plot_same_gap_feat(feature_maps, vis_dir)
-    plot_max_channel_space_feat(feature_maps, vis_dir)
+    # plot_space_feat(feature_maps, vis_dir)
+    # plot_same_gap_feat(feature_maps, vis_dir)
+    # plot_max_channel_space_feat(feature_maps, vis_dir)
+    # plot_same_gap_feat_show_level(feature_maps, vis_dir)
+    plot_same_gap_feat_show_each_channel(feature_maps, vis_dir)
         
