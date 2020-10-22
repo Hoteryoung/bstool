@@ -94,7 +94,7 @@ class CountImage():
         return mean_angles
 
     def save_count_results(self, angle, file_name):
-        save_file = os.path.join(self.save_dir, f"{int(angle / 10) * 10}.txt")
+        save_file = os.path.join(self.save_dir, f"{int(angle / 5) * 5}.txt")
         with open(save_file, 'a+') as f:
             f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
     # full_mean_angles = (full_mean_angles - np.min(full_mean_angles)) / (np.max(full_mean_angles) - np.min(full_mean_angles)) * 90
 
-    plt.hist(full_mean_angles, bins=np.arange(0, 100, (int(100) - int(0)) // 10), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+    plt.hist(full_mean_angles, bins=np.arange(0, 100, (int(100) - int(0)) // 20), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
 
     plt.savefig('/mnt/lustre/wangjinwang/Downloads/test.png')
     # plt.savefig('/home/jwwangchn/Downloads/test.png')
