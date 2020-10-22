@@ -113,11 +113,11 @@ if __name__ == '__main__':
     save_dir = '/mnt/lustre/wangjinwang/Downloads/Count'
     # save_dir = '/home/jwwangchn/Downloads/Count'
 
-    if not os.path.exists(self.save_dir):
-        os.makedirs(self.save_dir)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     else:
-        shutil.rmtree(self.save_dir)
-        os.makedirs(self.save_dir)
+        shutil.rmtree(save_dir)
+        os.makedirs(save_dir)
     
     full_mean_angles = []
     for city in cities:
