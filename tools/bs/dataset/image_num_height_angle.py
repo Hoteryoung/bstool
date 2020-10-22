@@ -8,6 +8,7 @@ from multiprocessing import Pool
 from functools import partial
 import tqdm
 import math
+import shutil
 
 import bstool
 
@@ -19,7 +20,8 @@ class CountImage():
                  dst_version='v2',
                  city='shanghai',
                  sub_fold=None,
-                 resolution=0.6):
+                 resolution=0.6,
+                 save_dir=None):
         self.city = city
         self.sub_fold = sub_fold
         self.resolution = resolution
@@ -35,6 +37,13 @@ class CountImage():
         bstool.mkdir_or_exist(self.image_save_dir)
         self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/labels'
         bstool.mkdir_or_exist(self.label_save_dir)
+
+        self.save_dir = save_dir
+        if not os.path.exists(self.save_dir):
+            os.makedirs(self.save_dir)
+        else:
+            shutil.rmtree(self.save_dir)
+            os.makedirs(self.save_dir)
 
     def count_image(self, json_file):
         file_name = bstool.get_basename(json_file)
@@ -70,6 +79,8 @@ class CountImage():
 
         mean_angle = np.abs(np.mean(np.array(angles)) * 180.0 / math.pi)
 
+        self.save_count_results(mean_angle, file_name)
+
         return mean_angle
 
     def core(self):
@@ -82,23 +93,31 @@ class CountImage():
         
         return mean_angles
 
+    def save_count_results(self, angle, file_name):
+        save_file = os.path.join(self.save_dir, f"{int(angle / 10) * 10}.txt")
+        with open(save_file, 'a+') as f:
+            f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
+
 
 if __name__ == '__main__':
     core_dataset_name = 'buildchange'
     src_version = 'v0'
     dst_version = 'v2'
 
-    cities = ['shanghai']
-    sub_folds = {'shanghai': ['arg']}
+    # cities = ['shanghai']
+    # sub_folds = {'shanghai': ['arg']}
 
     # cities = ['beijing', 'jinan', 'haerbin', 'chengdu']                 # debug
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    # sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
-    #              'chengdu':  ['arg', 'google', 'ms', 'tdt'],
-    #              'haerbin':  ['arg', 'google', 'ms'],
-    #              'jinan':    ['arg', 'google', 'ms', 'tdt'],
-    #              'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
+    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
+                 'chengdu':  ['arg', 'google', 'ms', 'tdt'],
+                 'haerbin':  ['arg', 'google', 'ms'],
+                 'jinan':    ['arg', 'google', 'ms', 'tdt'],
+                 'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
 
+    save_dir = '/mnt/lustre/wangjinwang/Downloads/Count'
+    # save_dir = '/home/jwwangchn/Downloads/Count'
+    
     full_mean_angles = []
     for city in cities:
         for sub_fold in sub_folds[city]:
@@ -107,7 +126,8 @@ if __name__ == '__main__':
                                     src_version=src_version,
                                     dst_version=dst_version,
                                     city=city,
-                                    sub_fold=sub_fold)
+                                    sub_fold=sub_fold,
+                                    save_dir=save_dir)
             mean_angles = count_image.core()
 
             full_mean_angles += mean_angles
@@ -115,8 +135,9 @@ if __name__ == '__main__':
 
     full_mean_angles = np.array(full_mean_angles)
 
-    full_mean_angles = (full_mean_angles - np.min(full_mean_angles)) / (np.max(full_mean_angles) - np.min(full_mean_angles)) * 90
+    # full_mean_angles = (full_mean_angles - np.min(full_mean_angles)) / (np.max(full_mean_angles) - np.min(full_mean_angles)) * 90
 
     plt.hist(full_mean_angles, bins=np.arange(0, 100, (int(100) - int(0)) // 10), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
 
     plt.savefig('/mnt/lustre/wangjinwang/Downloads/test.png')
+    # plt.savefig('/home/jwwangchn/Downloads/test.png')
