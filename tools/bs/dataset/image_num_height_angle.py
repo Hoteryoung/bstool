@@ -19,31 +19,22 @@ class CountImage():
                  dst_version='v2',
                  city='shanghai',
                  sub_fold=None,
-                 subimage_size=1024,
-                 gap=512,
-                 resolution=0.6,
-                 multi_processing=False,
-                 num_processor=8):
+                 resolution=0.6):
         self.city = city
         self.sub_fold = sub_fold
-        self.subimage_size = subimage_size
-        self.gap = gap
         self.resolution = resolution
 
         self.image_dir = f'./data/{core_dataset_name}/{src_version}/{city}/{sub_fold}/images'
         if city == 'chengdu':
             self.json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_L18/{sub_fold}/anno_20200924/OffsetField/TXT'
         else:
-            # self.json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18/{sub_fold}/anno_20200924/OffsetField/TXT'
-            self.json_dir = '/data/buildchange/v0/shanghai/arg/json_20200924'
+            self.json_dir = f'/mnt/lustre/menglingxuan/buildingwolf/20200329/{city}_18/{sub_fold}/anno_20200924/OffsetField/TXT'
+            # self.json_dir = '/data/buildchange/v0/shanghai/arg/json_20200924'
 
         self.image_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/images'
         bstool.mkdir_or_exist(self.image_save_dir)
         self.label_save_dir = f'./data/{core_dataset_name}/{dst_version}/{city}/labels'
         bstool.mkdir_or_exist(self.label_save_dir)
-
-        self.multi_processing = multi_processing
-        self.pool = Pool(num_processor)
 
     def count_image(self, json_file):
         file_name = bstool.get_basename(json_file)
@@ -97,19 +88,16 @@ if __name__ == '__main__':
     src_version = 'v0'
     dst_version = 'v2'
 
-    # cities = ['shanghai']
-    # sub_folds = {'shanghai': ['arg']}
+    cities = ['shanghai']
+    sub_folds = {'shanghai': ['arg']}
 
     # cities = ['beijing', 'jinan', 'haerbin', 'chengdu']                 # debug
-    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
-                 'chengdu':  ['arg', 'google', 'ms', 'tdt'],
-                 'haerbin':  ['arg', 'google', 'ms'],
-                 'jinan':    ['arg', 'google', 'ms', 'tdt'],
-                 'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
-    
-    subimage_size = 1024
-    gap = subimage_size // 2
+    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    # sub_folds = {'beijing':  ['arg', 'google', 'ms', 'tdt'],
+    #              'chengdu':  ['arg', 'google', 'ms', 'tdt'],
+    #              'haerbin':  ['arg', 'google', 'ms'],
+    #              'jinan':    ['arg', 'google', 'ms', 'tdt'],
+    #              'shanghai': ['arg', 'google', 'ms', 'tdt', 'PHR2016', 'PHR2017']}
 
     full_mean_angles = []
     for city in cities:
@@ -119,11 +107,7 @@ if __name__ == '__main__':
                                     src_version=src_version,
                                     dst_version=dst_version,
                                     city=city,
-                                    sub_fold=sub_fold,
-                                    subimage_size=subimage_size,
-                                    gap=gap,
-                                    multi_processing=True,
-                                    num_processor=8)
+                                    sub_fold=sub_fold)
             mean_angles = count_image.core()
 
             full_mean_angles += mean_angles
