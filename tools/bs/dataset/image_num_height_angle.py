@@ -39,11 +39,6 @@ class CountImage():
         bstool.mkdir_or_exist(self.label_save_dir)
 
         self.save_dir = save_dir
-        if not os.path.exists(self.save_dir):
-            os.makedirs(self.save_dir)
-        else:
-            shutil.rmtree(self.save_dir)
-            os.makedirs(self.save_dir)
 
     def count_image(self, json_file):
         file_name = bstool.get_basename(json_file)
@@ -117,6 +112,12 @@ if __name__ == '__main__':
 
     save_dir = '/mnt/lustre/wangjinwang/Downloads/Count'
     # save_dir = '/home/jwwangchn/Downloads/Count'
+
+    if not os.path.exists(self.save_dir):
+        os.makedirs(self.save_dir)
+    else:
+        shutil.rmtree(self.save_dir)
+        os.makedirs(self.save_dir)
     
     full_mean_angles = []
     for city in cities:
