@@ -77,7 +77,7 @@ class CountImage():
         
             angles.append(angle)
 
-        mean_angle = 90 - np.abs(np.mean(np.array(angles)) * 180.0 / math.pi)
+        mean_angle = np.abs(np.mean(np.array(angles)) * 180.0 / math.pi)
 
         self.save_count_results(mean_angle, file_name)
 
