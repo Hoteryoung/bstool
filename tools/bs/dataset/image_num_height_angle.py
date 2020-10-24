@@ -161,6 +161,8 @@ class CountImage():
         save_file = os.path.join(self.save_dir, f"{int(angle / 5) * 5}.txt")
         with open(save_file, 'a+') as f:
             f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
+        
+        return True
 
 
 def parse_args():
