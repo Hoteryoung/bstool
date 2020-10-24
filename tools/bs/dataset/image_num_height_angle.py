@@ -9,6 +9,7 @@ from functools import partial
 import tqdm
 import math
 import shutil
+import argparse
 
 import bstool
 
@@ -131,12 +132,26 @@ class CountImage():
             f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='MMDet eval on semantic segmentation')
+    parser.add_argument(
+        '--source',
+        type=str,
+        default='local', 
+        help='dataset for evaluation')
+
+    args = parser.parse_args()
+    return args
+
 if __name__ == '__main__':
+    args = parse_args()
+
     core_dataset_name = 'buildchange'
     src_version = 'v0'
     dst_version = 'v2'
 
-    data_source = 'local'   # remote
+    data_source = args.source   # remote or local
 
     if data_source == 'local':
         cities = ['shanghai']
