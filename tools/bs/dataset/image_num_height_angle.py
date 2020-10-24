@@ -120,8 +120,8 @@ class CountImage():
 
     def keep_file(self, angles, heights, offset_lengths):
         if len(angles) < 20:
-            return mean_angle, False
-            
+            return 0, False
+
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
