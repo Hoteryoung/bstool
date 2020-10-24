@@ -10,6 +10,7 @@ import tqdm
 import math
 import shutil
 import argparse
+from collections import defaultdict
 
 import bstool
 
@@ -107,21 +108,33 @@ class CountImage():
             heights.append(building_height)
             offset_lengths.append(offset_length)
 
-        mean_angle, keep_flag = self.keep_file(angles, heights, offset_lengths)
-
+        keep_flag, file_property = self.keep_file(angles, heights, offset_lengths)
+        
         if keep_flag:
-            result = self.save_count_results(mean_angle, file_name)
-            if result is None:
-                return None
-            else:
-                return mean_angle
+            mean_angle = file_property[0]
+            self.save_count_results(mean_angle, file_name)
+            return file_property
         else:
             return None
 
     def keep_file(self, angles, heights, offset_lengths):
-        if len(angles) < 20:
-            return 0, False
-
+        if data_source == 'local':
+            parameters = {
+                        'angles': 0,
+                        "mean_height": 0,
+                        "mean_angle": 0, 
+                        "mean_offset_length": 0,
+                        'std_offset_length': 50,
+                        'std_angle': 100}
+        else:
+            parameters = {
+                        'angles': 20,
+                        "mean_height": 4,
+                        "mean_angle": 45, 
+                        "mean_offset_length": 10,
+                        'std_offset_length': 5,
+                        'std_angle': 10}
+        
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
@@ -132,41 +145,50 @@ class CountImage():
         std_offset_length = np.std(offset_lengths)
         std_angle = np.std(angles)
 
-        if mean_height < 4:
-            return mean_angle, False
+        # parameters
+        if len(angles) < parameters['angles']:
+            return False, None
 
-        if mean_angle < 45 and mean_offset_length < 10 and std_offset_length < 5:
-            return mean_angle, False
+        if mean_height < parameters['mean_height']:
+            return False, None
 
-        if std_angle > 10:
-            return mean_angle, False
+        if mean_angle < parameters['mean_angle'] and mean_offset_length < parameters['mean_offset_length'] and std_offset_length < parameters['std_offset_length']:
+            return False, None
 
-        return mean_angle, True
+        if std_angle > parameters['std_angle']:
+            return False, None
+
+        file_property = [mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle]
+
+        return True, file_property
 
     def core(self):
         json_file_list = glob.glob("{}/*.json".format(self.json_dir))
 
         mean_angles = []
+        file_properties = []
         for json_file in tqdm.tqdm(json_file_list):
-            mean_angle = self.count_image(json_file)
-            if mean_angle is not None:
+            file_name = bstool.get_basename(json_file)
+            file_property = self.count_image(json_file)
+            
+            if file_property is not None:
+                mean_angle = file_property[0]
                 mean_angles.append(mean_angle)
+                file_property.append(file_name)
+                file_properties.append(file_property)
             else:
                 continue
         
-        return mean_angles
+        return mean_angles, file_properties
 
     def save_count_results(self, angle, file_name):
         if math.isnan(angle):
-            return 
+            angle = 0 
 
         save_file = os.path.join(self.save_dir, f"{int(angle / 5) * 5}.txt")
         with open(save_file, 'a+') as f:
             f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
         
-        return True
-
-
 def parse_args():
     parser = argparse.ArgumentParser(
         description='MMDet eval on semantic segmentation')
@@ -194,6 +216,7 @@ if __name__ == '__main__':
         save_dir = '/home/jwwangchn/Downloads/Count'
         plt_save_dir = '/home/jwwangchn/Downloads'
         training_dir = None
+        trainset_result_dir = '/data/buildchange/public/imagesets'
     else:
         cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
         sub_folds = {'beijing':  ['arg', 'google', 'ms'],
@@ -205,6 +228,9 @@ if __name__ == '__main__':
         save_dir = '/mnt/lustre/wangjinwang/Downloads/Count'
         plt_save_dir = '/mnt/lustre/wangjinwang/Downloads'
         training_dir = '/mnt/lustrenew/liweijia/data/roof-footprint/paper/val_shanghai/'
+        trainset_result_dir = '/mnt/lustre/wangjinwang/Downloads/public/imagesets'
+
+    bstool.mkdir_or_exist(trainset_result_dir)
 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -213,6 +239,7 @@ if __name__ == '__main__':
         os.makedirs(save_dir)
     
     full_mean_angles = []
+    training_set = defaultdict(dict)
     for city in cities:
         full_mean_angles_city = []
         for sub_fold in sub_folds[city]:
@@ -224,14 +251,16 @@ if __name__ == '__main__':
                                     sub_fold=sub_fold,
                                     save_dir=save_dir,
                                     training_dir=training_dir)
-            mean_angles = count_image.core()
+            mean_angles, file_properties = count_image.core()
 
             full_mean_angles += mean_angles
             full_mean_angles_city += mean_angles
             print("Finish processing {} {} set.".format(city, sub_fold))
+            
+            training_set[city][sub_fold] = file_properties
 
         full_mean_angles_city = np.array(full_mean_angles_city)
-        plt.hist(full_mean_angles, bins=np.arange(0, 100, (int(100) - int(0)) // 20), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
+        plt.hist(full_mean_angles_city, bins=np.arange(0, 100, (int(100) - int(0)) // 20), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
         plt.savefig(os.path.join(plt_save_dir, f'test_{city}.png'))
         plt.clf()
 
@@ -239,3 +268,12 @@ if __name__ == '__main__':
 
     plt.hist(full_mean_angles, bins=np.arange(0, 100, (int(100) - int(0)) // 20), histtype='bar', facecolor='dodgerblue', alpha=0.75, rwidth=0.9)
     plt.savefig(os.path.join(plt_save_dir, 'test_full_dataset.png'))
+
+
+    for city in cities:
+        for sub_fold in sub_folds[city]:
+            file_properties = training_set[city][sub_fold]
+            with open(os.path.join(trainset_result_dir, f'{city}_{sub_fold}_select_image.txt'), 'w') as f:
+                for file_property in file_properties:
+                    file_property = [file_property[-1]] + ["{:.2f}".format(float(value)) for value in file_property[:-1]] + ['\n']
+                    f.write(" ".join(file_property))
