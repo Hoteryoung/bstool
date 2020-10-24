@@ -79,6 +79,7 @@ class CountImage():
         angles = []
         object_num = len(origin_properties)
         heights = []
+        offset_lengths = []
         for single_property in origin_properties:
             
             if single_property['ignore'] == 1.0:
@@ -101,17 +102,45 @@ class CountImage():
 
             angle = math.atan2(math.sqrt(offset_x ** 2 + offset_y ** 2) * self.resolution, building_height)
         
+            offset_length = math.sqrt(offset_x ** 2 + offset_y ** 2)
+
             angles.append(angle)
             heights.append(building_height)
+            offset_lengths.append(offset_length)
 
-        mean_angle = np.abs(np.mean(np.array(angles)) * 180.0 / math.pi)
+        mean_angle, keep_flag = self.keep_file(angles, heights, offset_lengths)
+
+        if keep_flag:
+            result = self.save_count_results(mean_angle, file_name)
+            if result is None:
+                return None
+            else:
+                return mean_angle
+        else:
+            return None
+
+    def keep_file(self, angles, heights, offset_lengths):
+        angles = np.abs(angles) * 180.0 / math.pi
+        offset_lengths = np.abs(offset_lengths)
+
+        mean_angle = np.mean(angles)
         mean_height = np.mean(heights)
+        mean_offset_length = np.mean(offset_lengths)
+
+        std_offset_length = np.std(offset_lengths)
+        std_angle = np.std(angles)
 
         if mean_height < 4:
-            return None
-        else:
-            self.save_count_results(mean_angle, file_name)
-            return mean_angle
+            return mean_angle, False
+
+        if mean_angle < 45 and mean_offset_length < 10 and std_offset_length < 5:
+            return mean_angle, False
+
+        if std_angle > 10:
+            return mean_angle, False
+
+        return mean_angle, True
+
 
     def core(self):
         json_file_list = glob.glob("{}/*.json".format(self.json_dir))
@@ -127,6 +156,8 @@ class CountImage():
         return mean_angles
 
     def save_count_results(self, angle, file_name):
+        if math.isnan(angle):
+            return 
         save_file = os.path.join(self.save_dir, f"{int(angle / 5) * 5}.txt")
         with open(save_file, 'a+') as f:
             f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
