@@ -77,7 +77,6 @@ class CountImage():
 
         origin_properties = [obj['property'] for obj in objects]
         angles = []
-        object_num = len(origin_properties)
         heights = []
         offset_lengths = []
         for single_property in origin_properties:
@@ -120,6 +119,9 @@ class CountImage():
             return None
 
     def keep_file(self, angles, heights, offset_lengths):
+        if len(angles) < 20:
+            return mean_angle, False
+            
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
@@ -141,7 +143,6 @@ class CountImage():
 
         return mean_angle, True
 
-
     def core(self):
         json_file_list = glob.glob("{}/*.json".format(self.json_dir))
 
@@ -158,7 +159,7 @@ class CountImage():
     def save_count_results(self, angle, file_name):
         if math.isnan(angle):
             return 
-            
+
         save_file = os.path.join(self.save_dir, f"{int(angle / 5) * 5}.txt")
         with open(save_file, 'a+') as f:
             f.write(f'{self.city} {self.sub_fold} {file_name} {angle}\n')
