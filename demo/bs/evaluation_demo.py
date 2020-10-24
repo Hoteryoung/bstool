@@ -65,6 +65,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v005.10.04_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature_share_fcs',
             'bc_v005.10.05_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature_share_fcs_4_angles',
             'bc_v005.10.06_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature_share_fcs_4_angles_add_ignore',
+            'bc_v005.10.07_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature_share_fcs_4_angles_decouple',
             'bc_v008.01_mask_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d',
             'bc_v008.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d',
             'bc_v008.02.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_urban3d_atl',
@@ -106,7 +107,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v005.09.11' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v005.10.07' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
@@ -134,6 +135,11 @@ if __name__ == '__main__':
 
         if 'v008.01' in model or 'v008.04' in model:
             with_offset = False
+
+        if 'v008.02.01' in model:
+            score_threshold = 0.2
+        else:
+            score_threshold = 0.4
 
         for city in cities:
             print(f"========== {model} ========== {city} ==========")
@@ -214,7 +220,7 @@ if __name__ == '__main__':
                                         roof_csv_file=roof_csv_file,
                                         rootprint_csv_file=rootprint_csv_file,
                                         iou_threshold=0.1,
-                                        score_threshold=0.4,
+                                        score_threshold=score_threshold,
                                         output_dir=output_dir,
                                         with_offset=with_offset,
                                         with_height=with_height,
