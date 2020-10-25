@@ -265,6 +265,7 @@ if __name__ == '__main__':
     plt.ylabel('num')
 
     counter = defaultdict(dict)
+    total = 0
     for city in cities:
         for sub_fold in sub_folds[city]:
             num = 0
@@ -274,7 +275,9 @@ if __name__ == '__main__':
                     file_property = [file_property[-1]] + ["{:.2f}".format(float(value)) for value in file_property[:-1]] + ['\n']
                     f.write(" ".join(file_property))
                     num += 1
+                    total += 1
 
             counter[city][sub_fold] = num
 
     print(f"The number of publiced image is: {counter}")
+    print(f"Total number is: {total}")
