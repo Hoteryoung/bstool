@@ -30,9 +30,9 @@ class CountImage():
 
         self.image_dir = f'./data/{core_dataset_name}/{version}/{city}/images'
         if data_source == 'local':
-            self.json_dir = f'/data/{core_dataset_name}/{version}/{city}/labels'
+            self.json_dir = f'./data/{core_dataset_name}/{version}/{city}/labels'
         else:
-            self.json_dir = f'/data/{core_dataset_name}/{version}/{city}/labels'
+            self.json_dir = f'./data/{core_dataset_name}/{version}/{city}/labels'
 
         self.height_angle_save_dir = height_angle_save_dir
 
