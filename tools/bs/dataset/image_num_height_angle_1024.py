@@ -116,7 +116,7 @@ class CountImage():
             parameters = {
                         'angles': 10,
                         "mean_height": 4,
-                        "mean_angle": 40, 
+                        "mean_angle": 45, 
                         "mean_offset_length": 10,
                         'std_offset_length': 5,
                         'std_angle': 15,
@@ -264,10 +264,17 @@ if __name__ == '__main__':
     plt.xlabel('angle')
     plt.ylabel('num')
 
+    counter = defaultdict(dict)
     for city in cities:
         for sub_fold in sub_folds[city]:
+            num = 0
             file_properties = training_set[city][sub_fold]
             with open(os.path.join(training_image_info_dir, f'{city}_{sub_fold}_select_image.txt'), 'w') as f:
                 for file_property in file_properties:
                     file_property = [file_property[-1]] + ["{:.2f}".format(float(value)) for value in file_property[:-1]] + ['\n']
                     f.write(" ".join(file_property))
+                    num += 1
+
+            counter[city][sub_fold] = num
+
+    print(f"The number of publiced image is: {counter}")
