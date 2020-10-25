@@ -135,7 +135,9 @@ class CountImage():
         # parameters
         ignores = ignores.tolist()
 
-        if ignores.count(0) / len(ignores) < parameters['no_ignore_rate']:
+        no_ignore_rate = ignores.count(0) / len(ignores)
+
+        if no_ignore_rate < parameters['no_ignore_rate']:
             return False, None
 
         if len(angles) < parameters['angles']:
@@ -150,7 +152,7 @@ class CountImage():
         if std_angle > parameters['std_angle']:
             return False, None
 
-        file_property = [mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle]
+        file_property = [mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle, no_ignore_rate]
 
         return True, file_property
 
