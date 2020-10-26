@@ -12,6 +12,7 @@ from collections import defaultdict
 from json.decoder import JSONDecodeError
 import tqdm
 import ast
+import math
 
 import mmcv
 import bstool
@@ -205,7 +206,10 @@ def bs_json_parse(json_file):
         object_struct['ignore_flag'] = annotation['ignore']
         object_struct['offset'] = annotation['offset']
         object_struct['building_height'] = annotation['building_height']
-        
+
+        if math.isnan(object_struct['building_height']):
+            continue
+
         object_struct['segmentation'] = roof_mask
         object_struct['label'] = 1
         object_struct['iscrowd'] = object_struct['ignore_flag']

@@ -94,6 +94,24 @@ class CountImage():
         return image_info
 
     def get_image_info(self, file_name, angles, heights, offset_lengths, ignores):
+        if data_source == 'local':
+            parameters = {
+                        'angles': 0,
+                        "mean_height": 0,
+                        "mean_angle": 0, 
+                        "mean_offset_length": 0,
+                        'std_offset_length': 50,
+                        'std_angle': 100,
+                        'no_ignore_rate': 0.9}
+        else:
+            parameters = {
+                        'object_num': 5,
+                        "mean_height": 3,
+                        "mean_angle": 40, 
+                        "mean_offset_length": 5,
+                        'std_offset_length': 5,
+                        'std_angle': 30,
+                        'no_ignore_rate': 0.6}
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
@@ -106,8 +124,14 @@ class CountImage():
 
         ignores = ignores.tolist()
         no_ignore_rate = ignores.count(0) / len(ignores)
-
         object_num = len(ignores)
+
+        if object_num < parameters['object_num'] or no_ignore_rate < parameters['no_ignore_rate'] or mean_height < parameters['mean_height'] or std_angle > parameters['std_angle']:
+            return
+
+        if mean_angle < parameters['mean_angle'] and mean_offset_length < parameters['mean_offset_length'] and std_offset_length < parameters['std_offset_length']:
+            return
+
         sub_fold, ori_image_fn, coord = bstool.get_info_splitted_imagename(file_name)
 
         score = (mean_angle / 90) * (mean_height / 10) * (mean_offset_length / 20) * (no_ignore_rate) * (20 / (std_angle + 1)) * (std_offset_length / 10)
