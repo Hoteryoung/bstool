@@ -28,8 +28,8 @@ if __name__ == '__main__':
         sub_folds = {'shanghai': ['arg']}
         images_dir = './data/buildchange/v2/{}/images'
         labels_dir = './data/buildchange/v2/{}/labels'
-        vis_dir_ori = './data/buildchange/v2/misc/vis/{}'
-        image_info_dir = './data/buildchange/v2/misc/image_info'
+        vis_dir_ori = './data/buildchange/v2/misc/nooverlap/vis/{}'
+        image_info_dir = './data/buildchange/v2/misc/nooverlap/image_info'
     else:
         cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
         sub_folds = {'beijing':  ['arg', 'google', 'ms'],
