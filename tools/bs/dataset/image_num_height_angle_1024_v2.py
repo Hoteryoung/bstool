@@ -55,6 +55,10 @@ class CountImage():
             candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
             if coord not in candidate_coords:
                 return
+
+        # 0. keep the specific sub fold image
+        if sub_fold != self.sub_fold:
+            return
         
         # 1. skip the validation image
         if file_name in self.val_image_list:
@@ -96,7 +100,7 @@ class CountImage():
     def get_image_info(self, file_name, angles, heights, offset_lengths, ignores):
         if data_source == 'local':
             parameters = {
-                        'angles': 0,
+                        'object_num': 0,
                         "mean_height": 0,
                         "mean_angle": 0, 
                         "mean_offset_length": 0,
@@ -185,7 +189,6 @@ if __name__ == '__main__':
         cities = ['shanghai']
         sub_folds = {'shanghai': ['arg']}
         val_image_info_dir = None
-        training_image_info_csv = './data/buildchange/v2/misc/nooverlap/training_image_info.csv'
     else:
         cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
         sub_folds = {'beijing':  ['arg', 'google', 'ms'],
@@ -194,7 +197,6 @@ if __name__ == '__main__':
                     'jinan':    ['arg', 'google', 'ms'],
                     'shanghai': ['arg', 'google', 'ms']}
         val_image_info_dir = '/mnt/lustrenew/liweijia/data/roof-footprint/paper/val_shanghai/'
-        training_image_info_csv = './data/buildchange/v2/misc/nooverlap/training_image_info.csv'
     
     training_image_info = []
     for city in cities:
