@@ -124,11 +124,11 @@ class CountImage():
             parameters = {
                         'angles': 15,
                         "mean_height": 4,
-                        "mean_angle": 45, 
+                        "mean_angle": 40, 
                         "mean_offset_length": 10,
                         'std_offset_length': 5,
                         'std_angle': 10,
-                        'no_ignore_rate': 0.85}
+                        'no_ignore_rate': 0.80}
         
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
