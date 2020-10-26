@@ -134,7 +134,7 @@ class CountImage():
 
         sub_fold, ori_image_fn, coord = bstool.get_info_splitted_imagename(file_name)
 
-        score = (mean_angle / 90) * (mean_height / 10) * (mean_offset_length / 20) * (no_ignore_rate) * (20 / (std_angle + 1)) * (std_offset_length / 10) * (object_num / 65)
+        score = (object_num / 65) * (mean_angle / 90) * (mean_height / 10) * (mean_offset_length / 20) * (std_offset_length / 10) * (20 / (std_angle + 1)) * (no_ignore_rate)
 
         image_info = [file_name, sub_fold, ori_image_fn, coord[0], coord[1], object_num, mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle, no_ignore_rate, score]
 
