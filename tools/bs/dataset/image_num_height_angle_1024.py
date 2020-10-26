@@ -23,10 +23,12 @@ class CountImage():
                  sub_fold='arg',
                  resolution=0.6,
                  height_angle_save_dir=None,
-                 val_image_info_dir=None):
+                 val_image_info_dir=None,
+                 with_overlap=False):
         self.city = city
         self.sub_fold = sub_fold
         self.resolution = resolution
+        self.with_overlap = with_overlap
 
         self.image_dir = f'./data/{core_dataset_name}/{version}/{city}/images'
         if data_source == 'local':
@@ -55,6 +57,12 @@ class CountImage():
     def count_image(self, json_file):
         file_name = bstool.get_basename(json_file)
         sub_fold, ori_image_fn, coord = bstool.get_info_splitted_imagename(file_name)
+
+        # -1. skip the overlap images:
+        if not self.with_overlap:
+            candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
+            if coord not in candidate_coords:
+                return
 
         # 0. keep the specific sub fold image
         if sub_fold != self.sub_fold:
@@ -201,16 +209,22 @@ if __name__ == '__main__':
 
     core_dataset_name = 'buildchange'
     version = 'v2'
+    with_overlap = True
+    
+    if with_overlap:
+        overlap_info = 'overlap'
+    else:
+        overlap_info = 'nooverlap'
 
     data_source = args.source   # remote or local
 
     if data_source == 'local':
         cities = ['shanghai']
         sub_folds = {'shanghai': ['arg']}
-        height_angle_save_dir = f'./data/buildchange/{version}/misc/height_angle'
-        plt_save_dir = f'./data/buildchange/{version}/misc/plot'
+        height_angle_save_dir = f'./data/buildchange/{version}/misc/{overlap_info}/height_angle'
+        plt_save_dir = f'./data/buildchange/{version}/misc/{overlap_info}/plot'
         val_image_info_dir = None
-        training_image_info_dir = f'./data/buildchange/{version}/misc/image_info'
+        training_image_info_dir = f'./data/buildchange/{version}/misc/{overlap_info}/image_info'
     else:
         cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
         sub_folds = {'beijing':  ['arg', 'google', 'ms'],
@@ -219,10 +233,10 @@ if __name__ == '__main__':
                     'jinan':    ['arg', 'google', 'ms'],
                     'shanghai': ['arg', 'google', 'ms']}
 
-        height_angle_save_dir = f'./data/buildchange/{version}/misc/height_angle'
-        plt_save_dir = f'./data/buildchange/{version}/misc/plot'
+        height_angle_save_dir = f'./data/buildchange/{version}/misc/{overlap_info}/height_angle'
+        plt_save_dir = f'./data/buildchange/{version}/misc/{overlap_info}/plot'
         val_image_info_dir = '/mnt/lustrenew/liweijia/data/roof-footprint/paper/val_shanghai/'
-        training_image_info_dir = f'./data/buildchange/{version}/misc/image_info'
+        training_image_info_dir = f'./data/buildchange/{version}/misc/{overlap_info}/image_info'
 
     bstool.mkdir_or_exist(plt_save_dir)
     bstool.mkdir_or_exist(training_image_info_dir)
@@ -243,7 +257,8 @@ if __name__ == '__main__':
                                     city=city,
                                     sub_fold=sub_fold,
                                     height_angle_save_dir=height_angle_save_dir,
-                                    val_image_info_dir=val_image_info_dir)
+                                    val_image_info_dir=val_image_info_dir,
+                                    with_overlap=with_overlap)
             mean_angles, file_properties = count_image.core()
 
             full_mean_angles += mean_angles
