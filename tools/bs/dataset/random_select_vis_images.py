@@ -4,13 +4,24 @@ import os
 import argparse
 import random
 import shutil
+import pandas
 
 import bstool
 
 
+def parse_csv(csv_file):
+    csv_df = pandas.read_csv(csv_file)
+    file_names = list(csv_df.file_name.unique())
+    scores = list(csv_df.score.unique())
+
+    return file_names, scores
+
 if __name__ == '__main__':
     vis_root_dir = './data/buildchange/public/20201027/vis/{}'
     random_vis_dir = './data/buildchange/public/20201027/random_vis'
+    csv_file = './data/buildchange/public/misc/nooverlap/training_dataset_info_20201027.csv'
+
+    file_names, scores = parse_csv(csv_file)
 
     bstool.mkdir_or_exist(random_vis_dir)
 
@@ -35,8 +46,13 @@ if __name__ == '__main__':
     vis_file_list.sort()
     random.shuffle(vis_file_list)
 
+    max_score, min_score = max(scores), min(scores)
+
     for vis_file in vis_file_list[0:300]:
         basename = bstool.get_basename(vis_file)
-        shutil.copy(vis_file, os.path.join(random_vis_dir, basename))
+
+        score = (scores[file_names.index(basename)] - min_score) / (max_score - min_score) * 100 + 100
+
+        shutil.copy(vis_file, os.path.join(random_vis_dir, str(score) + '_' + basename))
 
     
