@@ -18,7 +18,6 @@ def parse_csv(csv_file):
 
 if __name__ == '__main__':
     vis_root_dir = './data/buildchange/public/20201027/vis/{}'
-    
     csv_file = './data/buildchange/public/misc/nooverlap/training_dataset_info_20201027.csv'
 
     file_names, scores = parse_csv(csv_file)
@@ -46,7 +45,7 @@ if __name__ == '__main__':
         random.shuffle(vis_file_list)
         random_vis_dir = './data/buildchange/public/20201027/random_vis'
     else:
-        sorted_index = np.argsort(scores)[::-1]
+        sorted_index = np.argsort(scores)
         vis_file_list = [vis_file_list[idx] for idx in sorted_index]
         random_vis_dir = './data/buildchange/public/20201027/high_score_image_300'
 
