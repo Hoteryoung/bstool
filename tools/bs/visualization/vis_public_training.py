@@ -30,7 +30,7 @@ if __name__ == '__main__':
                 basename = bstool.get_basename(label_fn)
                 
                 label_file = os.path.join(label_dir, basename + '.json')
-                image_file = os.path.join(label_dir, basename + '.png')
+                image_file = os.path.join(image_dir, basename + '.png')
 
                 objects = bstool.bs_json_parse(label_file)
                 ignores = np.array([obj['ignore_flag'] for obj in objects])
