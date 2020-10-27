@@ -7,9 +7,10 @@ import bstool
 
 
 if __name__ == '__main__':
-    image_root_dir = 'data/buildchange/public/20201027/{}/images'
-    label_root_dir = 'data/buildchange/public/20201027/{}/labels'
-    vis_root_dir = 'data/buildchange/public/20201027/vis/{}'
+    image_root_dir = './data/buildchange/public/20201027/{}/images'
+    label_root_dir = './data/buildchange/public/20201027/{}/labels'
+    vis_root_dir = './data/buildchange/public/20201027/vis/{}'
+
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     sub_folds = {'beijing':  ['arg', 'google', 'ms'],
                 'chengdu':  ['arg', 'google', 'ms'],
