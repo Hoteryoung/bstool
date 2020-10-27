@@ -115,7 +115,7 @@ def show_coco_mask(coco, image_file, anns, output_file=None):
     else:
         plt.show()
 
-def draw_masks_boundary(img, masks, color=(0, 0, 255), thickness=2):
+def draw_masks_boundary(img, masks, color=(0, 0, 255), thickness=3):
     for mask in masks:
         img = draw_mask_boundary(img, mask, color=color, thickness=thickness)
 
