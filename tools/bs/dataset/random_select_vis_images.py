@@ -54,5 +54,3 @@ if __name__ == '__main__':
         score = (scores[file_names.index(basename)] - min_score) / (max_score - min_score) * 100 + 100
 
         shutil.copy(vis_file, os.path.join(random_vis_dir, str(int(score) + '_' + basename))
-
-    
