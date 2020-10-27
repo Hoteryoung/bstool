@@ -45,8 +45,9 @@ if __name__ == '__main__':
         random.shuffle(vis_file_list)
         random_vis_dir = './data/buildchange/public/20201027/random_vis'
     else:
-        sorted_index = np.argsort(scores)
+        sorted_index = np.argsort(scores)[::-1]
         vis_file_list = [vis_file_list[idx] for idx in sorted_index]
+        file_names = [file_names[idx] for idx in sorted_index]
         random_vis_dir = './data/buildchange/public/20201027/high_score_image_300'
 
     bstool.mkdir_or_exist(random_vis_dir)
