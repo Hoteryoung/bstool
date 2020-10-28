@@ -61,7 +61,7 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=13608, 
+        default=13608, # 17225 for 20201028 generation
         help='dataset for evaluation')
     parser.add_argument(
         '--keep_threshold',
@@ -76,7 +76,7 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    csv_file = './data/buildchange/public/misc/nooverlap/full_dataset_info.csv'
+    csv_file = './data/buildchange/public/misc/nooverlap/full_dataset_info_20201028.csv'
     candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     version = '20201027'
@@ -102,6 +102,7 @@ if __name__ == '__main__':
             training_info.extend(result)
     
     training_csv_file = f'./data/buildchange/public/misc/nooverlap/training_dataset_info_{version}.csv'
+    training_imageset_file = f'./data/buildchange/public/misc/nooverlap/training_imageset_file_{version}.csv'
     with open(training_csv_file, 'w') as f:
         csv_writer = csv.writer(f, delimiter=',')
         head = ['file_name', 'sub_fold', 'ori_image_fn', 'coord_x', 'coord_y', 'object_num', 'mean_angle', 'mean_height', 'mean_offset_length', 'std_offset_length', 'std_angle', 'no_ignore_rate', 'score']
@@ -111,6 +112,8 @@ if __name__ == '__main__':
 
     print("The number of training data: ", len(training_info))
     
+
+    f = open(training_imageset_file, 'w')
     if len(training_info) == 3000:
         src_root_image_dir = './data/buildchange/v2/{}/images'
         src_root_label_dir = './data/buildchange/v2/{}/labels'
@@ -119,6 +122,7 @@ if __name__ == '__main__':
         for data in tqdm.tqdm(training_info):
             base_name = data[0]
             city = base_name.split("__")[0].split('_')[0]
+            sub_fold, ori_image_name, coord = bstool.get_info_splitted_imagename(base_name)
             src_image_file = os.path.join(src_root_image_dir.format(city), base_name + '.png')
             src_label_file = os.path.join(src_root_label_dir.format(city), base_name + '.json')
 
@@ -130,3 +134,7 @@ if __name__ == '__main__':
             
             shutil.copy(src_image_file, dst_image_file)
             shutil.copy(src_label_file, dst_label_file)
+
+            f.write(f"{city} {sub_fold} {ori_image_name}\n")
+
+    f.close()
