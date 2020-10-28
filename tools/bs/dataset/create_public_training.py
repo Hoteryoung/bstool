@@ -118,6 +118,7 @@ if __name__ == '__main__':
 
     print("The number of training data: ", len(training_info))
 
+    selected_image_info = []
     f = open(training_imageset_file, 'w')
     if len(training_info) == 3000:
         src_root_image_dir = './data/buildchange/v2/{}/images'
@@ -140,6 +141,9 @@ if __name__ == '__main__':
             shutil.copy(src_image_file, dst_image_file)
             shutil.copy(src_label_file, dst_label_file)
 
-            f.write(f"{city} {sub_fold} {ori_image_name}\n")
+            info = f"{city} {sub_fold} {ori_image_name}\n"
+            if info not in selected_image_info:
+                f.write(info)
+                selected_image_info.append(info)
 
     f.close()

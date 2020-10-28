@@ -16,7 +16,7 @@ def parse_csv(csv_file):
     return file_names
 
 if __name__ == '__main__':
-    csv_file = './data/buildchange/public/misc/nooverlap/training_dataset_info.csv'
+    csv_file = './data/buildchange/public/misc/nooverlap/training_dataset_info_20201028.csv'
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     sub_folds = ['arg', 'google', 'ms']
 
