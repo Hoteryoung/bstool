@@ -87,7 +87,12 @@ if __name__ == '__main__':
     
     training_info = []
     for ori_image_name, score in zip(ori_image_names, scores):
-        result = keep_ori_image(ori_image_name, file_names, candidate_coords, score_threshold_index, keep_sub_image_num_threshold=4)
+        result = keep_ori_image(ori_image_name, 
+                                file_names, 
+                                candidate_coords, 
+                                cities, 
+                                score_threshold_index=score_threshold_index, 
+                                keep_sub_image_num_threshold=keep_sub_image_num_threshold)
         if result is None:
             continue
         else:
