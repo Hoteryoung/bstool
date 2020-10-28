@@ -61,12 +61,17 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=13608, # 17225 for 20201028 generation, 13608 for 20201027 generation
+        default=13608, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
         help='dataset for evaluation')
     parser.add_argument(
         '--keep_threshold',
         type=int,
         default=3, 
+        help='dataset for evaluation')
+    parser.add_argument(
+        '--version',
+        type=str,
+        default='20201028', 
         help='dataset for evaluation')
 
     args = parser.parse_args()
@@ -76,7 +81,8 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    version = '20201027'
+    version = args.version
+    print("Processing the version of ", version)
     csv_file = f'./data/buildchange/public/misc/nooverlap/full_dataset_info_{version}.csv'
     candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
