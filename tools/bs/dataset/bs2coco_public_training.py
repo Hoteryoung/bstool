@@ -148,8 +148,8 @@ if __name__ == "__main__":
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
     # cities = ['xian_fine_origin']
     # cities = ['xian_fine_samples']
-    date = '20201027'
-    release_version = f'public/{date}'
+    version = '20201028'
+    release_version = f'public/{version}'
 
     groundtruth = True
     with_height_sample = False
@@ -158,9 +158,9 @@ if __name__ == "__main__":
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")
         if 'xian' in city or 'dalian' in city:
-            anno_name = [core_dataset_name, f'public_{date}', 'val', city]
+            anno_name = [core_dataset_name, f'public_{version}', 'val', city]
         else:
-            anno_name = [core_dataset_name, f'public_{date}', 'train', city]
+            anno_name = [core_dataset_name, f'public_{version}', 'train', city]
 
         if with_height_sample:
             anno_name.append("height_sampled")
