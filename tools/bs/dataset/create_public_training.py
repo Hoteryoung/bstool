@@ -76,10 +76,11 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    csv_file = './data/buildchange/public/misc/nooverlap/full_dataset_info_20201028.csv'
+    version = '20201028'
+    csv_file = f'./data/buildchange/public/misc/nooverlap/full_dataset_info_{version}.csv'
     candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    version = '20201028'
+    
 
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
