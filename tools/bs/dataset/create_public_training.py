@@ -5,6 +5,7 @@ from collections import defaultdict
 import pandas
 import tqdm
 import shutil
+import argparse
 
 import bstool
 
@@ -53,8 +54,25 @@ def keep_ori_image(ori_image_name,
     else:
         return
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='MMDet eval on semantic segmentation')
+    parser.add_argument(
+        '--score_threshold',
+        type=int,
+        default=10000, 
+        help='dataset for evaluation')
+    parser.add_argument(
+        '--keep_threshold',
+        type=int,
+        default=4, 
+        help='dataset for evaluation')
+
+    args = parser.parse_args()
 
 if __name__ == '__main__':
+    args = parse_args()
+
     csv_file = './data/buildchange/public/misc/nooverlap/full_dataset_info.csv'
     candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
@@ -62,7 +80,8 @@ if __name__ == '__main__':
 
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
-    score_threshold_index = 15000
+    score_threshold_index = args.score_threshold
+    keep_sub_image_num_threshold = args.keep_threshold
     
     training_info = []
     for ori_image_name, score in zip(ori_image_names, scores):
