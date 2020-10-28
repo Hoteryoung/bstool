@@ -49,8 +49,8 @@ def keep_ori_image(ori_image_name,
                 training_info.append(full_data[google_idx])
                 training_info.append(full_data[ms_idx])
 
-    print("sub_image_num: ", sub_image_num)
-    if sub_image_num >= keep_sub_image_num_threshold * 3:
+    # print("sub_image_num: ", sub_image_num)
+    if sub_image_num >= keep_sub_image_num_threshold:
         return training_info
     else:
         return
@@ -61,12 +61,12 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=10000, 
+        default=13608, 
         help='dataset for evaluation')
     parser.add_argument(
         '--keep_threshold',
         type=int,
-        default=4, 
+        default=3, 
         help='dataset for evaluation')
 
     args = parser.parse_args()
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     score_threshold_index = args.score_threshold
     keep_sub_image_num_threshold = args.keep_threshold
 
-    print("You set the thresholds of score and keep as: ", score_threshold_index, type(score_threshold_index), keep_sub_image_num_threshold, type(keep_sub_image_num_threshold))
+    print("You set the thresholds of score and keep as: ", score_threshold_index, keep_sub_image_num_threshold)
     
     training_info = []
     for ori_image_name, score in zip(ori_image_names, scores):
