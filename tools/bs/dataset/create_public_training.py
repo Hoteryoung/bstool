@@ -49,6 +49,7 @@ def keep_ori_image(ori_image_name,
                 training_info.append(full_data[google_idx])
                 training_info.append(full_data[ms_idx])
 
+    print("sub_image_num: ", sub_image_num)
     if sub_image_num >= keep_sub_image_num_threshold * 3:
         return training_info
     else:
