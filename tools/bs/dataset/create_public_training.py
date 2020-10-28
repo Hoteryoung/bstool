@@ -85,6 +85,8 @@ if __name__ == '__main__':
 
     score_threshold_index = args.score_threshold
     keep_sub_image_num_threshold = args.keep_threshold
+
+    print("You set the thresholds of score and keep as: ", score_threshold_index, type(score_threshold_index), keep_sub_image_num_threshold, type(keep_sub_image_num_threshold))
     
     training_info = []
     for ori_image_name, score in zip(ori_image_names, scores):
