@@ -30,8 +30,8 @@ def keep_ori_image(ori_image_name,
                    score_threshold_index=10000,
                    keep_sub_image_num_threshold=4):
     training_info = []
+    sub_image_num = 0
     for city in cities:
-        sub_image_num = 0
         for candidate_coord in candidate_coords:
             arg = f"{city}_arg__{ori_image_name}__{candidate_coord[0]}_{candidate_coord[1]}"
             google = f"{city}_google__{ori_image_name}__{candidate_coord[0]}_{candidate_coord[1]}"
