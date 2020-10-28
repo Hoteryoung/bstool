@@ -213,7 +213,7 @@ if __name__ == '__main__':
 
             print("Finish processing {} {} set.".format(city, sub_fold))
 
-    full_csv_file = './data/buildchange/public/misc/nooverlap/full_dataset_info.csv'
+    full_csv_file = './data/buildchange/public/misc/nooverlap/full_dataset_info_20201028.csv'
 
     training_image_info_ = np.array(training_image_info)
     scores = training_image_info_[:, -1].astype(np.float64)
