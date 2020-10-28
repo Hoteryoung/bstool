@@ -50,7 +50,7 @@ def keep_ori_image(ori_image_name,
                 training_info.append(full_data[ms_idx])
 
     # print("sub_image_num: ", sub_image_num)
-    if sub_image_num >= keep_sub_image_num_threshold:
+    if sub_image_num >= keep_sub_image_num_threshold or keep_sub_image_num_threshold == 0:
         return training_info
     else:
         return
@@ -61,7 +61,7 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=13608, # 17225 for 20201028 generation
+        default=13608, # 17225 for 20201028 generation, 13608 for 20201027 generation
         help='dataset for evaluation')
     parser.add_argument(
         '--keep_threshold',
@@ -76,12 +76,11 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    version = '20201028'
+    version = '20201027'
     csv_file = f'./data/buildchange/public/misc/nooverlap/full_dataset_info_{version}.csv'
     candidate_coords = [(0, 0), (0, 1024), (1024, 0), (1024, 1024)]
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     
-
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
     score_threshold_index = args.score_threshold
@@ -103,7 +102,7 @@ if __name__ == '__main__':
             training_info.extend(result)
     
     training_csv_file = f'./data/buildchange/public/misc/nooverlap/training_dataset_info_{version}.csv'
-    training_imageset_file = f'./data/buildchange/public/misc/nooverlap/training_imageset_file_{version}.csv'
+    training_imageset_file = f'./data/buildchange/public/misc/nooverlap/training_imageset_file_{version}.txt'
     with open(training_csv_file, 'w') as f:
         csv_writer = csv.writer(f, delimiter=',')
         head = ['file_name', 'sub_fold', 'ori_image_fn', 'coord_x', 'coord_y', 'object_num', 'mean_angle', 'mean_height', 'mean_offset_length', 'std_offset_length', 'std_angle', 'no_ignore_rate', 'score']
@@ -112,7 +111,6 @@ if __name__ == '__main__':
             csv_writer.writerow(data)
 
     print("The number of training data: ", len(training_info))
-    
 
     f = open(training_imageset_file, 'w')
     if len(training_info) == 3000:
