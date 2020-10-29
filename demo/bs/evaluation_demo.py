@@ -102,13 +102,15 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v013.01.01_offset_rcnn_with_side_face_reweight',
             'bc_v014.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_coordconv',
             'bc_v015.01.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_non_local',
-            'bc_v100.01.01_offset_rcnn_r50_1x_public_20201027_baseline'
+            'bc_v100.01.01_offset_rcnn_r50_1x_public_20201027_baseline',
+            'bc_v100.01.02_offset_rcnn_r50_1x_public_20201027_lr0.01',
+            'bc_v100.01.04_offset_rcnn_r50_2x_public_20201028_lr_0.02'
             ]
 
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'v100.01.01' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v100.01.04' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']

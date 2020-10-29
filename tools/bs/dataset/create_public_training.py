@@ -95,7 +95,7 @@ if __name__ == '__main__':
     print("You set the thresholds of score and keep as: ", score_threshold_index, keep_sub_image_num_threshold)
     
     training_info = []
-    for ori_image_name, score in zip(ori_image_names, scores):
+    for ori_image_name in ori_image_names:
         result = keep_ori_image(ori_image_name, 
                                 file_names, 
                                 candidate_coords, 
