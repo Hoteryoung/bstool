@@ -211,7 +211,6 @@ def bs_json_parse(json_file, fix_height=False):
             if fix_height:
                 object_struct['building_height'] = 3.0
             else:
-                print("This building height has error, continue")
                 continue
 
         object_struct['segmentation'] = roof_mask
@@ -219,6 +218,9 @@ def bs_json_parse(json_file, fix_height=False):
         object_struct['iscrowd'] = object_struct['ignore_flag']
         
         objects.append(object_struct)
+
+    if len(objects) == 0:
+        print("The heights of this image are all nan, please fix them")
     
     return objects
 
