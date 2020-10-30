@@ -162,7 +162,7 @@ if __name__ == "__main__":
             fix_height = True
         else:
             anno_name = [core_dataset_name, f'public_{version}', 'train', city]
-            fix_height = False
+            fix_height = True
 
         if with_height_sample:
             anno_name.append("height_sampled")

@@ -93,11 +93,11 @@ class SplitImage():
 
             # bstool.show_polygons_on_image(subimages[subimage_coordinate], subimage_polygons)
 
-            subimage_file = os.path.join(self.image_save_dir, f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png')
-            json_file = os.path.join(self.label_save_dir, f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.json')
+            subimage_file = os.path.join(self.image_save_dir, f'{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png')
+            json_file = os.path.join(self.label_save_dir, f'{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.json')
             
             image_info = {"ori_filename": f"{file_name}.jpg",
-                        "subimage_filename": f'{self.city}_{self.sub_fold}__{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png',
+                        "subimage_filename": f'{file_name}__{subimage_coordinate[0]}_{subimage_coordinate[1]}.png',
                         "width": self.subimage_size,
                         "height": self.subimage_size,
                         "city": self.city,
