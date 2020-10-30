@@ -161,7 +161,7 @@ def mask_parse(mask_file,
 
     return objects
         
-def bs_json_parse(json_file):
+def bs_json_parse(json_file, fix_height=False):
     """parse json file
 
     Args:
@@ -208,7 +208,10 @@ def bs_json_parse(json_file):
         object_struct['building_height'] = annotation['building_height']
 
         if math.isnan(object_struct['building_height']):
-            continue
+            if fix_height:
+                object_struct['building_height'] = 3.0
+            else:
+                continue
 
         object_struct['segmentation'] = roof_mask
         object_struct['label'] = 1

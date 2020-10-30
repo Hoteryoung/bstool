@@ -39,12 +39,12 @@ ALL_MODELS = [
             ]
 
 if __name__ == '__main__':
-    models = [model for model in ALL_MODELS[1:] if 'v100.01.07' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v100.01.04' in model]
     cities = ['dalian', 'xian']
 
     with_only_vis = False
     with_offset = True
-    save_merged_csv = True
+    save_merged_csv = False
 
     if save_merged_csv:
         csv_info = 'merged'
@@ -68,10 +68,10 @@ if __name__ == '__main__':
             bstool.mkdir_or_exist(f'./data/buildchange/summary/{model}')
             
             if city == 'xian':
-                anno_file = f'./data/buildchange/v1/coco/annotations/buildchange_v1_val_xian_fine.json'
-                gt_roof_csv_file = './data/buildchange/public/xian_val_roof_crop1024_gt_minarea100.csv'
-                gt_footprint_csv_file = './data/buildchange/public/xian_val_footprint_crop1024_gt_minarea100.csv'
-                image_dir = f'./data/buildchange/v0/xian_fine/images'
+                anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_xian_fine.json'
+                gt_roof_csv_file = './data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea100.csv'
+                gt_footprint_csv_file = './data/buildchange/public/20201028/xian_val_footprint_crop1024_gt_minarea100.csv'
+                image_dir = f'./data/buildchange/public/20201028/xian_fine/images'
             else:
                 raise NotImplementedError("do not support city: ", city)
 

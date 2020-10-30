@@ -73,7 +73,7 @@ class BS2COCO(bstool.Convert2COCO):
     def __json_parse__(self, label_file, image_file):
         objects = []
         if self.groundtruth:
-            objects = bstool.bs_json_parse(label_file)
+            objects = bstool.bs_json_parse(label_file, fix_height=fix_height)
             
             if with_height_sample:
                 heights = [obj['building_height'] for obj in objects]
@@ -159,8 +159,10 @@ if __name__ == "__main__":
         print(f"Begin to process {city} data!")
         if 'xian' in city or 'dalian' in city:
             anno_name = [core_dataset_name, f'public_{version}', 'val', city]
+            fix_height = True
         else:
             anno_name = [core_dataset_name, f'public_{version}', 'train', city]
+            fix_height = False
 
         if with_height_sample:
             anno_name.append("height_sampled")
