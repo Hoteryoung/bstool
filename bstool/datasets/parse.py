@@ -803,7 +803,7 @@ class CSVParse():
 
         self.objects = defaultdict(dict)
         self.dataset_buildings = []
-        print("begin parsing the csv file")
+        print(f"begin parsing the csv file: {csv_file}")
         for image_name in tqdm.tqdm(self.image_name_list):
             buildings = []
             for idx, row in csv_df[csv_df.ImageId == image_name].iterrows():

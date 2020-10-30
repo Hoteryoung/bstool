@@ -39,7 +39,8 @@ class Evaluation():
                  replace_pred_roof=False,
                  replace_pred_offset=False,
                  with_only_offset=False,
-                 offset_model='footprint2roof'):
+                 offset_model='footprint2roof',
+                 save_merged_csv=True):
         self.gt_roof_csv_file = gt_roof_csv_file
         self.gt_footprint_csv_file = gt_footprint_csv_file
         self.roof_csv_file = roof_csv_file
@@ -50,6 +51,7 @@ class Evaluation():
         self.classify_interval=[0,2,4,6,8,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,130,140,150,160,170,180,190,200,220,240,260,280,300,340,380]
         self.offset_class_num = len(self.classify_interval)
         self.with_only_offset = with_only_offset
+        self.save_merged_csv = save_merged_csv
 
         self.out_file_format = out_file_format
 
@@ -93,9 +95,12 @@ class Evaluation():
                                             replace_pred_roof=replace_pred_roof,
                                             offset_model=offset_model)
 
-        merged_objects = pkl_parser.merged_objects
-        
-        bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
+        if save_merged_csv:
+            merged_objects = pkl_parser.merged_objects
+            bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
+        else:
+            objects = pkl_parser.objects
+            bstool.bs_csv_dump(objects, roof_csv_file, rootprint_csv_file)
 
     def _csv2json(self, csv_file, ann_file):
         self.coco = COCO(ann_file)
