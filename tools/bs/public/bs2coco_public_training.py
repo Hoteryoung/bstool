@@ -147,7 +147,7 @@ if __name__ == "__main__":
     # cities = ['jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
     # cities = ['xian_fine_origin']
-    # cities = ['xian_fine_samples']
+    cities = ['xian_fine']
     version = '20201028'
     release_version = f'public/{version}'
 

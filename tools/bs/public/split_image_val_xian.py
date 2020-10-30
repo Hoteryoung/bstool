@@ -132,7 +132,7 @@ class SplitImage():
 if __name__ == '__main__':
     core_dataset_name = 'buildchange'
     src_version = 'v0'
-    dst_version = 'public'
+    dst_version = 'public/20201028'
     
     cities = ['xian_fine']
     sub_folds = {'xian_fine':  ['arg', 'google', 'ms']}
