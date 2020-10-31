@@ -307,7 +307,8 @@ class BSPklParser():
                  gt_roof_csv_file=None,
                  replace_pred_roof=False,
                  replace_pred_offset=False,
-                 offset_model='footprint2roof'):
+                 offset_model='footprint2roof',
+                 merge_splitted=True):
         self.iou_threshold = iou_threshold
         self.score_threshold = score_threshold
         self.min_area = min_area
@@ -340,10 +341,11 @@ class BSPklParser():
             result = results[idx]
 
             self.building_with_coord[ori_image_name][coord] = self._convert_items(result)
-            self.objects[img_name] = self.building_with_coord[ori_image_name][coord][:]
+            self.objects[img_name] = self.building_with_coord[ori_image_name][coord].copy()
         
         print('========== begin to merge the polygons in pkl ==========')
-        self.merged_objects = self._merge_buildings()
+        if merge_splitted:
+            self.merged_objects = self._merge_buildings()
 
         if self.replace_pred_roof:
             print('========== replace roof prediction with groundtruth ==========')
@@ -478,7 +480,7 @@ class BSPklParser():
             merged_buildings = []
             polygons_merged, scores_merged = [], []
             for subimage_coordinate in subimage_coordinates:
-                buildings = self.building_with_coord[ori_image_name][subimage_coordinate]
+                buildings = self.building_with_coord[ori_image_name][subimage_coordinate].copy()
 
                 if len(buildings) == 0:
                     continue

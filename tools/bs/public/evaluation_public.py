@@ -40,7 +40,7 @@ ALL_MODELS = [
 
 if __name__ == '__main__':
     models = [model for model in ALL_MODELS[1:] if 'v100.01.04' in model]
-    cities = ['dalian', 'xian']
+    cities = ['xian_public']
 
     with_only_vis = False
     with_offset = True
@@ -67,18 +67,16 @@ if __name__ == '__main__':
             summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary_{csv_info}.csv'
             bstool.mkdir_or_exist(f'./data/buildchange/summary/{model}')
             
-            if city == 'xian':
+            if city == 'xian_public':
                 anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_xian_fine.json'
-                gt_roof_csv_file = './data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea100.csv'
-                gt_footprint_csv_file = './data/buildchange/public/20201028/xian_val_footprint_crop1024_gt_minarea100.csv'
+                gt_roof_csv_file = './data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea100_fix.csv'
+                gt_footprint_csv_file = './data/buildchange/public/20201028/xian_val_footprint_crop1024_gt_minarea100_fix.csv'
                 image_dir = f'./data/buildchange/public/20201028/xian_fine/images'
             else:
                 raise NotImplementedError("do not support city: ", city)
 
             if 'xian' in city:
-                pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_xian_coco_results.pkl'
-            elif 'dalian' in city:
-                pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_dalian_coco_results.pkl'
+                pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_coco_results.pkl'
             else:
                 raise NotImplementedError("do not support city: ", city)
             
@@ -96,7 +94,7 @@ if __name__ == '__main__':
                                         score_threshold=score_threshold,
                                         output_dir=output_dir,
                                         with_offset=with_offset,
-                                        show=True,
+                                        show=False,
                                         save_merged_csv=save_merged_csv)
 
             title = city + version
@@ -115,7 +113,6 @@ if __name__ == '__main__':
                 evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir)
                 for with_footprint in [True, False]:
                     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
-
             else:
                 evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir)
                 for with_footprint in [True, False]:

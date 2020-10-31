@@ -30,7 +30,7 @@ class Evaluation():
                  json_prefix=None,
                  iou_threshold=0.1,
                  score_threshold=0.4,
-                 min_area=500,
+                 min_area=100,
                  with_offset=False,
                  with_height=False,
                  output_dir=None,
@@ -82,7 +82,8 @@ class Evaluation():
                                             gt_roof_csv_file=gt_roof_csv_file,
                                             replace_pred_roof=replace_pred_roof,
                                             replace_pred_offset=replace_pred_offset,
-                                            offset_model=offset_model)
+                                            offset_model=offset_model,
+                                            merge_splitted=save_merged_csv)
             else:
                 pkl_parser = bstool.BSPklParser_Without_Offset(anno_file, 
                                             pkl_file, 

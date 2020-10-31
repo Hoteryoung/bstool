@@ -31,7 +31,7 @@ def mask2polygon(mask):
     """
     mask_x = mask[0::2]
     mask_y = mask[1::2]
-    mask_coord = [(x, y) for x, y in zip(mask_x, mask_y)]
+    mask_coord = [(int(x), int(y)) for x, y in zip(mask_x, mask_y)]
 
     polygon = Polygon(mask_coord)
 
