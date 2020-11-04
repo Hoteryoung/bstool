@@ -66,14 +66,7 @@ class BS2COCO(bstool.Convert2COCO):
     def __json_parse__(self, label_file, image_file):
         objects = []
         if self.groundtruth:
-            objects = bstool.bs_json_parse(label_file, fix_height=fix_height)
-            
-            if with_height_sample:
-                heights = [obj['building_height'] for obj in objects]
-                if max(heights) < min_height:
-                    return []
-                else:
-                    print("The max height is: ", max(heights))
+            objects = bstool.bs_json_parse(label_file, fix_height=True)
         else:
             object_struct = {}
             object_struct['bbox'] = [0, 0, 0, 0]
