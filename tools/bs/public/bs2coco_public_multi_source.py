@@ -36,8 +36,16 @@ class BS2COCO(bstool.Convert2COCO):
             offset = object_struct['offset']
             building_height = object_struct['building_height']
             iscrowd = object_struct['iscrowd']
-
+            
             area = bstool.mask2polygon(segmentation).area
+
+            if area <= self.small_object_area and self.groundtruth:
+                self.small_object_idx += 1
+                continue
+
+            width = bbox[2]
+            height = bbox[3]
+            area = height * width
 
             if area <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
@@ -139,7 +147,7 @@ if __name__ == "__main__":
     version = '20201028'
     release_version = f'public/{version}'
     groundtruth = True
-    only_footprint = 1
+    only_footprint = 0
 
     if only_footprint == 1:
         anno_info = 'only_footprint'
