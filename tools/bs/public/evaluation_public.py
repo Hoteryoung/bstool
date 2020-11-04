@@ -34,6 +34,10 @@ ALL_MODELS = [
             'bc_v100.01.05_offset_rcnn_r50_2x_public_20201028_sample_num',
             'bc_v100.01.06_offset_rcnn_r50_3x_public_20201028_lr_0.02',
             'bc_v100.01.07_offset_rcnn_r50_2x_public_20201027_lr_0.02',
+            'bc_v100.01.08_offset_rcnn_r50_2x_public_20201028_footprint_bbox_footprint_mask_baseline',
+            'bc_v100.01.09_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline',
+            'bc_v100.01.10_offset_rcnn_r50_2x_public_20201028_footprint_bbox_footprint_mask_baseline_no_aug',
+            'bc_v100.01.11_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_no_aug',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple'
             ]
@@ -69,8 +73,8 @@ if __name__ == '__main__':
             
             if city == 'xian_public':
                 anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_xian_fine.json'
-                gt_roof_csv_file = './data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea100_fix.csv'
-                gt_footprint_csv_file = './data/buildchange/public/20201028/xian_val_footprint_crop1024_gt_minarea100_fix.csv'
+                gt_roof_csv_file = './data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea500.csv'
+                gt_footprint_csv_file = './data/buildchange/public/20201028/xian_val_footprint_crop1024_gt_minarea500.csv'
                 image_dir = f'./data/buildchange/public/20201028/xian_fine/images'
             else:
                 raise NotImplementedError("do not support city: ", city)

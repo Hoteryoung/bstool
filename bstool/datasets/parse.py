@@ -755,7 +755,7 @@ class BSPklParser_Without_Offset(BSPklParser):
             if bbox[0] < 0 or bbox[1] > 1023 or bbox[2] < 0 or bbox[3] > 1023:
                 continue
 
-            roof = bstool.bbox2pointobb(bbox)   # fake roof
+            # roof = bstool.bbox2pointobb(bbox)   # fake roof
 
             roof_polygon = bstool.mask2polygon(roof)
 
@@ -768,8 +768,10 @@ class BSPklParser_Without_Offset(BSPklParser):
 
             building['bbox'] = bbox
             building['height'] = 0.0
+            building['offset'] = [0, 0]
             building['score'] = score
             building['roof_polygon'] = roof_polygon
+            building['footprint_polygon'] = roof_polygon
 
             buildings.append(building)
         
@@ -812,9 +814,11 @@ class CSVParse():
         self.objects = defaultdict(dict)
         self.dataset_buildings = []
         print(f"begin parsing the csv file: {csv_file}")
+        object_count = [0, 0]
         for image_name in tqdm.tqdm(self.image_name_list):
             buildings = []
             for idx, row in csv_df[csv_df.ImageId == image_name].iterrows():
+                object_count[0] += 1
                 building = dict()
                 obj_keys = row.to_dict().keys()
                 polygon = shapely.wkt.loads(row.PolygonWKT_Pix)
@@ -825,7 +829,7 @@ class CSVParse():
 
                 if check_valid and not bstool.single_valid_polygon(building['polygon']):
                     building['polygon'] = building['polygon'].buffer(0)
-                    # continue
+                    continue
                 
                 building['score'] = row.Confidence
                 if 'Offset' in obj_keys:
@@ -845,11 +849,13 @@ class CSVParse():
                     building['height'] = 0
 
                 buildings.append(building)
+                object_count[1] += 1
 
             self.objects[image_name] = buildings
             self.dataset_buildings += buildings
 
         self.image_fns = self.objects.keys()
+        print("This CSV has object number: ", object_count)
 
     def __call__(self, image_fn):
         if image_fn in self.objects.keys():

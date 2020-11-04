@@ -30,7 +30,7 @@ class Evaluation():
                  json_prefix=None,
                  iou_threshold=0.1,
                  score_threshold=0.4,
-                 min_area=100,
+                 min_area=500,
                  with_offset=False,
                  with_height=False,
                  output_dir=None,

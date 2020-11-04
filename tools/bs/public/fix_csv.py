@@ -22,16 +22,23 @@ def bs_csv_dump(full_data, csv_file):
         csv_writer = csv.writer(summary, delimiter=',')
         csv_writer.writerow(['ImageId', 'BuildingId', 'PolygonWKT_Pix', 'Confidence'])
         for data in full_data:
+            # if type(data[2]) == str:
+            #     polygon = shapely.wkt.loads(data[2])
+            # else:
+            #     polygon = data[2]
+            # if not bstool.single_valid_polygon(polygon):
+            #     data[2] = polygon.buffer(0).wkt
+            #     # continue
             csv_writer.writerow(data)
 
 if __name__ == '__main__':
+    for mask in ['roof', 'footprint']:
+        src_csv_df = f'/data/buildchange/public/20201028/xian_val_{mask}_crop1024_gt_minarea100.csv'
 
-    src_csv_df = '/data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea100.csv'
+        dst_csv_df = f'/data/buildchange/public/20201028/xian_val_{mask}_crop1024_gt_minarea100_fix.csv'
 
-    dst_csv_df = '/data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea100_fix.csv'
-
-    full_data = parse_csv(src_csv_df)
-    bs_csv_dump(full_data, dst_csv_df)
+        full_data = parse_csv(src_csv_df)
+        bs_csv_dump(full_data, dst_csv_df)
 
 
 
