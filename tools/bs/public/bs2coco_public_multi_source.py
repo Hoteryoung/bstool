@@ -160,7 +160,7 @@ if __name__ == "__main__":
     if only_footprint == 1:
         anno_info = 'only_footprint'
     else:
-        anno_info = ''
+        anno_info = 'with_full'
 
     for idx, sub_fold in enumerate(sub_folds):
         print(f"Begin to process {sub_fold} data!")
