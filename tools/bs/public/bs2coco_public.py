@@ -39,12 +39,7 @@ class BS2COCO(bstool.Convert2COCO):
 
             width = bbox[2]
             height = bbox[3]
-            area = height * width
-
-            footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
-            if footprint_bbox_width * footprint_bbox_height <= self.small_object_area and self.groundtruth:
-                self.small_object_idx += 1
-                continue
+            area = bstool.mask2polygon(segmentation).area
 
             if area <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
@@ -58,7 +53,7 @@ class BS2COCO(bstool.Convert2COCO):
 
             coco_annotation['roof_bbox'] = roof_bbox
             coco_annotation['building_bbox'] = building_bbox
-            # coco_annotation['roof_mask'] = roof_mask
+            coco_annotation['roof_mask'] = roof_mask
             coco_annotation['footprint_bbox'] = footprint_bbox
             coco_annotation['footprint_mask'] = footprint_mask
             coco_annotation['ignore_flag'] = ignore_flag
@@ -88,7 +83,7 @@ class BS2COCO(bstool.Convert2COCO):
             object_struct['footprint_bbox'] = [0, 0, 0, 0]
             object_struct['building_bbox'] = [0, 0, 0, 0]
 
-            # object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
             object_struct['footprint_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
             object_struct['ignore_flag'] = 0
             object_struct['offset'] = [0, 0]
@@ -147,7 +142,7 @@ if __name__ == "__main__":
     # cities = ['jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
     # cities = ['xian_fine_origin']
-    cities = ['xian_fine']
+    # cities = ['xian_fine']
     version = '20201028'
     release_version = f'public/{version}'
 
@@ -161,7 +156,7 @@ if __name__ == "__main__":
             anno_name = [core_dataset_name, f'public_{version}', 'val', city]
             fix_height = True
         else:
-            anno_name = [core_dataset_name, f'public_{version}', 'train', city]
+            anno_name = [core_dataset_name, f'public_{version}', 'train', city, 'minarea_500']
             fix_height = True
 
         if with_height_sample:
@@ -182,7 +177,7 @@ if __name__ == "__main__":
                                 data_licenses=licenses,
                                 data_type="instances",
                                 groundtruth=groundtruth,
-                                small_object_area=10,
+                                small_object_area=500,  # 10 for old
                                 image_size=(1024, 1024))
 
         images, annotations = bs2coco.get_image_annotation_pairs()
