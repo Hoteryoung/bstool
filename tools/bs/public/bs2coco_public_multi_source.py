@@ -37,14 +37,7 @@ class BS2COCO(bstool.Convert2COCO):
             building_height = object_struct['building_height']
             iscrowd = object_struct['iscrowd']
 
-            width = bbox[2]
-            height = bbox[3]
-            area = height * width
-
-            footprint_bbox_width, footprint_bbox_height = footprint_bbox[2], footprint_bbox[3]
-            if footprint_bbox_width * footprint_bbox_height <= self.small_object_area and self.groundtruth:
-                self.small_object_idx += 1
-                continue
+            area = bstool.mask2polygon(segmentation).area
 
             if area <= self.small_object_area and self.groundtruth:
                 self.small_object_idx += 1
@@ -58,7 +51,7 @@ class BS2COCO(bstool.Convert2COCO):
 
             coco_annotation['roof_bbox'] = roof_bbox
             coco_annotation['building_bbox'] = building_bbox
-            # coco_annotation['roof_mask'] = roof_mask
+            coco_annotation['roof_mask'] = roof_mask
             coco_annotation['footprint_bbox'] = footprint_bbox
             coco_annotation['footprint_mask'] = footprint_mask
             coco_annotation['ignore_flag'] = ignore_flag
@@ -88,7 +81,7 @@ class BS2COCO(bstool.Convert2COCO):
             object_struct['footprint_bbox'] = [0, 0, 0, 0]
             object_struct['building_bbox'] = [0, 0, 0, 0]
 
-            # object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
+            object_struct['roof_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
             object_struct['footprint_mask'] = [0, 0, 0, 0, 0, 0, 0, 0]
             object_struct['ignore_flag'] = 0
             object_struct['offset'] = [0, 0]
@@ -105,7 +98,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='MMDet eval on semantic segmentation')
     parser.add_argument(
-        '--city',
+        '--sub_fold',
         type=str,
         default='None', 
         help='dataset for evaluation')
@@ -115,10 +108,10 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    if args.city == 'None':
-        cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
+    if args.sub_fold == 'None':
+        sub_folds = ['arg', 'ms', 'google']
     else:
-        cities = [args.city]
+        sub_folds = [args.sub_fold]
     # basic dataset information
     info = {"year" : 2020,
             "version" : "1.0",
@@ -143,7 +136,6 @@ if __name__ == "__main__":
 
     # dataset meta data
     core_dataset_name = 'buildchange'
-    cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     sub_folds = ['arg', 'ms', 'google']
     # cities = ['jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
@@ -152,25 +144,14 @@ if __name__ == "__main__":
 
     version = '20201028'
     release_version = f'public/{version}'
-
     groundtruth = True
-    with_height_sample = False
-    min_height = 100
 
-    for idx, city in enumerate(cities):
-        print(f"Begin to process {city} data!")
-        if 'xian' in city or 'dalian' in city:
-            anno_name = [core_dataset_name, f'public_{version}', 'val', city]
-            fix_height = True
-        else:
-            anno_name = [core_dataset_name, f'public_{version}', 'train', city]
-            fix_height = True
-
-        if with_height_sample:
-            anno_name.append("height_sampled")
+    for idx, sub_fold in enumerate(sub_folds):
+        print(f"Begin to process {sub_fold} data!")
+        anno_name = [core_dataset_name, f'public_{version}', 'train', sub_fold]
         
-        imgpath = f'./data/{core_dataset_name}/{release_version}/{city}/images'
-        annopath = f'./data/{core_dataset_name}/{release_version}/{city}/labels'
+        imgpath = f'./data/{core_dataset_name}/{release_version}/{sub_fold}/images'
+        annopath = f'./data/{core_dataset_name}/{release_version}/{sub_fold}/labels'
         save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'
         
         bstool.mkdir_or_exist(save_path)
@@ -184,7 +165,7 @@ if __name__ == "__main__":
                             data_licenses=licenses,
                             data_type="instances",
                             groundtruth=groundtruth,
-                            small_object_area=10,
+                            small_object_area=500,
                             image_size=(1024, 1024))
 
         images, annotations = bs2coco.get_image_annotation_pairs()
