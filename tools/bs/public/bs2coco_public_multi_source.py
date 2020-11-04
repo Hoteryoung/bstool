@@ -51,6 +51,14 @@ class BS2COCO(bstool.Convert2COCO):
                 self.small_object_idx += 1
                 continue
 
+            width = roof_bbox[2]
+            height = roof_bbox[3]
+            area = height * width
+
+            if area <= self.small_object_area and self.groundtruth:
+                self.small_object_idx += 1
+                continue
+
             coco_annotation = {}
             coco_annotation['bbox'] = bbox
             coco_annotation['segmentation'] = [segmentation]
