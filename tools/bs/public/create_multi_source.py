@@ -28,8 +28,8 @@ if __name__ == '__main__':
                     src_label = os.path.join(src_label_dir, basename + '.json')
 
                     dst_image = os.path.join(dst_image_dir, basename + '.png')
-                    src_label = os.path.join(dst_label_dir, basename + '.json')
+                    dst_label = os.path.join(dst_label_dir, basename + '.json')
 
                     shutil.copy(src_image, dst_image)
-                    shutil.copy(src_label, src_label)
+                    shutil.copy(src_label, dst_label)
             
