@@ -58,6 +58,10 @@ class BS2COCO(bstool.Convert2COCO):
             coco_annotation['offset'] = offset
             coco_annotation['building_height'] = building_height
             coco_annotation['iscrowd'] = iscrowd
+            if only_footprint:
+                coco_annotation['only_footprint'] = 1
+            else:
+                coco_annotation['only_footprint'] = 0
 
             coco_annotations.append(coco_annotation)
 
@@ -83,6 +87,7 @@ class BS2COCO(bstool.Convert2COCO):
             object_struct['segmentation'] = [0, 0, 0, 0, 0, 0, 0, 0]
             object_struct['label'] = 1
             object_struct['iscrowd'] = 0
+            object_struct['only_footprint'] = 0
             objects.append(object_struct)
 
         return objects
@@ -130,18 +135,20 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'buildchange'
     sub_folds = ['arg', 'ms', 'google']
-    # cities = ['jinan', 'haerbin', 'chengdu']
-    # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
-    # cities = ['xian_fine_origin']
-    # cities = ['xian_fine']
 
     version = '20201028'
     release_version = f'public/{version}'
     groundtruth = True
+    only_footprint = 1
+
+    if only_footprint == 1:
+        anno_info = 'only_footprint'
+    else:
+        anno_info = ''
 
     for idx, sub_fold in enumerate(sub_folds):
         print(f"Begin to process {sub_fold} data!")
-        anno_name = [core_dataset_name, f'public_{version}', 'train', sub_fold]
+        anno_name = [core_dataset_name, f'public_{version}', 'train', sub_fold, anno_info]
         
         imgpath = f'./data/{core_dataset_name}/{release_version}/{sub_fold}/images'
         annopath = f'./data/{core_dataset_name}/{release_version}/{sub_fold}/labels'
