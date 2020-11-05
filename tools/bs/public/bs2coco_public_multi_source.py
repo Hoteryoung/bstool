@@ -155,7 +155,7 @@ if __name__ == "__main__":
     version = '20201028'
     release_version = f'public/{version}'
     groundtruth = True
-    only_footprint = 0
+    only_footprint = 1
 
     if only_footprint == 1:
         anno_info = 'only_footprint'

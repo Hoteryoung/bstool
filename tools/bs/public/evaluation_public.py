@@ -39,11 +39,14 @@ ALL_MODELS = [
             'bc_v100.01.10_offset_rcnn_r50_2x_public_20201028_footprint_bbox_footprint_mask_baseline_no_aug',
             'bc_v100.01.11_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_no_aug',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
-            'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple'
+            'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
+            'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
+            'bc_v100.03.02_semi_offset_rcnn_r50_2x_public_20201028_real_semi',
+            'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume'
             ]
 
 if __name__ == '__main__':
-    models = [model for model in ALL_MODELS[1:] if 'v100.01.04' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v100.03.03' in model]
     cities = ['xian_public']
 
     with_only_vis = False
