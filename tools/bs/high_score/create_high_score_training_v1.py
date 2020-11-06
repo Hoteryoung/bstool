@@ -47,14 +47,14 @@ if __name__ == '__main__':
 
     version = args.version
     print("Processing the version of ", version)
-    csv_file = f'./data/buildchange/public/misc/overlap/full_dataset_info_{version}.csv'
+    csv_file = f'./data/buildchange/high_score/misc/full_dataset_info_{version}.csv'
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
     training_info = full_data[0:5000]
     
-    training_csv_file = f'./data/buildchange/public/misc/overlap/training_dataset_info_{version}.csv'
+    training_csv_file = f'./data/buildchange/high_score/misc/training_dataset_info_{version}.csv'
     
     with open(training_csv_file, 'w') as f:
         csv_writer = csv.writer(f, delimiter=',')
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     print("The number of training data: ", len(training_info))
 
     selected_image_info = []
-    training_imageset_file ='./data/buildchange/public/misc/overlap/training_imageset_file_{}_high_score_5000_{}.txt'
+    training_imageset_file ='./data/buildchange/high_score/misc/training_imageset_file_{}_high_score_5000_{}.txt'
     opened_file = dict()
     for city in cities:
         f = open(training_imageset_file.format(version, city), 'w')
