@@ -15,11 +15,9 @@ class CountImage():
                  core_dataset_name='buildchange',
                  version='v2',
                  city='shanghai',
-                 sub_fold='arg',
                  resolution=0.6,
                  with_overlap=False):
         self.city = city
-        self.sub_fold = sub_fold
         self.resolution = resolution
         self.with_overlap = with_overlap
 
@@ -166,17 +164,15 @@ if __name__ == '__main__':
     
     training_image_info = []
     for city in cities:
-        for sub_fold in sub_folds[city]:
-            print("Begin processing {} {} set.".format(city, sub_fold))
-            count_image = CountImage(core_dataset_name=core_dataset_name,
-                                    version=version,
-                                    city=city,
-                                    sub_fold=sub_fold,
-                                    with_overlap=with_overlap)
-            image_infos = count_image.core()
-            training_image_info.extend(image_infos)
+        print("Begin processing {} set.".format(city))
+        count_image = CountImage(core_dataset_name=core_dataset_name,
+                                version=version,
+                                city=city,
+                                with_overlap=with_overlap)
+        image_infos = count_image.core()
+        training_image_info.extend(image_infos)
 
-            print("Finish processing {} {} set.".format(city, sub_fold))
+        print("Finish processing {} set.".format(city))
 
     full_csv_file = f'./data/buildchange/public/misc/{overlap_info}/full_dataset_info_20201104.csv'
 
