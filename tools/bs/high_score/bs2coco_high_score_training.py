@@ -178,7 +178,7 @@ if __name__ == "__main__":
                                 data_licenses=licenses,
                                 data_type="instances",
                                 groundtruth=groundtruth,
-                                small_object_area=10,
+                                small_object_area=100,
                                 imageset_file=imageset_file,
                                 image_size=(1024, 1024))
 
