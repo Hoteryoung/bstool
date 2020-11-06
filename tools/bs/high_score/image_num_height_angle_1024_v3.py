@@ -165,7 +165,7 @@ if __name__ == '__main__':
 
         print("Finish processing {} set.".format(city))
 
-    full_csv_file = f'./data/buildchange/high_score/misc/{overlap_info}/full_dataset_info_20201104.csv'
+    full_csv_file = f'./data/buildchange/high_score/misc/full_dataset_info_20201104.csv'
 
     training_image_info_ = np.array(training_image_info)
     scores = training_image_info_[:, -1].astype(np.float64)
