@@ -39,8 +39,8 @@ class CountImage():
 
         # 3. obtain the info of building
         heights = np.array([3 * obj['Floor'] for obj in origin_properties])
-        offsets = np.array([[obj['xoffset'], obj['yoffset']] for obj in objects])
-        ignores = np.array([obj['ignore'] for obj in objects])
+        offsets = np.array([[obj['xoffset'], obj['yoffset']] for obj in origin_properties])
+        ignores = np.array([obj['ignore'] for obj in origin_properties])
 
         # 4. drop ignored objects
         keep_inds = (ignores == 0)
