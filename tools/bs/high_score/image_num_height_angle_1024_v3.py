@@ -15,11 +15,9 @@ class CountImage():
                  core_dataset_name='buildchange',
                  version='v2',
                  city='shanghai',
-                 resolution=0.6,
-                 with_overlap=False):
+                 resolution=0.6):
         self.city = city
         self.resolution = resolution
-        self.with_overlap = with_overlap
 
         self.image_dir = f'./data/{core_dataset_name}/{version}/{city}/images'
         if data_source == 'local':
@@ -142,12 +140,6 @@ if __name__ == '__main__':
 
     core_dataset_name = 'buildchange'
     version = 'v2'
-    with_overlap = True
-    
-    if with_overlap:
-        overlap_info = 'overlap'
-    else:
-        overlap_info = 'nooverlap'
 
     data_source = args.source   # remote or local
 
@@ -167,14 +159,13 @@ if __name__ == '__main__':
         print("Begin processing {} set.".format(city))
         count_image = CountImage(core_dataset_name=core_dataset_name,
                                 version=version,
-                                city=city,
-                                with_overlap=with_overlap)
+                                city=city)
         image_infos = count_image.core()
         training_image_info.extend(image_infos)
 
         print("Finish processing {} set.".format(city))
 
-    full_csv_file = f'./data/buildchange/public/misc/{overlap_info}/full_dataset_info_20201104.csv'
+    full_csv_file = f'./data/buildchange/high_score/misc/{overlap_info}/full_dataset_info_20201104.csv'
 
     training_image_info_ = np.array(training_image_info)
     scores = training_image_info_[:, -1].astype(np.float64)
