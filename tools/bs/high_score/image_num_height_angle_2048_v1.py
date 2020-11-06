@@ -102,11 +102,9 @@ class CountImage():
         if mean_angle < parameters['mean_angle'] and mean_offset_length < parameters['mean_offset_length'] and std_offset_length < parameters['std_offset_length']:
             return
 
-        sub_fold, ori_image_fn, coord = bstool.get_info_splitted_imagename(file_name)
-
         score = (object_num / 65) * (mean_angle / 90) * (mean_height / 10) * (mean_offset_length / 20) * (std_offset_length / 10) * (20 / (std_angle + 1)) * (no_ignore_rate)
 
-        image_info = [file_name, sub_fold, ori_image_fn, coord[0], coord[1], object_num, mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle, no_ignore_rate, score]
+        image_info = [file_name, object_num, mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle, no_ignore_rate, score]
 
         return image_info
 
@@ -179,7 +177,7 @@ if __name__ == '__main__':
 
     with open(full_csv_file, 'w') as f:
         csv_writer = csv.writer(f, delimiter=',')
-        head = ['file_name', 'sub_fold', 'ori_image_fn', 'coord_x', 'coord_y', 'object_num', 'mean_angle', 'mean_height', 'mean_offset_length', 'std_offset_length', 'std_angle', 'no_ignore_rate', 'score']
+        head = ['ori_image_fn', 'object_num', 'mean_angle', 'mean_height', 'mean_offset_length', 'std_offset_length', 'std_angle', 'no_ignore_rate', 'score']
         csv_writer.writerow(head)
         for data in training_image_info:
             csv_writer.writerow(data)
