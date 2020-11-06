@@ -81,7 +81,7 @@ if __name__ == '__main__':
         
         shutil.copy(src_label_file, dst_label_file)
 
-        info = f"{city} {sub_fold} {ori_image_name}\n"
+        info = f"{base_name}\n"
         if info not in selected_image_info:
             f.write(info)
             selected_image_info.append(info)
