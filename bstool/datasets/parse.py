@@ -606,7 +606,12 @@ class BSPklParser():
 
                 valid_flag = bstool.single_valid_polygon(bstool.mask2polygon(mask))
                 if not valid_flag:
-                    continue
+                    polygon_ = bstool.mask2polygon(mask).buffer(0)
+                    if polygon_.geom_type == 'MultiPolygon':
+                        continue
+                    else:
+                        mask = bstool.polygon2mask(polygon_)
+                    # continue
             else:
                 continue
 

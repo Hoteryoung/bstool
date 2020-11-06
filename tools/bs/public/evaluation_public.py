@@ -41,16 +41,18 @@ ALL_MODELS = [
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
+            'bc_v100.03.01_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
             'bc_v100.03.02_semi_offset_rcnn_r50_2x_public_20201028_real_semi',
-            'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume'
+            'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume',
+            'bc_v100.03.04_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_lr0.01'
             ]
 
 if __name__ == '__main__':
-    models = [model for model in ALL_MODELS[1:] if 'v100.03.03' in model]
+    models = [model for model in ALL_MODELS[1:] if 'v100.01.09' in model]
     cities = ['xian_public']
 
     with_only_vis = False
-    with_offset = True
+    with_offset = False
     save_merged_csv = False
 
     if save_merged_csv:
