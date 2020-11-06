@@ -55,7 +55,7 @@ if __name__ == '__main__':
     training_info = full_data[0:5000]
     
     training_csv_file = f'./data/buildchange/public/misc/overlap/training_dataset_info_{version}.csv'
-    training_imageset_file = f'./data/buildchange/public/misc/overlap/training_imageset_file_{version}_high_socre_5000.txt'
+    
     with open(training_csv_file, 'w') as f:
         csv_writer = csv.writer(f, delimiter=',')
         head = ['file_name', 'sub_fold', 'ori_image_fn', 'coord_x', 'coord_y', 'object_num', 'mean_angle', 'mean_height', 'mean_offset_length', 'std_offset_length', 'std_angle', 'no_ignore_rate', 'score']
@@ -66,7 +66,12 @@ if __name__ == '__main__':
     print("The number of training data: ", len(training_info))
 
     selected_image_info = []
-    f = open(training_imageset_file, 'w')
+    training_imageset_file ='./data/buildchange/public/misc/overlap/training_imageset_file_{}_high_score_5000_{}.txt'
+    opened_file = dict()
+    for city in cities:
+        f = open(training_imageset_file.format(version, city), 'w')
+        opened_file[city] = f
+
     src_root_label_dir = './data/buildchange/v2/{}/labels'
     dst_root_label_dir = './data/buildchange/high_score/{}/{}/labels'
     for data in tqdm.tqdm(training_info):
@@ -83,7 +88,9 @@ if __name__ == '__main__':
 
         info = f"{base_name}\n"
         if info not in selected_image_info:
-            f.write(info)
+            opened_file[city].write(info)
             selected_image_info.append(info)
 
-    f.close()
+    for city in cities:
+        f = opened_file[city]
+        f.close()
