@@ -47,15 +47,15 @@ if __name__ == '__main__':
 
     version = args.version
     print("Processing the version of ", version)
-    csv_file = f'./data/buildchange/public/misc/nooverlap/full_dataset_info_{version}.csv'
+    csv_file = f'./data/buildchange/public/misc/overlap/full_dataset_info_{version}.csv'
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
     
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
     training_info = full_data[0:5000]
     
-    training_csv_file = f'./data/buildchange/public/misc/nooverlap/training_dataset_info_{version}.csv'
-    training_imageset_file = f'./data/buildchange/public/misc/nooverlap/training_imageset_file_{version}_high_socre_5000.txt'
+    training_csv_file = f'./data/buildchange/public/misc/overlap/training_dataset_info_{version}.csv'
+    training_imageset_file = f'./data/buildchange/public/misc/overlap/training_imageset_file_{version}_high_socre_5000.txt'
     with open(training_csv_file, 'w') as f:
         csv_writer = csv.writer(f, delimiter=',')
         head = ['file_name', 'sub_fold', 'ori_image_fn', 'coord_x', 'coord_y', 'object_num', 'mean_angle', 'mean_height', 'mean_offset_length', 'std_offset_length', 'std_angle', 'no_ignore_rate', 'score']
