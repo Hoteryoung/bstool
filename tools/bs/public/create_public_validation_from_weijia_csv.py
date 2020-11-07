@@ -40,8 +40,8 @@ if __name__ == '__main__':
         dst_image_file = os.path.join(dst_root_image_dir.format(version), base_name + '.png')
         dst_label_file = os.path.join(dst_root_label_dir.format(version), base_name + '.json')
         
-        # shutil.copy(src_image_file, dst_image_file)
-        # shutil.copy(src_label_file, dst_label_file)
-        print(src_label_file, dst_label_file)
+        shutil.copy(src_image_file, dst_image_file)
+        shutil.copy(src_label_file, dst_label_file)
+        # print(src_label_file, dst_label_file)
         # os.remove(dst_image_file)
         # os.remove(dst_label_file)
