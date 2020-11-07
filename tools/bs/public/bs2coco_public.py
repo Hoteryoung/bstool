@@ -142,7 +142,7 @@ if __name__ == "__main__":
     # cities = ['jinan', 'haerbin', 'chengdu']
     # cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu', 'xian_fine', 'dalian_fine']
     # cities = ['xian_fine_origin']
-    cities = ['shanghai_fine']
+    # cities = ['shanghai_fine']
     version = '20201028'
     release_version = f'public/{version}'
 
@@ -152,7 +152,7 @@ if __name__ == "__main__":
 
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")
-        if 'xian' in city or 'dalian' in city:
+        if 'xian' in city or 'shanghai_fine' in city:
             anno_name = [core_dataset_name, f'public_{version}', 'val', city, 'minarea_500']
             fix_height = True
         else:
