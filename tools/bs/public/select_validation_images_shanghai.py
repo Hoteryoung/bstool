@@ -57,7 +57,7 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=17225, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
+        default=1900, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
         help='dataset for evaluation')
     parser.add_argument(
         '--keep_threshold',
@@ -117,10 +117,10 @@ if __name__ == '__main__':
     selected_image_info = []
     f = open(training_imageset_file, 'w')
     if len(training_info) == 200:
-        src_root_image_dir = './data/buildchange/v2/{}/images'
-        src_root_label_dir = './data/buildchange/v2/{}/labels'
-        dst_root_image_dir = './data/buildchange/public/{}/{}/images'
-        dst_root_label_dir = './data/buildchange/public/{}/{}/labels'
+        src_root_image_dir = './data/buildchange/v2/shanghai/images'
+        src_root_label_dir = './data/buildchange/v2/shanghai/labels'
+        dst_root_image_dir = './data/buildchange/public/{}/shanghai_fine/images'
+        dst_root_label_dir = './data/buildchange/public/{}/shanghai_fine/labels'
         for data in tqdm.tqdm(training_info):
             base_name = data[0]
             city = base_name.split("__")[0].split('_')[0]
