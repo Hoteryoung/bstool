@@ -99,7 +99,7 @@ class CountImage():
                     "mean_offset_length": 5,
                     'std_offset_length': 5,
                     'std_angle': 30,
-                    'no_ignore_rate': 0.95}
+                    'no_ignore_rate': 0.90}
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
