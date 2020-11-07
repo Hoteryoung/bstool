@@ -59,6 +59,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v005.09.09_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_rotate_augmentation_4_angles',
             'bc_v005.09.10_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_rotate_augmentation_4_angles',
             'bc_v005.09.11_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_rotate_augmentation_4_angles_ignore',
+            'bc_v005.09.12_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_high_score',
             'bc_v005.10.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature',
             'bc_v005.10.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature_wo_online_augmentation',
             'bc_v005.10.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_wo_online_augmentation_wo_expend_feature',
@@ -116,7 +117,7 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
 if __name__ == '__main__':
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'bc_v100.01.04' in model]
+    models = [model for model in ALL_MODELS[1:] if 'bc_v005.09.12' in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
@@ -127,7 +128,7 @@ if __name__ == '__main__':
     # cities = ['urban3d']
     # cities = ['atl']
 
-    with_only_vis = True
+    with_only_vis = False
     with_offset = True
     replace_pred_roof = False
     replace_pred_offset = False

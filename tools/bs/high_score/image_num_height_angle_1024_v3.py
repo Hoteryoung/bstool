@@ -75,10 +75,10 @@ class CountImage():
             parameters = {
                         'object_num': 5,
                         "mean_height": 3,
-                        "mean_angle": 40, 
+                        "mean_angle": 75, 
                         "mean_offset_length": 5,
-                        'std_offset_length': 5,
-                        'std_angle': 30,
+                        'std_offset_length': 1,
+                        'std_angle': 15,
                         'no_ignore_rate': 0.80}
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
@@ -102,7 +102,9 @@ class CountImage():
 
         sub_fold, ori_image_fn, coord = bstool.get_info_splitted_imagename(file_name)
 
-        score = (object_num / 65) * (mean_angle / 90) * (mean_height / 10) * (mean_offset_length / 20) * (std_offset_length / 10) * (20 / (std_angle + 1)) * (no_ignore_rate)
+        # score = (object_num / 65) * (mean_angle / 90) * (mean_height / 10) * (mean_offset_length / 20) * (std_offset_length / 10) * (20 / (std_angle + 1)) * (no_ignore_rate)
+
+        score = (object_num / 65) * (mean_angle / 90) * (20 / mean_offset_length) * (20 / (std_angle + 1)) * (no_ignore_rate)
 
         image_info = [file_name, sub_fold, ori_image_fn, coord[0], coord[1], object_num, mean_angle, mean_height, mean_offset_length, std_offset_length, std_angle, no_ignore_rate, score]
 
@@ -165,7 +167,7 @@ if __name__ == '__main__':
 
         print("Finish processing {} set.".format(city))
 
-    full_csv_file = f'./data/buildchange/high_score/misc/full_dataset_info_20201104.csv'
+    full_csv_file = f'./data/buildchange/high_score/misc/full_dataset_info_20201107.csv'
 
     training_image_info_ = np.array(training_image_info)
     scores = training_image_info_[:, -1].astype(np.float64)
