@@ -61,12 +61,12 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=13608, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
+        default=17225, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
         help='dataset for evaluation')
     parser.add_argument(
         '--keep_threshold',
         type=int,
-        default=3, 
+        default=4, 
         help='dataset for evaluation')
     parser.add_argument(
         '--version',
