@@ -92,24 +92,14 @@ class CountImage():
         return image_info
 
     def get_image_info(self, file_name, angles, heights, offset_lengths, ignores):
-        if data_source == 'local':
-            parameters = {
-                        'object_num': 0,
-                        "mean_height": 0,
-                        "mean_angle": 0, 
-                        "mean_offset_length": 0,
-                        'std_offset_length': 50,
-                        'std_angle': 100,
-                        'no_ignore_rate': 0.9}
-        else:
-            parameters = {
-                        'object_num': 2,
-                        "mean_height": 3,
-                        "mean_angle": 40, 
-                        "mean_offset_length": 5,
-                        'std_offset_length': 5,
-                        'std_angle': 30,
-                        'no_ignore_rate': 0.95}
+        parameters = {
+                    'object_num': 2,
+                    "mean_height": 3,
+                    "mean_angle": 40, 
+                    "mean_offset_length": 5,
+                    'std_offset_length': 5,
+                    'std_angle': 30,
+                    'no_ignore_rate': 0.95}
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
