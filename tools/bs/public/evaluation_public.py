@@ -64,7 +64,8 @@ ALL_MODELS = [
             'bc_v100.03.18_semi_offset_rcnn_r50_2x_public_20201028_full_data_no_update_footprint_bbox',
             'bc_v100.03.19_semi_offset_rcnn_r50_2x_public_20201028_full_data_use_the_label_pos_smooth_l1',
             'bc_v100.03.20_semi_offset_rcnn_r50_2x_public_20201028_full_data_rewrite_mask_branch',
-            'bc_v100.03.21_semi_offset_rcnn_r50_2x_public_20201028_full_data_rewrite_mask_branch_iou_loss'
+            'bc_v100.03.21_semi_offset_rcnn_r50_2x_public_20201028_full_data_rewrite_mask_branch_iou_loss',
+            'bc_v100.03.22_semi_offset_rcnn_r50_2x_public_20201028_full_data_rewrite_mask_branch_iou_loss_weight_0.2'
             ]
 
 def parse_args():
