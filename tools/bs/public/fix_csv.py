@@ -33,9 +33,10 @@ def bs_csv_dump(full_data, csv_file):
 
 if __name__ == '__main__':
     for mask in ['roof', 'footprint']:
-        src_csv_df = f'/data/buildchange/public/20201028/xian_val_{mask}_crop1024_gt_minarea100.csv'
+        
+        src_csv_df = f'/data/buildchange/public/20201028/xian_val_{mask}_crop1024_gt_minarea500.csv'
 
-        dst_csv_df = f'/data/buildchange/public/20201028/xian_val_{mask}_crop1024_gt_minarea100_fix.csv'
+        dst_csv_df = f'/data/buildchange/public/20201028/xian_val_{mask}_crop1024_gt_minarea500_fix.csv'
 
         full_data = parse_csv(src_csv_df)
         bs_csv_dump(full_data, dst_csv_df)
