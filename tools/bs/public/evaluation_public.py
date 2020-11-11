@@ -58,7 +58,8 @@ ALL_MODELS = [
             'bc_v100.03.12_semi_offset_rcnn_r50_2x_public_20201028_real_semi_lr0.02_finetune_03.11',
             'bc_v100.03.13_semi_offset_rcnn_r50_2x_public_20201028_full_data',
             'bc_v100.03.14_semi_offset_rcnn_r50_2x_public_20201028_full_data_no_footprint',
-            'bc_v100.03.15_semi_offset_rcnn_r50_2x_public_20201028_full_data_iou_loss'
+            'bc_v100.03.15_semi_offset_rcnn_r50_2x_public_20201028_full_data_iou_loss',
+            'bc_v100.03.16_semi_offset_rcnn_r50_2x_public_20201028_full_data_no_update_footprint_mask'
             ]
 
 def parse_args():
@@ -80,10 +81,11 @@ if __name__ == '__main__':
     models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
     cities = ['xian_public']
+    cities = ['shanghai_public']
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
-    with_only_vis = False
+    with_only_vis = True
     with_offset = True
     save_merged_csv = False
 
