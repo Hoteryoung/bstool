@@ -1,5 +1,7 @@
 import bstool
 import csv
+import argparse
+
 
 def write_results2csv(results, meta_info=None):
     print("meta_info: ", meta_info)
@@ -58,8 +60,23 @@ ALL_MODELS = [
             'bc_v100.03.14_semi_offset_rcnn_r50_2x_public_20201028_full_data_no_footprint'
             ]
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='MMDet eval on semantic segmentation')
+    parser.add_argument(
+        '--version',
+        type=str,
+        default='v100.03.13', 
+        help='dataset for evaluation')
+
+    args = parser.parse_args()
+
+    return args
+
 if __name__ == '__main__':
-    models = [model for model in ALL_MODELS[0:] if 'v100.03.13' in model]
+    args = parse_args()
+
+    models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
     cities = ['xian_public']
     # cities = ['xian_public', 'shanghai_public']
