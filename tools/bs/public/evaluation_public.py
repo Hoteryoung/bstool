@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
-    with_only_vis = True
+    with_only_vis = False
     with_offset = True
     save_merged_csv = False
 
