@@ -81,7 +81,6 @@ if __name__ == '__main__':
     models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
     cities = ['xian_public']
-    # cities = ['shanghai_public']
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
