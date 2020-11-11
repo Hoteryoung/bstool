@@ -57,7 +57,8 @@ ALL_MODELS = [
             'bc_v100.03.11_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_no_footprint',
             'bc_v100.03.12_semi_offset_rcnn_r50_2x_public_20201028_real_semi_lr0.02_finetune_03.11',
             'bc_v100.03.13_semi_offset_rcnn_r50_2x_public_20201028_full_data',
-            'bc_v100.03.14_semi_offset_rcnn_r50_2x_public_20201028_full_data_no_footprint'
+            'bc_v100.03.14_semi_offset_rcnn_r50_2x_public_20201028_full_data_no_footprint',
+            'bc_v100.03.15_semi_offset_rcnn_r50_2x_public_20201028_full_data_iou_loss'
             ]
 
 def parse_args():
