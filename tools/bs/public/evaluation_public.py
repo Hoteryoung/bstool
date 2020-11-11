@@ -61,8 +61,8 @@ ALL_MODELS = [
 if __name__ == '__main__':
     models = [model for model in ALL_MODELS[0:] if 'v100.03.13' in model]
     # cities = ['shanghai_public', 'xian_public']
-    # cities = ['xian_public']
-    cities = ['xian_public', 'shanghai_public']
+    cities = ['xian_public']
+    # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
     with_only_vis = False
