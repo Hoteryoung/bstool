@@ -24,7 +24,8 @@ class BS2COCO(bstool.Convert2COCO):
 
         for object_struct in objects:
             bbox = object_struct['bbox']
-            segmentation = object_struct['segmentation']
+            # segmentation = object_struct['segmentation']
+            segmentation = object_struct['footprint_mask']
             label = object_struct['label']
 
             roof_bbox = object_struct['roof_bbox']
