@@ -89,6 +89,11 @@ def parse_args():
         type=str,
         default='v100.02.01', 
         help='dataset for evaluation')
+    parser.add_argument(
+        '--city',
+        type=str,
+        default='', 
+        help='dataset for evaluation')
 
     args = parser.parse_args()
 
@@ -99,13 +104,19 @@ if __name__ == '__main__':
 
     models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
-    cities = ['shanghai_xian_public']
+    if args.city == '':
+        cities = ['shanghai_xian_public']
+    else:
+        cities = [args.city]
     # cities = ['xian_public']
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
     with_only_vis = False
-    with_offset = True
+    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version:
+        with_offset = False
+    else:
+        with_offset = True
     save_merged_csv = False
 
     if save_merged_csv:
