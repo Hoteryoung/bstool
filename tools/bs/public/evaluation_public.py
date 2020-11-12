@@ -104,6 +104,7 @@ if __name__ == '__main__':
 
     models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
+    print("args.city: ", args.city)
     if args.city == '':
         cities = ['shanghai_xian_public']
     else:
