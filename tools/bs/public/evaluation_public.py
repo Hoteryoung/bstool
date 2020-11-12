@@ -87,7 +87,7 @@ def parse_args():
     parser.add_argument(
         '--version',
         type=str,
-        default='v100.03.35', 
+        default='v100.02.01', 
         help='dataset for evaluation')
 
     args = parser.parse_args()
@@ -177,6 +177,13 @@ if __name__ == '__main__':
                                     gt_footprint_csv_file=gt_footprint_csv_file,
                                     vis_dir=vis_boundary_dir)
                     write_results2csv([segmentation_eval_results], meta_info)
+                    result_dict = dict("Roof F1: ", segmentation_eval_results['roof']['F1_score'],
+                                       "Roof Precition: ", segmentation_eval_results['roof']['Precision'],
+                                       "Roof Recall: ", segmentation_eval_results['roof']['Recall'],
+                                       "Footprint F1: ", segmentation_eval_results['footprint']['F1_score'],
+                                       "Footprint Precition: ", segmentation_eval_results['footprint']['Precision'],
+                                       "Footprint Recall: ", segmentation_eval_results['footprint']['Recall'])
+                    print("result_dict: ", result_dict)
                 else:
                     print('!!!!!!!!!!!!!!!!!!!!!! ALl the results of images are empty !!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
