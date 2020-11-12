@@ -99,6 +99,7 @@ if __name__ == '__main__':
 
     models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
+    cities = ['shanghai_xian_public']
     cities = ['xian_public']
     # cities = ['xian_public', 'shanghai_public']
     
@@ -138,15 +139,15 @@ if __name__ == '__main__':
                 gt_roof_csv_file = './data/buildchange/public/20201028/shanghai_val_v2_roof_crop1024_gt_minarea500.csv'
                 gt_footprint_csv_file = './data/buildchange/public/20201028/shanghai_val_v2_footprint_crop1024_gt_minarea500.csv'
                 image_dir = f'./data/buildchange/public/20201028/shanghai_fine/images'
+            elif city == 'shanghai_xian_public':
+                anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_shanghai_xian_minarea_500.json'
+                gt_roof_csv_file = './data/buildchange/public/20201028/shanghai_xian_merge_val_roof_crop1024_gt_minarea500.csv'
+                gt_footprint_csv_file = './data/buildchange/public/20201028/shanghai_xian_merge_val_footprint_crop1024_gt_minarea500.csv'
+                image_dir = f'./data/buildchange/public/20201028/shanghai_xian/images'
             else:
                 raise NotImplementedError("do not support city: ", city)
 
-            if 'xian' in city:
-                pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_coco_results.pkl'
-            elif 'shanghai' in city:
-                pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_coco_results.pkl'
-            else:
-                raise NotImplementedError("do not support city: ", city)
+            pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_coco_results.pkl'
             
             roof_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_roof_{csv_info}.csv'
             rootprint_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_footprint_{csv_info}.csv'
