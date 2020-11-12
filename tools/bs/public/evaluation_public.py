@@ -87,7 +87,7 @@ def parse_args():
     parser.add_argument(
         '--version',
         type=str,
-        default='v100.03.13', 
+        default='v100.03.35', 
         help='dataset for evaluation')
 
     args = parser.parse_args()
@@ -168,14 +168,17 @@ if __name__ == '__main__':
             title = city + version
             if with_only_vis is False:
                 # evaluation
-                segmentation_eval_results = evaluation.segmentation()
-                meta_info = dict(summary_file=summary_file,
-                                 model=model,
-                                 anno_file=anno_file,
-                                 gt_roof_csv_file=gt_roof_csv_file,
-                                 gt_footprint_csv_file=gt_footprint_csv_file,
-                                 vis_dir=vis_boundary_dir)
-                write_results2csv([segmentation_eval_results], meta_info)
+                if evaluation.dump_result:
+                    segmentation_eval_results = evaluation.segmentation()
+                    meta_info = dict(summary_file=summary_file,
+                                    model=model,
+                                    anno_file=anno_file,
+                                    gt_roof_csv_file=gt_roof_csv_file,
+                                    gt_footprint_csv_file=gt_footprint_csv_file,
+                                    vis_dir=vis_boundary_dir)
+                    write_results2csv([segmentation_eval_results], meta_info)
+                else:
+                    print('!!!!!!!!!!!!!!!!!!!!!! ALl the results of images are empty !!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
                 # vis
                 if with_vis:

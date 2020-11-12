@@ -235,10 +235,12 @@ def bs_csv_dump(objects, roof_csv_file, footprint_csv_file):
     ori_image_name_list = list(objects.keys())
 
     first_in = True
+    empty_image_counter = 0
     for ori_image_name in tqdm.tqdm(ori_image_name_list):
         buildings = objects[ori_image_name]
 
         if len(buildings) == 0:
+            empty_image_counter += 1
             continue
         
         roof_polygons = [building['roof_polygon'] for building in buildings]
@@ -267,5 +269,9 @@ def bs_csv_dump(objects, roof_csv_file, footprint_csv_file):
             roof_csv_dataset = roof_csv_dataset.append(roof_csv)
             footprint_csv_dataset = footprint_csv_dataset.append(footprint_csv)
 
-    roof_csv_dataset.to_csv(roof_csv_file, index=False)
-    footprint_csv_dataset.to_csv(footprint_csv_file, index=False)
+    if empty_image_counter == len(ori_image_name_list):
+        return False
+    else:
+        roof_csv_dataset.to_csv(roof_csv_file, index=False)
+        footprint_csv_dataset.to_csv(footprint_csv_file, index=False)
+        return True

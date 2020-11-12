@@ -99,9 +99,10 @@ class Evaluation():
         if save_merged_csv:
             merged_objects = pkl_parser.merged_objects
             bstool.bs_csv_dump(merged_objects, roof_csv_file, rootprint_csv_file)
+            self.dump_result = True
         else:
             objects = pkl_parser.objects
-            bstool.bs_csv_dump(objects, roof_csv_file, rootprint_csv_file)
+            self.dump_result = bstool.bs_csv_dump(objects, roof_csv_file, rootprint_csv_file)
 
     def _csv2json(self, csv_file, ann_file):
         self.coco = COCO(ann_file)
