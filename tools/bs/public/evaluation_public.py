@@ -91,7 +91,8 @@ ALL_MODELS = [
             'bc_v100.03.34_semi_offset_rcnn_r50_2x_public_20201028_arg_roof2footprint',
             'bc_v100.03.36_semi_offset_rcnn_r50_2x_public_20201028_arg_google_debug',
             'bc_v100.03.35_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
-            'bc_v100.03.37_semi_offset_rcnn_r50_2x_public_20201028_roof2footprintwithout_bbox_no_pretrain'
+            'bc_v100.03.37_semi_offset_rcnn_r50_2x_public_20201028_roof2footprintwithout_bbox_no_pretrain',
+            'bc_v100.03.38_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_without_rotation',
             ]
 
 def parse_args():
@@ -100,7 +101,7 @@ def parse_args():
     parser.add_argument(
         '--version',
         type=str,
-        default='v100.02.01', 
+        default='bc_v100.01.09', 
         help='dataset for evaluation')
     parser.add_argument(
         '--city',
@@ -126,7 +127,7 @@ if __name__ == '__main__':
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
-    with_only_vis = False
+    with_only_vis = True
     if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version:
         with_offset = False
     else:
