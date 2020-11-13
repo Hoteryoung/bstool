@@ -42,10 +42,17 @@ ALL_MODELS = [
             'bc_v100.01.11_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_no_aug',
             'bc_v100.01.12_offset_rcnn_r50_1x_public_20201028_footprint_bbox_footprint_mask_baseline_simple',
             'bc_v100.01.13_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn',
+            'bc_v100.01.14_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn',
+            'bc_v100.01.15_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
             'bc_v100.02.04_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_arg',
+            'bc_v100.02.05_offset_rcnn_r50_2x_public_20201028_rotate_offset_2_angles',
+            'bc_v100.02.06_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_flip',
+            'bc_v100.02.07_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_without_image_rotation_flip',
+            'bc_v100.02.08_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_without_image_rotation',
+            'bc_v100.02.09_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_without_image_flip',
             'bc_v100.03.01_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
             'bc_v100.03.02_semi_offset_rcnn_r50_2x_public_20201028_real_semi',
             'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume',
@@ -79,7 +86,9 @@ ALL_MODELS = [
             'bc_v100.03.32_semi_offset_rcnn_r50_2x_public_20201028_roof2footprint_finetune_03.11_without_bbox_experiment',
             'bc_v100.03.33_semi_offset_rcnn_r50_2x_public_20201028_roof2footprint_finetune_03.11_without_bbox_experiment',
             'bc_v100.03.34_semi_offset_rcnn_r50_2x_public_20201028_arg_roof2footprint',
-            'bc_v100.03.35_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain'
+            'bc_v100.03.36_semi_offset_rcnn_r50_2x_public_20201028_arg_google_debug',
+            'bc_v100.03.35_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
+            'bc_v100.03.37_semi_offset_rcnn_r50_2x_public_20201028_roof2footprintwithout_bbox_no_pretrain'
             ]
 
 def parse_args():
