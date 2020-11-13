@@ -124,7 +124,7 @@ if __name__ == '__main__':
     
     with_vis = False
     with_only_vis = False
-    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version:
+    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version:
         with_offset = False
     else:
         with_offset = True
