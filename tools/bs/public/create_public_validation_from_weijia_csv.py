@@ -20,7 +20,7 @@ if __name__ == '__main__':
     version = '20201028'
     print("Processing the version of ", version)
 
-    csv_file = f'./data/buildchange/public/{version}/shanghai_val_footprint_crop1024_gt_minarea500.csv'    
+    csv_file = f'./data/buildchange/public/{version}/shanghai_val_v3_final_crop1024_footprint_gt_minarea500.csv'    
     file_names = parse_csv(csv_file)
 
     src_root_image_dir = './data/buildchange/v2/shanghai/images'
