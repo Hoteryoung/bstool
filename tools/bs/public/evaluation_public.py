@@ -46,6 +46,7 @@ ALL_MODELS = [
             'bc_v100.01.15_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline',
             'bc_v100.01.16_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_rotation_flip',
             'bc_v100.01.17_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_rotation',
+            'bc_v100.01.18_offset_rcnn_r50_2x_public_20201028_lr_0.02_only_arg',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
@@ -97,7 +98,9 @@ ALL_MODELS = [
             'bc_v100.03.39_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation',
             'bc_v100.03.41_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_without_rotation_without_footprint_bbox',
             'bc_v100.03.42_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_google',
-            'bc_v100.03.43_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms'
+            'bc_v100.03.43_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms',
+            'bc_v100.03.44_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_google',
+            'bc_v100.03.45_semi_offset_rcnn_r50_2x_public_20201028_without_bbox_without_rotation_arg_ms_google'
             ]
 
 def parse_args():
