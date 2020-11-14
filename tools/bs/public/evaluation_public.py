@@ -93,6 +93,9 @@ ALL_MODELS = [
             'bc_v100.03.35_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
             'bc_v100.03.37_semi_offset_rcnn_r50_2x_public_20201028_roof2footprintwithout_bbox_no_pretrain',
             'bc_v100.03.38_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_without_rotation',
+            'bc_v100.03.40_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_without_rotation_with_foa'
+            'bc_v100.03.39_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation',
+            'bc_v100.03.41_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain_without_rotation_without_footprint_bbox'
             ]
 
 def parse_args():
