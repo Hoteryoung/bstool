@@ -810,7 +810,7 @@ class Evaluation():
                     else:
                         color = colors['FP'][::-1]
 
-                    if gt_polygon.geom_type != 'Polygon':
+                    if pred_polygon.geom_type != 'Polygon':
                         continue
 
                     img = bstool.draw_mask_boundary(img, bstool.polygon2mask(pred_polygon), color=color)
