@@ -38,9 +38,9 @@ def bs_csv_dump(full_data, csv_file):
 
 if __name__ == '__main__':
     xian_csv_format = '/data/buildchange/public/20201028/xian_val_{}_crop1024_gt_minarea500.csv'
-    shanghai_csv_format = '/data/buildchange/public/20201028/shanghai_val_v2_{}_crop1024_gt_minarea500.csv'
+    shanghai_csv_format = '/data/buildchange/public/20201028/shanghai_val_v3_final_crop1024_{}_gt_minarea500.csv'
 
-    merge_csv_format = '/data/buildchange/public/20201028/shanghai_xian_merge_val_{}_crop1024_gt_minarea500.csv'
+    merge_csv_format = '/data/buildchange/public/20201028/shanghai_xian_v3_merge_val_{}_crop1024_gt_minarea500.csv'
     
     for mask in ['roof', 'footprint']:
         xian_csv_file = xian_csv_format.format(mask)

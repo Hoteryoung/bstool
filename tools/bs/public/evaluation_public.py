@@ -181,8 +181,8 @@ if __name__ == '__main__':
                 image_dir = f'./data/buildchange/public/20201028/shanghai_fine/images'
             elif city == 'shanghai_xian_public':
                 anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_shanghai_xian_minarea_500.json'
-                gt_roof_csv_file = './data/buildchange/public/20201028/shanghai_val_v3_final_crop1024_roof_gt_minarea500.csv'
-                gt_footprint_csv_file = './data/buildchange/public/20201028/shanghai_val_v3_final_crop1024_footprint_gt_minarea500.csv'
+                gt_roof_csv_file = './data/buildchange/public/20201028/shanghai_xian_v3_merge_val_roof_crop1024_gt_minarea500.csv'
+                gt_footprint_csv_file = './data/buildchange/public/20201028/shanghai_xian_v3_merge_val_footprint_crop1024_gt_minarea500.csv'
                 image_dir = f'./data/buildchange/public/20201028/shanghai_xian/images'
             else:
                 raise NotImplementedError("do not support city: ", city)

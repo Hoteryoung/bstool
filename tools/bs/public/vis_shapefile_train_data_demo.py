@@ -1,10 +1,11 @@
 import os
+import cv2
 import bstool
 
 
 if __name__ == '__main__':
 
-    sub_folds = ['arg', 'google', 'ms']
+    sub_folds = ['arg', 'google', 'ms', 'tdt']
 
     for sub_fold in sub_folds:
         image_dir = '/home/jwwangchn/Documents/Nutstore/100-Work/110-Projects/2020-BS/01-CVPR/01-绘图/01-不同时间拍摄的图像'
@@ -25,6 +26,9 @@ if __name__ == '__main__':
         masks = [obj['mask'] for obj in objects]
         bboxes = [obj['bbox'] for obj in objects]
 
-        bstool.show_polygon(polygons)
-        bstool.show_masks_on_image(rgb_file, masks)
-        bstool.show_bboxs_on_image(rgb_file, bboxes)
+        img = cv2.imread(rgb_file)
+
+        # bstool.show_polygon(polygons)
+        img = bstool.draw_masks_boundary(img, masks)
+
+        bstool.show_image(img)
