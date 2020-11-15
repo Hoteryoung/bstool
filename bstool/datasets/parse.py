@@ -834,7 +834,8 @@ class CSVParse():
 
                 if check_valid and not bstool.single_valid_polygon(building['polygon']):
                     building['polygon'] = building['polygon'].buffer(0)
-                    continue
+                    if building['polygon'].geom_type == 'MultiPolygon':
+                        continue
                 
                 building['score'] = row.Confidence
                 if 'Offset' in obj_keys:
