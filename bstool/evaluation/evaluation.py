@@ -787,22 +787,22 @@ class Evaluation():
                     continue
 
                 building = objects[image_basename]
-
-                if with_gt:
-                    for idx, gt_polygon in enumerate(building['gt_polygons']):
-                        iou = building['gt_iou'][idx]
-                        if idx in building['gt_TP_indexes']:
-                            color = colors['gt_TP'][::-1]
-
-                        else:
-                            color = colors['FN'][::-1]
-
-                        if gt_polygon.geom_type != 'Polygon':
+                
+                for idx, gt_polygon in enumerate(building['gt_polygons']):
+                    iou = building['gt_iou'][idx]
+                    if idx in building['gt_TP_indexes']:
+                        color = colors['gt_TP'][::-1]
+                        if not with_gt:
                             continue
+                    else:
+                        color = colors['FN'][::-1]
 
-                        img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
-                        if with_iou:
-                            img = bstool.draw_iou(img, gt_polygon, iou, color=color)
+                    if gt_polygon.geom_type != 'Polygon':
+                        continue
+
+                    img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
+                    if with_iou:
+                        img = bstool.draw_iou(img, gt_polygon, iou, color=color)
 
                 for idx, pred_polygon in enumerate(building['pred_polygons']):
                     if idx in building['pred_TP_indexes']:

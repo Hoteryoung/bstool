@@ -12,9 +12,9 @@ if __name__ == '__main__':
         rgb_file = os.path.join(image_dir, f'{sub_fold}_L18_106968_219488.jpg')
 
         # shp_file = '/data/buildchange/v0/shanghai/shp_4326/L18_106968_219320.shp'
-        shp_file = '/data/buildchange/v0/shanghai/merged_shp/_L18_106968_219488.shp'
-        geo_file = '/data/buildchange/v0/shanghai/geo_info/_L18_106968_219488.png'
-        rgb_file = '/data/buildchange/v0/shanghai/images/_L18_106968_219488.jpg'
+        shp_file = '/data/buildchange/v0/shanghai/merged_shp/L18_106968_219488.shp'
+        geo_file = '/data/buildchange/v0/shanghai/geo_info/L18_106968_219488.png'
+        # rgb_file = '/data/buildchange/v0/shanghai/images/_L18_106968_219488.jpg'
 
         objects = bstool.shp_parse(shp_file=shp_file,
                                     geo_file=geo_file,
