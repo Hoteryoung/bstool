@@ -788,7 +788,7 @@ class Evaluation():
 
                 building = objects[image_basename]
 
-                if not with_gt:
+                if with_gt:
                     for idx, gt_polygon in enumerate(building['gt_polygons']):
                         iou = building['gt_iou'][idx]
                         if idx in building['gt_TP_indexes']:
