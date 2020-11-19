@@ -30,12 +30,12 @@ def parse_args():
     parser.add_argument(
         '--score_threshold',
         type=int,
-        default=13608, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
+        default=10000, # 17225 for 20201028 generation, 13608 for 20201027 generation, 9360 and 0 for 20201027 highset generation
         help='dataset for evaluation')
     parser.add_argument(
         '--version',
         type=str,
-        default='20201104', 
+        default='20201119_near_nadir', 
         help='dataset for evaluation')
 
     args = parser.parse_args()
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
-    training_info = full_data[0:5000]
+    training_info = full_data[0:3500]
     
     training_csv_file = f'./data/buildchange/high_score/misc/training_dataset_info_{version}.csv'
     
@@ -65,32 +65,33 @@ if __name__ == '__main__':
 
     print("The number of training data: ", len(training_info))
 
-    selected_image_info = []
-    training_imageset_file ='./data/buildchange/high_score/misc/training_imageset_file_{}_high_score_5000_{}.txt'
-    opened_file = dict()
-    for city in cities:
-        f = open(training_imageset_file.format(version, city), 'w')
-        opened_file[city] = f
+    if len(training_info) == 3500:
+        selected_image_info = []
+        training_imageset_file ='./data/buildchange/high_score/misc/training_imageset_file_{}_high_score_2500_{}.txt'
+        opened_file = dict()
+        for city in cities:
+            f = open(training_imageset_file.format(version, city), 'w')
+            opened_file[city] = f
 
-    src_root_label_dir = './data/buildchange/v2/{}/labels'
-    dst_root_label_dir = './data/buildchange/high_score/{}/{}/labels'
-    for data in tqdm.tqdm(training_info):
-        base_name = data[0]
-        city = base_name.split("__")[0].split('_')[0]
-        sub_fold, ori_image_name, coord = bstool.get_info_splitted_imagename(base_name)
-        src_label_file = os.path.join(src_root_label_dir.format(city), base_name + '.json')
+        src_root_label_dir = './data/buildchange/v2/{}/labels'
+        dst_root_label_dir = './data/buildchange/high_score/{}/{}/labels'
+        for data in tqdm.tqdm(training_info):
+            base_name = data[0]
+            city = base_name.split("__")[0].split('_')[0]
+            sub_fold, ori_image_name, coord = bstool.get_info_splitted_imagename(base_name)
+            src_label_file = os.path.join(src_root_label_dir.format(city), base_name + '.json')
 
-        bstool.mkdir_or_exist(dst_root_label_dir.format(version, city))
+            bstool.mkdir_or_exist(dst_root_label_dir.format(version, city))
 
-        dst_label_file = os.path.join(dst_root_label_dir.format(version, city), base_name + '.json')
-        
-        shutil.copy(src_label_file, dst_label_file)
+            dst_label_file = os.path.join(dst_root_label_dir.format(version, city), base_name + '.json')
+            
+            shutil.copy(src_label_file, dst_label_file)
 
-        info = f"{base_name}\n"
-        if info not in selected_image_info:
-            opened_file[city].write(info)
-            selected_image_info.append(info)
+            info = f"{base_name}\n"
+            if info not in selected_image_info:
+                opened_file[city].write(info)
+                selected_image_info.append(info)
 
-    for city in cities:
-        f = opened_file[city]
-        f.close()
+        for city in cities:
+            f = opened_file[city]
+            f.close()
