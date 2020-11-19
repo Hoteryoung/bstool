@@ -52,7 +52,9 @@ if __name__ == '__main__':
     
     file_names, ori_image_names, scores, full_data = parse_csv(csv_file)
 
-    training_info = full_data[0:1500]
+    keep_image_num = 1500
+
+    training_info = full_data[0:keep_image_num]
     
     training_csv_file = f'./data/buildchange/high_score/misc/training_dataset_info_{version}.csv'
     
@@ -65,7 +67,7 @@ if __name__ == '__main__':
 
     print("The number of training data: ", len(training_info))
 
-    if len(training_info) == 3500:
+    if len(training_info) == keep_image_num:
         selected_image_info = []
         training_imageset_file ='./data/buildchange/high_score/misc/training_imageset_file_{}_high_score_{}.txt'
         opened_file = dict()
