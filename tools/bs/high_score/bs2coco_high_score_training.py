@@ -144,7 +144,7 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'buildchange'
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    version = '20201119_near_nadir'
+    version = '20201119_off_nadir'
     release_version = f'v2'
 
     groundtruth = True
