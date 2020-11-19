@@ -74,12 +74,12 @@ class CountImage():
         else:
             parameters = {
                         'object_num': 5,
-                        "mean_height": 3,
-                        "mean_angle": 75, 
+                        "mean_height": 1,
+                        "mean_angle": 45, 
                         "mean_offset_length": 5,
                         'std_offset_length': 1,
                         'std_angle': 15,
-                        'no_ignore_rate': 0.80}
+                        'no_ignore_rate': 0.90}
         angles = np.abs(angles) * 180.0 / math.pi
         offset_lengths = np.abs(offset_lengths)
 
@@ -130,7 +130,7 @@ def parse_args():
     parser.add_argument(
         '--source',
         type=str,
-        default='local', 
+        default='remote', 
         help='dataset for evaluation')
 
     args = parser.parse_args()
@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
         print("Finish processing {} set.".format(city))
 
-    full_csv_file = f'./data/buildchange/high_score/misc/full_dataset_info_20201107.csv'
+    full_csv_file = f'./data/buildchange/high_score/misc/full_dataset_info_20201119_off_nadir.csv'
 
     training_image_info_ = np.array(training_image_info)
     scores = training_image_info_[:, -1].astype(np.float64)
