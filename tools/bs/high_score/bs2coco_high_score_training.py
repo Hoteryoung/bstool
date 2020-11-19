@@ -144,7 +144,7 @@ if __name__ == "__main__":
     # dataset meta data
     core_dataset_name = 'buildchange'
     cities = ['shanghai', 'beijing', 'jinan', 'haerbin', 'chengdu']
-    version = '20201104'
+    version = '20201119_near_nadir'
     release_version = f'v2'
 
     groundtruth = True
@@ -154,11 +154,11 @@ if __name__ == "__main__":
     for idx, city in enumerate(cities):
         print(f"Begin to process {city} data!")
         if 'xian' in city or 'dalian' in city:
-            anno_name = [core_dataset_name, f'high_score', 'val', city]
+            anno_name = [core_dataset_name, f'high_score', f'{version}', 'val', city]
         else:
-            anno_name = [core_dataset_name, f'high_score', 'train', city]
+            anno_name = [core_dataset_name, f'high_score', f'{version}', 'train', city]
 
-        imageset_file = f'data/buildchange/high_score/misc/training_imageset_file_20201104_high_score_5000_{city}.txt'
+        imageset_file = f'data/buildchange/high_score/misc/training_imageset_file_{version}_high_score_{city}.txt'
 
         if with_height_sample:
             anno_name.append("height_sampled")
