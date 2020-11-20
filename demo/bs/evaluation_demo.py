@@ -60,6 +60,9 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v005.09.10_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_rotate_augmentation_4_angles',
             'bc_v005.09.11_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_rotate_augmentation_4_angles_ignore',
             'bc_v005.09.12_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_high_score',
+            'bc_v005.09.13_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_high_score_1119_near_nadir',
+            'bc_v005.09.14_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_high_score_1119_off_nadir',
+            'bc_v005.09.15_offset_rcnn_r50_1x_v2_5city_trainval_roof_mask_building_bbox_high_score_1119_off_nadir_near_nadir',
             'bc_v005.10.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature',
             'bc_v005.10.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_rotate_offset_feature_wo_online_augmentation',
             'bc_v005.10.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_wo_online_augmentation_wo_expend_feature',
@@ -114,15 +117,38 @@ ALL_MODELS = ['bc_v005.01_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_buildin
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple'
             ]
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='MMDet eval on semantic segmentation')
+    parser.add_argument(
+        '--version',
+        type=str,
+        default='bc_v100.02.08', 
+        help='dataset for evaluation')
+    parser.add_argument(
+        '--city',
+        type=str,
+        default='', 
+        help='dataset for evaluation')
+
+    args = parser.parse_args()
+
+    return args
+
 if __name__ == '__main__':
+    args = parse_args()
     # models = ['bc_v005.08.02_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin', 'bc_v005.08.03_offset_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_polar_cos_sin_no_norm']
     # models = ['bc_v005.07_offset_rcnn_r50_2x_v1_5city_trainval_roof_mask_building_bbox_smooth_l1_offsetweight_2.0_conv10']
-    models = [model for model in ALL_MODELS[1:] if 'bc_v005.09.12' in model]
+    models = [model for model in ALL_MODELS[0:] if args.version in model]
     # models = ['bc_v006.05_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_angle']
     # models = ['bc_v006.01_height_rcnn_r50_1x_v1_5city_trainval_roof_mask_building_bbox_linear_50_50']
     # cities = ['jinan', 'shanghai', 'beijing','chengdu', 'haerbin']
     # cities = ['dalian', 'xian', 'xian_fixed']
-    cities = ['dalian', 'xian']
+    print("args.city: ", args.city)
+    if args.city == '':
+        cities = ['dalian', 'xian']
+    else:
+        cities = [args.city]
     # cities = ['xian']
     # cities = ['dalian', 'xian_fixed']
     # cities = ['urban3d']
