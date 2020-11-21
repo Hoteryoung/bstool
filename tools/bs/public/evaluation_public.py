@@ -108,7 +108,10 @@ ALL_MODELS = [
             'bc_v100.03.45_semi_offset_rcnn_r50_2x_public_20201028_without_bbox_without_rotation_arg_ms_google',
             'bc_v100.03.46_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google',
             'bc_v100.03.47_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_google_foa',
-            'bc_v100.03.48_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_foa'
+            'bc_v100.03.48_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_foa',
+            'bc_v100.03.49_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_foa',
+            'bc_v100.03.50_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_without_rotation',
+            'bc_v100.03.51_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_google_foa'
             ]
 
 def parse_args():
