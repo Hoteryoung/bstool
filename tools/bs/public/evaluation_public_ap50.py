@@ -212,6 +212,8 @@ class CSV2Json():
             cocoEval.params.catIds = self.cat_ids
             cocoEval.params.imgIds = self.img_ids
 
+            cocoEval.params.maxDets = [2, 25, 250]
+
             cocoEval.evaluate()
             cocoEval.accumulate()
             cocoEval.summarize()
