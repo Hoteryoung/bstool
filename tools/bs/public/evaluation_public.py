@@ -51,6 +51,12 @@ ALL_MODELS = [
             'bc_v100.01.20_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn_roof',
             'bc_v100.01.21_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn_roof',
             'bc_v100.01.22_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_image_rotation',
+            'bc_v100.01.23_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_fix_parameter',
+            'bc_v100.01.24_offset_rcnn_r50_2x_public_20201028_lr_0.02_48_epoch',
+            'bc_v100.01.25_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_rotation_48_epoch',
+            'bc_v100.01.26_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_12epoch',
+            'bc_v100.01.27_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn_12epoch',
+            'bc_v100.01.28_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn_12epoch',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
@@ -62,6 +68,9 @@ ALL_MODELS = [
             'bc_v100.02.09_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_without_image_flip',
             'bc_v100.02.10_offset_rcnn_r50_1x_public_20201028_rotate_offset_4_angles_12epoch',
             'bc_v100.02.11_offset_rcnn_r50_2x_public_20201028_rotate_offset_2_angles_without_rotation shanghai_xian_public',
+            'bc_v100.02.12_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_only_share_conv',
+            'bc_v100.02.13_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_share_conv_and_fc',
+            'bc_v100.02.14_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_no_share_conv_fc',
             'bc_v100.03.01_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
             'bc_v100.03.02_semi_offset_rcnn_r50_2x_public_20201028_real_semi',
             'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume',
@@ -111,7 +120,10 @@ ALL_MODELS = [
             'bc_v100.03.48_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_foa',
             'bc_v100.03.49_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_foa',
             'bc_v100.03.50_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_without_rotation',
-            'bc_v100.03.51_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_google_foa'
+            'bc_v100.03.51_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_ms_google_foa',
+            'bc_v100.03.52_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_full_ms_google_only',
+            'bc_v100.03.53_semi_offset_rcnn_r50_2x_public_20201028_finetune_03.38_without_bbox_without_rotation_arg_full_ms_google_only_foa',
+            'bc_v100.03.54_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_without_rotation_lw_16.0'
             ]
 
 def parse_args():
@@ -147,7 +159,7 @@ if __name__ == '__main__':
     
     with_vis = False
     with_only_vis = False
-    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version:
+    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version  or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version:
         with_offset = False
     else:
         with_offset = True
