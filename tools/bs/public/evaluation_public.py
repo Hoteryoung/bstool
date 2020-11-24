@@ -162,7 +162,7 @@ if __name__ == '__main__':
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
-    with_only_vis = True
+    with_only_vis = False
     with_only_pred = False
     if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version:
         with_offset = False
