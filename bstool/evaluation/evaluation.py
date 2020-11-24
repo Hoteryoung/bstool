@@ -766,7 +766,7 @@ class Evaluation():
 
         return objects
 
-    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint'], with_iou=False, with_gt=True):
+    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint'], with_iou=False, with_gt=True, with_only_pred=False):
         colors = {'gt_TP':   (0, 255, 0),
                 'pred_TP': (255, 255, 0),
                 'FP':      (0, 255, 255),
@@ -788,27 +788,31 @@ class Evaluation():
 
                 building = objects[image_basename]
                 
-                for idx, gt_polygon in enumerate(building['gt_polygons']):
-                    iou = building['gt_iou'][idx]
-                    if idx in building['gt_TP_indexes']:
-                        color = colors['gt_TP'][::-1]
-                        if not with_gt:
+                if with_only_pred == False:
+                    for idx, gt_polygon in enumerate(building['gt_polygons']):
+                        iou = building['gt_iou'][idx]
+                        if idx in building['gt_TP_indexes']:
+                            color = colors['gt_TP'][::-1]
+                            if not with_gt:
+                                continue
+                        else:
+                            color = colors['FN'][::-1]
+
+                        if gt_polygon.geom_type != 'Polygon':
                             continue
-                    else:
-                        color = colors['FN'][::-1]
 
-                    if gt_polygon.geom_type != 'Polygon':
-                        continue
-
-                    img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
-                    if with_iou:
-                        img = bstool.draw_iou(img, gt_polygon, iou, color=color)
+                        img = bstool.draw_mask_boundary(img, bstool.polygon2mask(gt_polygon), color=color)
+                        if with_iou:
+                            img = bstool.draw_iou(img, gt_polygon, iou, color=color)
 
                 for idx, pred_polygon in enumerate(building['pred_polygons']):
-                    if idx in building['pred_TP_indexes']:
-                        color = colors['pred_TP'][::-1]
+                    if with_only_pred == False:
+                        if idx in building['pred_TP_indexes']:
+                            color = colors['pred_TP'][::-1]
+                        else:
+                            color = colors['FP'][::-1]
                     else:
-                        color = colors['FP'][::-1]
+                        color = colors['pred_TP'][::-1]
 
                     if pred_polygon.geom_type != 'Polygon':
                         continue

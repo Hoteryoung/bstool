@@ -57,6 +57,7 @@ ALL_MODELS = [
             'bc_v100.01.26_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_12epoch',
             'bc_v100.01.27_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn_12epoch',
             'bc_v100.01.28_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn_12epoch',
+            'bc_v100.01.29_offset_rcnn_r50_2x_public_20201028_lr_0.02_96epoch',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
@@ -71,6 +72,7 @@ ALL_MODELS = [
             'bc_v100.02.12_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_only_share_conv',
             'bc_v100.02.13_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_share_conv_and_fc',
             'bc_v100.02.14_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_no_share_conv_fc',
+            'bc_v100.02.16_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_48_epoch shanghai_xian_public',
             'bc_v100.03.01_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
             'bc_v100.03.02_semi_offset_rcnn_r50_2x_public_20201028_real_semi',
             'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume',
@@ -134,7 +136,7 @@ def parse_args():
     parser.add_argument(
         '--version',
         type=str,
-        default='bc_v100.02.08', 
+        default='bc_v100.03.38', 
         help='dataset for evaluation')
     parser.add_argument(
         '--city',
@@ -160,7 +162,8 @@ if __name__ == '__main__':
     # cities = ['xian_public', 'shanghai_public']
     
     with_vis = False
-    with_only_vis = False
+    with_only_vis = True
+    with_only_pred = False
     if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version:
         with_offset = False
     else:
@@ -181,8 +184,12 @@ if __name__ == '__main__':
 
             output_dir = f'./data/buildchange/statistic/{model}/{city}'
             bstool.mkdir_or_exist(output_dir)
-            vis_boundary_dir = f'./data/buildchange/vis/{model}/{city}/boundary'
-            bstool.mkdir_or_exist(vis_boundary_dir)
+            if with_only_pred == False:
+                vis_boundary_dir = f'./data/buildchange/vis/{model}/{city}/boundary'
+                bstool.mkdir_or_exist(vis_boundary_dir)
+            else:
+                vis_boundary_dir = f'./data/buildchange/vis/{model}/{city}/boundary_pred'
+                bstool.mkdir_or_exist(vis_boundary_dir)
             vis_offset_dir = f'./data/buildchange/vis/{model}/{city}/offset'
             bstool.mkdir_or_exist(vis_offset_dir)
             summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary_{csv_info}.csv'
@@ -253,6 +260,6 @@ if __name__ == '__main__':
                     # for with_footprint in [True, False]:
                     #     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
             else:
-                evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir, with_gt=True)
-                for with_footprint in [True, False]:
-                    evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
+                evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir, with_gt=True, with_only_pred=with_only_pred)
+                # for with_footprint in [True, False]:
+                #     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
