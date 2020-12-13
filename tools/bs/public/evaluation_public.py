@@ -4,6 +4,12 @@ import argparse
 
 
 def write_results2csv(results, meta_info=None):
+    """Write the evaluation results to csv file
+
+    Args:
+        results (list): list of result
+        meta_info (dict, optional): The meta info about the evaluation (file path of ground truth etc.). Defaults to None.
+    """
     print("meta_info: ", meta_info)
     segmentation_eval_results = results[0]
     with open(meta_info['summary_file'], 'w') as summary:
@@ -28,6 +34,7 @@ def write_results2csv(results, meta_info=None):
 
         csv_writer.writerow([''])
 
+# Save the FULL CONFIG NAME of models which need to be evaluated, you can use the short name (bc_vXXX.XX.XX) to filter the model
 ALL_MODELS = [
             'bc_v100.01.01_offset_rcnn_r50_1x_public_20201027_baseline',
             'bc_v100.01.02_offset_rcnn_r50_1x_public_20201027_lr0.01',
@@ -136,13 +143,13 @@ def parse_args():
     parser.add_argument(
         '--version',
         type=str,
-        default='bc_v100.03.38', 
-        help='dataset for evaluation')
+        default='bc_v100.01.09', 
+        help='model name (version) for evaluation')
     parser.add_argument(
         '--city',
         type=str,
         default='', 
-        help='dataset for evaluation')
+        help='dataset city for evaluation')
 
     args = parser.parse_args()
 
@@ -151,23 +158,30 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
+    # select which model to be evaluated
     models = [model for model in ALL_MODELS[0:] if args.version in model]
     # cities = ['shanghai_public', 'xian_public']
     print("args.city: ", args.city)
+    # city candidates for evaluation (public dataset): ['shanghai_xian_public', 'shanghai_public', 'xian_public']
     if args.city == '':
         cities = ['shanghai_xian_public']
     else:
         cities = [args.city]
-    # cities = ['xian_public']
-    # cities = ['xian_public', 'shanghai_public']
     
+    # with_vis = True -> save vis results to local when evaluating (this processing needs time and storage, default is False)
     with_vis = False
-    with_only_vis = False
-    with_only_pred = False
+    # with_only_vis = True -> skip the evaluation
+    with_only_vis = True
+    # with_only_pred = True -> only draw the prediction mask in the visualization results
+    with_only_pred = True
+
+    # with_offset = True -> evaluate the LOVE and S2LOVE models, with_offset = False -> evaluate the Mask R-CNN baseline
     if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version:
         with_offset = False
     else:
         with_offset = True
+    
+    # save_merged_csv = True -> merge the 1024 * 1024 sub-images to 2048 * 2048 images before evaluation (full dataset), save_merged_csv = False -> evaluate the 1024 * 1024 images (public dataset)
     save_merged_csv = False
 
     if save_merged_csv:
@@ -177,13 +191,18 @@ if __name__ == '__main__':
 
     for model in models:
         version = model.split('_')[1]
+
+        # important parameter!!! It determines the quality of prediction for evaluation.
         score_threshold = 0.4
 
         for city in cities:
             print(f"========== {model} ========== {city} ==========")
 
+            # not used
             output_dir = f'./data/buildchange/statistic/{model}/{city}'
             bstool.mkdir_or_exist(output_dir)
+
+            # vis_boundary_dir: dir for saving vis images
             if with_only_pred == False:
                 vis_boundary_dir = f'./data/buildchange/vis/{model}/{city}/boundary'
                 bstool.mkdir_or_exist(vis_boundary_dir)
@@ -192,9 +211,16 @@ if __name__ == '__main__':
                 bstool.mkdir_or_exist(vis_boundary_dir)
             vis_offset_dir = f'./data/buildchange/vis/{model}/{city}/offset'
             bstool.mkdir_or_exist(vis_offset_dir)
+
+            # summary_file: the summary csv file
             summary_file = f'./data/buildchange/summary/{model}/{model}_{city}_eval_summary_{csv_info}.csv'
             bstool.mkdir_or_exist(f'./data/buildchange/summary/{model}')
             
+            # important files
+            # anno_file: COCO json file for evaluation
+            # gt_roof_csv_file: ground truth for roof (csv format)
+            # gt_footprint_csv_file: ground truth for footprint (csv format)
+            # image_dir: image dir for evaluation
             if city == 'xian_public':
                 anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_xian_fine.json'
                 gt_roof_csv_file = './data/buildchange/public/20201028/xian_val_roof_crop1024_gt_minarea500.csv'
@@ -213,8 +239,11 @@ if __name__ == '__main__':
             else:
                 raise NotImplementedError("do not support city: ", city)
 
+            # important files
+            # pkl_file: detection result (pkl format)
+            # roof_csv_file: prediction result of roof (csv format), it is generated in the evaluation 
+            # rootprint_csv_file: prediction result of roof (csv format), it is generated in the evaluation 
             pkl_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_coco_results.pkl'
-            
             roof_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_roof_{csv_info}.csv'
             rootprint_csv_file = f'../mmdetv2-bc/results/buildchange/{model}/{model}_{city}_footprint_{csv_info}.csv'
 
@@ -236,6 +265,7 @@ if __name__ == '__main__':
             if with_only_vis is False:
                 # evaluation
                 if evaluation.dump_result:
+                    # calculate the F1 score
                     segmentation_eval_results = evaluation.segmentation()
                     meta_info = dict(summary_file=summary_file,
                                     model=model,
@@ -256,10 +286,14 @@ if __name__ == '__main__':
 
                 # vis
                 if with_vis:
+                    # generate the vis results
                     evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir, with_gt=True)
+                    # draw offset in the image (not used in this file)
                     # for with_footprint in [True, False]:
                     #     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)
             else:
+                # generate the vis results
                 evaluation.visualization_boundary(image_dir=image_dir, vis_dir=vis_boundary_dir, with_gt=True, with_only_pred=with_only_pred)
+                # draw offset in the image (not used in this file)
                 # for with_footprint in [True, False]:
                 #     evaluation.visualization_offset(image_dir=image_dir, vis_dir=vis_offset_dir, with_footprint=with_footprint)

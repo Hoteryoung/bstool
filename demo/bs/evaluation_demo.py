@@ -124,7 +124,7 @@ def parse_args():
     parser.add_argument(
         '--version',
         type=str,
-        default='bc_v100.02.08', 
+        default='bc_v100.01.04', 
         help='dataset for evaluation')
     parser.add_argument(
         '--city',
