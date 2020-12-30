@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   evaluation_public.py
+@Time    :   2020/12/30 22:29:35
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   公开数据集的评估代码，较为重要
+'''
+
+
 import bstool
 import csv
 import argparse

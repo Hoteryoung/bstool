@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   eval_detection_demo.py
+@Time    :   2020/12/30 21:53:00
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   使用 COCO API 进行检测相关的性能评估 demo
+'''
+
+
 import bstool
 
 

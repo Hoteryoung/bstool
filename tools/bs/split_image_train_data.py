@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   split_image_train_data.py
+@Time    :   2020/12/30 22:41:47
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对 2048 * 2048 的图像进行裁剪
+'''
+
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

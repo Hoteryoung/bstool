@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   random_select_vis_images.py
+@Time    :   2020/12/30 22:18:38
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   随机挑选一些图像进行可视化，主要是本地图像加载较慢，所以随机挑选一些来看
+'''
+
+
 import numpy as np
 import cv2
 import os

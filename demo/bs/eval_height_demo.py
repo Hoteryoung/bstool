@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   eval_height_demo.py
+@Time    :   2020/12/30 21:53:42
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对高度进行评估的 demo (可能无效)
+'''
+
+
 import bstool
 
 

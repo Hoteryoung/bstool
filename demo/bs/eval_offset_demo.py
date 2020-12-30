@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   eval_offset_demo.py
+@Time    :   2020/12/30 21:54:12
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对 offset 进行评估的 demo (可能无效)
+'''
+
+
 import bstool
 
 

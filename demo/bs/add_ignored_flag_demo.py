@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   add_ignored_flag_demo.py
+@Time    :   2020/12/30 21:50:22
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   根据语义分割结果为实例分割的标注添加 ignore 标志位的 demo
+'''
+
 import matplotlib.pyplot as plt
 import geopandas
 

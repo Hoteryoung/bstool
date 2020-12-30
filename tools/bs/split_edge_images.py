@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   split_edge_images.py
+@Time    :   2020/12/30 22:41:26
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   分割 edge map
+'''
+
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

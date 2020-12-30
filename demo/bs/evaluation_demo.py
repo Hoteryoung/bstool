@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   evaluation_demo.py
+@Time    :   2020/12/30 21:55:14
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   完整评估程序 demo (重点程序)
+'''
+
+
 import bstool
 import csv
 import argparse

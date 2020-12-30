@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   generate_pixel_offset.py
+@Time    :   2020/12/30 22:16:06
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   生成 pixel-level 的 offset 标注数据
+'''
+
+
 import os
 import numpy as np
 import cv2

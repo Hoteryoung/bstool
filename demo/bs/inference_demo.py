@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   inference_demo.py
+@Time    :   2020/12/30 21:56:27
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对模型进行 inference 的 demo, 目前已经将这部分程序移植到 mmdetv2 中
+'''
+
+
 import numpy as np
 import cv2
 import geopandas

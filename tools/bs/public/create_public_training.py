@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   create_public_training.py
+@Time    :   2020/12/30 22:27:11
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   在计算出所有图像的分数之后，使用此程序挑选出指定数量的数据用于公开，需要尝试不同的阈值来达到控制图像数量的目的
+'''
+
+
 import os
 import csv
 import numpy as np

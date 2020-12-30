@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   split_image_val_xian.py
+@Time    :   2020/12/30 22:33:42
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   将 xian 验证集裁剪为 1024 * 1024 的子图像
+'''
+
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

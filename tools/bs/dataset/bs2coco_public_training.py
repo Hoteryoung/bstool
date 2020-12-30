@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   bs2coco_public_training.py
+@Time    :   2020/12/30 22:13:11
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   公开数据集: 将公开数据集的训练集转换成 COCO 标注格式
+'''
+
+
 import os
 import cv2
 import json

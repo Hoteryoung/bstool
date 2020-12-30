@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   bs2coco_high_score_training.py
+@Time    :   2020/12/30 22:21:42
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   挑选 high score 的图像，转换成 COCO 格式
+'''
+
+
 import os
 import cv2
 import json

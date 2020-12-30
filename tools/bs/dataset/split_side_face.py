@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   split_side_face.py
+@Time    :   2020/12/30 22:20:38
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对令宣生成的建筑物侧面图进行分割，用于训练 instance-level 的网络
+'''
+
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   urban3d_offset.py
+@Time    :   2020/12/30 22:04:31
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   Urban 3D 数据集 offset 相关的程序
+'''
+
 import os
 import cv2
 import numpy as np

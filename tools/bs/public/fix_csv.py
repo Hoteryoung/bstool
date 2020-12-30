@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   fix_csv.py
+@Time    :   2020/12/30 22:29:59
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   由于唯嘉在对图像进行分割的时候，子图像的坐标定义与我们这边不一样，导致错误，使用此程序进行修复她生成的 CSV 文件
+'''
+
+
 import bstool
 import pandas
 import shapely

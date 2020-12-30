@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   split_offset_field_images.py
+@Time    :   2020/12/30 22:42:35
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对 2048 * 2048 的 offset field 文件进行裁剪
+'''
+
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

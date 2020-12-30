@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   mask2csv_val_urban3d.py
+@Time    :   2020/12/30 22:39:26
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   将 urban3d 的 mask 标注转换为 csv 文件
+'''
+
+
 import cv2
 import numpy as np
 import rasterio as rio

@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   statistic_demo.py
+@Time    :   2020/12/30 22:02:23
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   计算数据统计信息的 demo
+'''
+
 import bstool
 
 

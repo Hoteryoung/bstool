@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   bs2coco_public_for_ap50.py
+@Time    :   2020/12/30 22:25:03
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   生成用于计算 AP50 指标的 COCO 文件
+'''
+
+
 import os
 import cv2
 import json

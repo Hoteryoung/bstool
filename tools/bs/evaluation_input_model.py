@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   evaluation_input_model.py
+@Time    :   2020/12/30 22:37:12
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   根据输入的模型进行精度评估
+'''
+
 import argparse
 import csv
 

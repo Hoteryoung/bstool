@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   merge_csv_results_demo2.py
+@Time    :   2020/12/30 21:57:55
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   合并 CSV 结果文件的 demo
+'''
+
+
 import bstool
 
 

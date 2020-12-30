@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   split_image_train_data_v2.py
+@Time    :   2020/12/30 22:19:58
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对原始 2048 * 2048 的图像进行分割，分割成 1024 * 1024 大小
+'''
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

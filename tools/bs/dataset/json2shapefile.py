@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   json2shapefile.py
+@Time    :   2020/12/30 22:17:55
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   将 json 标注文件转换为 shapefile 文件，用于处理令宣生成的 v3 数据集
+'''
+
+
 import numpy as np
 import os
 import pandas

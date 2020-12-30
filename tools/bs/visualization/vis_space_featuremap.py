@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   vis_space_featuremap.py
+@Time    :   2020/12/30 22:36:14
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对空间特征进行可视化
+'''
+
 import os
 import numpy as np
 from matplotlib import pyplot as plt

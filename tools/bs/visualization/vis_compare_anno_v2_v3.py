@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   vis_compare_anno_v2_v3.py
+@Time    :   2020/12/30 22:34:38
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对令宣生成的 V2 和 V3 两个版本的标注文件进行可视化分析
+'''
+
+
 import numpy as np
 import cv2
 import os

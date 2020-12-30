@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   vis_shapefile_val_data_demo.py
+@Time    :   2020/12/30 22:09:06
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   可视化 shapefile 文件
+'''
+
+
 import bstool
 
 

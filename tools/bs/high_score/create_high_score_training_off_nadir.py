@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   create_high_score_training_off_nadir.py
+@Time    :   2020/12/30 22:22:36
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   根据分数高低，挑选 off-nadir 图像
+'''
+
 import os
 import csv
 import numpy as np

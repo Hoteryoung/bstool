@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   image_num_height_angle_2048_v1.py
+@Time    :   2020/12/30 22:24:24
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   按照图像分数对 2048 * 2048 的图像进行排序
+'''
+
+
 import os
 import numpy as np
 import glob

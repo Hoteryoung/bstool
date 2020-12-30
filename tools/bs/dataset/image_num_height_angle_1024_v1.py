@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   image_num_height_angle_1024_v1.py
+@Time    :   2020/12/30 22:16:28
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   公开数据集: 计算数据集的各项属性参数，用于创建公开数据级，较为重要
+'''
+
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

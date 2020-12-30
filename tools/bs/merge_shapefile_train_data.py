@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   merge_shapefile_train_data.py
+@Time    :   2020/12/30 22:39:51
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   合并分块标注的 shapefile 文件
+'''
+
+
 import os
 import glob
 import tqdm

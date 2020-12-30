@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   compression_json.py
+@Time    :   2020/12/30 22:13:55
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   压缩 json 文件，剔除部分重复的信息 (json 文件过大导致训练模型的时候内存溢出)
+'''
+
 import bstool
 import mmcv
 import json

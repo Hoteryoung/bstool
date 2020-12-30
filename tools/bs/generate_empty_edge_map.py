@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   generate_empty_edge_map.py
+@Time    :   2020/12/30 22:37:33
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   edge map 是唯嘉生成的，数量上与我这面有些不对应，为了能够正常训练网络，生成了一些空白的 edge map
+'''
+
+
 import os
 import cv2
 import bstool

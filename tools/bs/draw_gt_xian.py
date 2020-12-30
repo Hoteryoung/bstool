@@ -1,3 +1,13 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   draw_gt_xian.py
+@Time    :   2020/12/30 22:36:46
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   可视化 xian 的 gt
+'''
 
 import os
 import bstool

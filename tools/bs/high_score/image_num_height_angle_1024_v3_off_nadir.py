@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   image_num_height_angle_1024_v3_off_nadir.py
+@Time    :   2020/12/30 22:23:44
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   按照 off-nadir 的性质，计算图像分数，并进行排序
+'''
+
 import os
 import numpy as np
 import glob

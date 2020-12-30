@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   vis_public_training.py
+@Time    :   2020/12/30 22:35:55
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   对公开数据集进行可视化
+'''
+
+
 import numpy as np
 import cv2
 import os

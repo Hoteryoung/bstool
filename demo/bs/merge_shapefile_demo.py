@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   merge_shapefile_demo.py
+@Time    :   2020/12/30 21:58:54
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   由于标注的时候是分块标注的，导致边缘部分的建筑物被分开，因此使用此程序合并分块标注的标注信息
+'''
+
+
 import pandas
 import geopandas
 

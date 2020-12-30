@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   select_high_score_vis_images.py
+@Time    :   2020/12/30 22:19:20
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   根据图像分数高低，挑选分数较高的图像进行可视化
+'''
+
+
 import numpy as np
 import cv2
 import os

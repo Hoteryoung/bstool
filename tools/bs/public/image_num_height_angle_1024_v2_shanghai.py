@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   image_num_height_angle_1024_v2_shanghai.py
+@Time    :   2020/12/30 22:31:06
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   单独计算 shanghai 的分数，用于生成验证集
+'''
+
+
 import os
 import numpy as np
 import glob

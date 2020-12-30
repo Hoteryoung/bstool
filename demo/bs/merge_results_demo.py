@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   merge_results_demo.py
+@Time    :   2020/12/30 21:58:27
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   将子图像的检测结果合并成原始图像的检测结果 demo
+'''
+
+
 import os
 import numpy as np
 import mmcv

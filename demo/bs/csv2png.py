@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   csv2png.py
+@Time    :   2020/12/30 21:52:33
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   可视化 CSV 文件的 demo
+'''
+
+
 import os
 import numpy as np
 import cv2

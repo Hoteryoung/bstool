@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   create_multi_source.py
+@Time    :   2020/12/30 22:26:15
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   根据数据源来对数据进行划分
+'''
+
 import os
 import shutil
 import bstool

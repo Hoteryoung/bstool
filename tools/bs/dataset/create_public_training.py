@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   create_public_training.py
+@Time    :   2020/12/30 22:14:53
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   公开数据集: 生成 3000 张公开训练集的程序，比较重要
+'''
+
+
 import os
 import csv
 import numpy as np
