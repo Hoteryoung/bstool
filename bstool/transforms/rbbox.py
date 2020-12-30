@@ -9,6 +9,15 @@ import pycocotools.mask as maskUtils
 
 
 def segm2rbbox(segms, dilate=False):
+    """convert the segmentation to bbox
+
+    Args:
+        segms (np.array): segmentation (COCO format)
+        dilate (bool, optional): [description]. Defaults to False.
+
+    Returns:
+        np.array: converted rotated bounding box
+    """
     mask = maskUtils.decode(segms).astype(np.bool)
     gray = np.array(mask*255, dtype=np.uint8)
     if dilate:
@@ -224,6 +233,14 @@ def hobb2pointobb(hobb):
 
 
 def maskobb2thetaobb(maskobb):
+    """convert maskobb to thetaobb
+
+    Args:
+        maskobb (np.array): COCO format mask
+
+    Returns:
+        np.array: (cx, cy, w, h, theta)
+    """
     mask = maskUtils.decode(maskobb).astype(np.bool)
     gray = np.array(mask*255, dtype=np.uint8)
     contours = cv2.findContours(gray.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
@@ -276,6 +293,16 @@ def bbox2centerness(mask_height, mask_width, bbox):
     return centerness
 
 def bbox2gaussmask(mask_height, mask_width, bbox):
+    """convert bbox to gaussian mask
+
+    Args:
+        mask_height (float): height of mask
+        mask_width (float): width of mask
+        bbox (list): (xmin, ymin, xmax, ymax)
+
+    Returns:
+        np.array: gaussian mask
+    """
     xmin, ymin, xmax, ymax = bbox
     bbox_w = xmax - xmin
     bbox_h = ymax - ymin

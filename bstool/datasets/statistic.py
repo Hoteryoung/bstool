@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   statistic.py
+@Time    :   2020/12/30 18:41:29
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   statistic the information of dataset
+'''
+
+
 import os
 import numpy as np
 from pycocotools.coco import COCO
@@ -40,6 +52,14 @@ class Statistic():
                 self.objects += self._parse_csv(csv_file_)
 
     def _parse_coco(self, ann_file):
+        """parse COCO file
+
+        Args:
+            ann_file (str): annotation file
+
+        Returns:
+            dict: dict of annotation information
+        """
         coco =  COCO(ann_file)
         img_ids = coco.get_img_ids()
 
@@ -60,6 +80,14 @@ class Statistic():
         return objects
 
     def _parse_csv(self, csv_file):
+        """parse csv file
+
+        Args:
+            csv_file (str): csv file name
+
+        Returns:
+            dict: data of csv file
+        """
         csv_df = pandas.read_csv(csv_file)
         image_name_list = list(set(csv_df.ImageId.unique()))
 
@@ -89,6 +117,11 @@ class Statistic():
         return objects
 
     def height_distribution(self, title=['all']):
+        """calculate the hight distribution
+
+        Args:
+            title (list, optional): title of plot. Defaults to ['all'].
+        """
         heights = np.array([obj['height'] for obj in self.objects])
 
         print("Height mean: ", heights.mean())
@@ -119,6 +152,11 @@ class Statistic():
         plt.clf()
 
     def height_curve(self, title=['all']):
+        """plot the curve of height
+
+        Args:
+            title (list, optional): title of plot. Defaults to ['all'].
+        """
         heights = np.array([obj['height'] for obj in self.objects])
 
         heights = np.sort(heights)[::-1]
@@ -137,6 +175,11 @@ class Statistic():
         plt.clf()
 
     def offset_polar(self, title=['all']):
+        """plot the offset in polar coordinate
+
+        Args:
+            title (list, optional): title of plot. Defaults to ['all'].
+        """
         offsets = np.array([obj['offset'] for obj in self.objects])
 
         r = np.sqrt(offsets[:, 0] ** 2 + offsets[:, 1] ** 2)
@@ -166,6 +209,11 @@ class Statistic():
         plt.clf()
 
     def offset_distribution(self, title=['all']):
+        """plot the offset distribution
+
+        Args:
+            title (list, optional): title of plot. Defaults to ['all'].
+        """
         offsets = np.array([obj['offset'] for obj in self.objects])
 
         print("Offset X mean: ", offsets[:, 0].mean())

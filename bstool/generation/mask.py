@@ -7,6 +7,15 @@ import bstool
 
 def generate_polygon(mask_image, 
                      min_area=20):
+    """convert the mask to polygon
+
+    Args:
+        mask_image (np.array): input mask image
+        min_area (int, optional): threshold of area, when area < min_area, filter this object. Defaults to 20.
+
+    Returns:
+        list: list of polygons
+    """
     contours = measure.find_contours(mask_image, 0.5, positive_orientation='low')
 
     polygons = []
@@ -42,7 +51,15 @@ def generate_polygon(mask_image,
 
 def generate_polygon_opencv(mask_image, 
                             min_area=20):
+    """convert the mask to polygon with OpenCV API
 
+    Args:
+        mask_image (np.array): input mask image
+        min_area (int, optional): threshold of area, when area < min_area, filter this object. Defaults to 20.
+
+    Returns:
+        list: list of polygons
+    """
     contours = cv2.findContours(mask_image.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = contours[0] if len(contours) == 2 else contours[1]
     

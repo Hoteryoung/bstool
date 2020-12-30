@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   evaluation_detection.py
+@Time    :   2020/12/19 23:10:17
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   帮唯嘉对 CrowdAI 数据的检测结果进行 COCO 格式的评估
+'''
+
+
 import os
 import os.path as osp
 import tempfile

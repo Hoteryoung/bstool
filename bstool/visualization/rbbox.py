@@ -14,15 +14,45 @@ def draw_rectangle_by_points(im, point, color=(0, 0, 255)):
     return im
 
 def show_bbox(im, bbox, color=(0, 0, 255)):
+    """show bounding box
+
+    Args:
+        im (np.array): input image
+        bbox (list): (xmin, ymin, h, w)
+        color (tuple, optional): color of box. Defaults to (0, 0, 255).
+
+    Returns:
+        np.array: output image
+    """
     cv2.rectangle(im, (int(bbox[0]), int(bbox[1])), (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3])), color, 2)
 
     return im
 
 def show_pointobb(im, pointobb, color=(0, 0, 255)):
+    """show pointobb
+
+    Args:
+        im (np.array): input image
+        pointobb (list): (x1, y1, x2, y2, x3, y3, x4, y4)
+        color (tuple, optional): color of box. Defaults to (0, 0, 255).
+
+    Returns:
+        np.array: output image
+    """
     im = draw_rectangle_by_points(im, pointobb, color=color)
     return im
 
 def show_thetaobb(im, thetaobb, color=(0, 0, 255)):
+    """show thetaobb
+
+    Args:
+        im (np.array): input image
+        thetaobb (list): (cx, cy, w, h, theta)
+        color (tuple, optional): color of box. Defaults to (0, 0, 255).
+
+    Returns:
+        np.array: output image
+    """
     cx, cy, w, h, theta = thetaobb
 
     rect = ((cx, cy), (w, h), theta / np.pi * 180.0)
@@ -33,6 +63,16 @@ def show_thetaobb(im, thetaobb, color=(0, 0, 255)):
     return im
 
 def show_hobb(im, hobb, color=(0, 0, 255)):
+    """show hobb
+
+    Args:
+        im (np.array): input image
+        hobb (list): (x1, y1, x2, y2, h)
+        color (tuple, optional): color of box. Defaults to (0, 0, 255).
+
+    Returns:
+        np.array: output image
+    """
     first_point_x = hobb[0]
     first_point_y = hobb[1]
     second_point_x = hobb[2]

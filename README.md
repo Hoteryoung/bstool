@@ -39,8 +39,8 @@ python setup.py develop
 - [x] Evaluation codes for instance segmentation
 - [x] Visualization code for ground truth CSV file and prediction CSV file
 - [x] Visualization code for TP, FN, FP (pred and gt)
-- [ ] Evaluation codes for offset
-- [ ] Evaluation codes for height
+- [x] Evaluation codes for offset
+- [x] Evaluation codes for height
 
 
 ### Structure
@@ -64,3 +64,4 @@ python setup.py develop
     - utils:            Small useful tools for general tasks
         - path
         - mask
+    - csrc:             Codes for cuda operation (Note: if you meet the compilation errors, please comment this section in setup.py)

@@ -5,6 +5,16 @@ import cv2
 def generate_image(height=512, 
                    width=512, 
                    color=(255, 255, 255)):
+    """generate the image with specified height, width and color
+
+    Args:
+        height (int, optional): image height. Defaults to 512.
+        width (int, optional): image width. Defaults to 512.
+        color (tuple, optional): image color. Defaults to (255, 255, 255).
+
+    Returns:
+        np.array: RGB image
+    """
     if type(color) == tuple:
         b = np.full((height, width, 1), color[0], dtype=np.uint8)
         g = np.full((height, width, 1), color[1], dtype=np.uint8)
@@ -18,6 +28,15 @@ def generate_image(height=512,
 
 def generate_subclass_mask(mask_image,
                            subclasses=(1, 3)):
+    """extract the mask from mask image with specified class
+
+    Args:
+        mask_image (np.array): input mask image
+        subclasses (tuple, optional): specified class. Defaults to (1, 3).
+
+    Returns:
+        np.array: extracted the mask with class
+    """
     mask_shape = mask_image.shape
     sub_mask = generate_image(mask_shape[0], mask_shape[1], color=0)
     if mask_image.ndim == 2:

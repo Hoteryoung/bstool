@@ -2,6 +2,14 @@ from shapely.validation import explain_validity
 
 
 def single_valid_polygon(polygon):
+    """check the validation of polygon
+
+    Args:
+        polygon (Polygon): input polygon
+
+    Returns:
+        bool: the flag of validation
+    """
     if not polygon.is_valid:
         # print("This polygon is invalid: ", polygon)
         return False

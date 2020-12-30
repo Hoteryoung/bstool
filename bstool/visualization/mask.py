@@ -100,6 +100,14 @@ def show_polygon(polygons, size=[2048, 2048], output_file=None):
     plt.show()
 
 def show_coco_mask(coco, image_file, anns, output_file=None):
+    """show mask with COCO format
+
+    Args:
+        coco (coco): coco object
+        image_file (str): image file
+        anns (coco): annotations of COCO
+        output_file (str, optional): output file. Defaults to None.
+    """
     img = cv2.imread(image_file)
     plt.figure(figsize=(8, 8))
     plt.imshow(img)
@@ -116,18 +124,51 @@ def show_coco_mask(coco, image_file, anns, output_file=None):
         plt.show()
 
 def draw_masks_boundary(img, masks, color=(0, 0, 255), thickness=3):
+    """draw boundary of masks
+
+    Args:
+        img (np.array): input image
+        masks (list): list of masks
+        color (tuple, optional): color of boundary. Defaults to (0, 0, 255).
+        thickness (int, optional): thickness of line. Defaults to 3.
+
+    Returns:
+        np.array: image with mask boundary
+    """
     for mask in masks:
         img = draw_mask_boundary(img, mask, color=color, thickness=thickness)
 
     return img
 
 def draw_mask_boundary(img, mask, color=(0, 0, 255), thickness=2):
+    """draw boundary of masks
+
+    Args:
+        img (np.array): input image
+        masks (list): list of masks
+        color (tuple, optional): color of boundary. Defaults to (0, 0, 255).
+        thickness (int, optional): thickness of line. Defaults to 3.
+
+    Returns:
+        np.array: image with mask boundary
+    """
     mask = np.array(mask).reshape((-1, 1, 2))
     img = cv2.polylines(img, [mask], True, color, thickness=thickness, lineType=cv2.LINE_AA)
 
     return img
 
 def draw_iou(img, polygon, iou, color=(0, 0, 255)):
+    """draw iou on object center
+
+    Args:
+        img (np.array): input image
+        polygon (list): mask with polygon format
+        iou (int, optional): iou value.
+        color (tuple, optional): color of boundary. Defaults to (0, 0, 255).
+        
+    Returns:
+        [type]: [description]
+    """
     centroid = bstool.get_polygon_centroid([polygon])[0]
 
     centroid = tuple([int(_) for _ in centroid])
@@ -137,6 +178,16 @@ def draw_iou(img, polygon, iou, color=(0, 0, 255)):
     return img
 
 def draw_height_angle(img, angle, color=(0, 0, 255)):
+    """draw height angle on image
+
+    Args:
+        img (np.array): input image
+        angle (list): height angle
+        color (tuple, optional): color of boundary. Defaults to (0, 0, 255).
+        
+    Returns:
+        [type]: [description]
+    """
     img_height, img_width = img.shape[0], img.shape[1]
 
     coord = (int(img_height // 2), int(img_width // 2))

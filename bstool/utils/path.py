@@ -3,6 +3,12 @@ import six
 
 
 def mkdir_or_exist(dir_name, mode=0o777):
+    """make of check the dir
+
+    Args:
+        dir_name (str): directory name 
+        mode (str, optional): authority of mkdir. Defaults to 0o777.
+    """
     if dir_name == '':
         return
     dir_name = os.path.expanduser(dir_name)
@@ -40,6 +46,14 @@ def get_dir_name(file_path):
 
 
 def get_info_splitted_imagename(img_name):
+    """get the information of splitted sub-image from sub-image file name
+
+    Args:
+        img_name (str): input image name
+
+    Returns:
+        list: file name information
+    """
     base_name = get_basename(img_name)
     if base_name.count('__') == 1:
         # urban3d
@@ -66,6 +80,14 @@ def get_info_splitted_imagename(img_name):
     return sub_fold, ori_image_fn, (coord_x, coord_y)
 
 def get_files_recursion(root_dir):
+    """get files recursion
+
+    Args:
+        root_dir (str): input directory
+
+    Returns:
+        list: list of files
+    """
     all_files = []
     fns = os.listdir(root_dir)
     for fn in fns:
@@ -78,6 +100,14 @@ def get_files_recursion(root_dir):
     return all_files
 
 def get_file_names_recursion(root_dir):
+    """get file names recursion
+
+    Args:
+        root_dir (str): input directory
+
+    Returns:
+        list: list of file names
+    """
     all_fns = []
     fns = os.listdir(root_dir)
     for fn in fns:

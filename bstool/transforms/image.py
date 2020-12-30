@@ -13,6 +13,18 @@ def split_image(img,
                 gap=200, 
                 mode='keep_all', 
                 expand_boundary=True):
+    """split the original image to sub-images
+
+    Args:
+        img (np.array): input image
+        subsize (float, optional): the size of sub-image. Defaults to 1024.
+        gap (int, optional): the gap of sliding windows. Defaults to 200.
+        mode (str, optional): keep all or drop boundary. Defaults to 'keep_all'.
+        expand_boundary (bool, optional): if original image size < subsize, boundary will be expanded. Defaults to True.
+
+    Returns:
+        dict: splitted sub-images
+    """
     if isinstance(img, str):
         img = cv2.imread(img)
 
@@ -154,6 +166,18 @@ def drop_subimage(subimages,
             return False
 
 def image_flip(img, transform_flag='h'):
+    """flip the image
+
+    Args:
+        img (np.array): input image
+        transform_flag (str, optional): horizontal or vertical. Defaults to 'h'.
+
+    Raises:
+        NotImplementedError: [description]
+
+    Returns:
+        np.array: flipped image
+    """
     if transform_flag == 'h':
         img = cv2.flip(img, 1)
     elif transform_flag == 'v':

@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   create_softlink.py
+@Time    :   2020/12/19 23:05:04
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   用于使用程序在 v0 中创建软链接
+'''
+
+
 import os
 
 

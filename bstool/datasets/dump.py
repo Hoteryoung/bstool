@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   dump.py
+@Time    :   2020/12/30 18:33:51
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   将数据存储到相应文件中的函数集合
+'''
+
 import json
 from shapely import affinity
 import tqdm
@@ -6,6 +17,14 @@ import pandas
 import bstool
 
 def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file):
+    """dump roof, footprint, and offset to json file. This function is used in the inference stage
+
+    Args:
+        roof_polygons (list): list of polygon (roof)
+        footprint_polygons (list): list of polygon (footprint)
+        offsets (list): list of offset
+        json_file (str): json file name
+    """
     annos = []
     for roof_polygon, footprint_polygon, offset in zip(roof_polygons, footprint_polygons, offsets):
         offset = [float(_) for _ in offset]
@@ -232,6 +251,16 @@ def urban3d_json_dump(polygons, properties, image_info, json_file):
         json.dump(json_data, jsonfile, indent=4)
 
 def bs_csv_dump(objects, roof_csv_file, footprint_csv_file):
+    """dump the parameters to csv file
+
+    Args:
+        objects (list): list of parameters
+        roof_csv_file (str): roof csv file
+        footprint_csv_file (str): footprint csv file
+
+    Returns:
+        bool: flag of empty file number
+    """
     ori_image_name_list = list(objects.keys())
 
     first_in = True

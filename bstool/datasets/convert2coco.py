@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   convert2coco.py
+@Time    :   2020/12/30 16:15:36
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   用于将其他类型的标注数据转换成 COCO 格式，Convert2COCO 为基类，具体使用时，请用其他类继承的方式完成 __generate_coco_annotation__ 函数
+'''
+
 import os
 import cv2
 import mmcv
@@ -40,6 +51,8 @@ class Convert2COCO():
         self.meta_info = meta_info
 
         self.imlist = []
+        # create self.imlist from self.imageset_file or self.imgpath
+        # if the numbers of image and label are same, you can use the self.imgpath directly
         if self.imageset_file:
             with open(self.imageset_file, 'r') as f:
                 lines = f.readlines()

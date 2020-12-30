@@ -7,6 +7,18 @@ import matplotlib.pyplot as plt
 
 
 def draw_grid(img, line_color=(0, 255, 0), thickness=2, type_=cv2.LINE_AA, pxstep=512):
+    """draw grid on image
+
+    Args:
+        img (np.array): input image
+        line_color (tuple, optional): color of line. Defaults to (0, 255, 0).
+        thickness (int, optional): thickness of line. Defaults to 2.
+        type_ (cv2, optional): line type. Defaults to cv2.LINE_AA.
+        pxstep (int, optional): step of line. Defaults to 512.
+
+    Returns:
+        np.array: output image
+    """
     x = pxstep
     y = pxstep
     while x < img.shape[1]:
@@ -20,6 +32,16 @@ def draw_grid(img, line_color=(0, 255, 0), thickness=2, type_=cv2.LINE_AA, pxste
     return img
 
 def get_confusion_matrix_indexes(pred_csv_file, gt_csv_file, show_matplotlib=False):
+    """calculate the TP, FP, and FN of CSV file
+
+    Args:
+        pred_csv_file (str): prediction csv file
+        gt_csv_file (str): ground truth csv file
+        show_matplotlib (bool, optional): whether to show matplotlib. Defaults to False.
+
+    Returns:
+        float: indexes
+    """
     pred_csv_df = pandas.read_csv(pred_csv_file)
     gt_csv_df = pandas.read_csv(gt_csv_file)
 
@@ -96,6 +118,17 @@ def get_confusion_matrix_indexes(pred_csv_file, gt_csv_file, show_matplotlib=Fal
 
 
 def draw_confusion_matrix_on_image(img, image_basename, confusion_matrix, color=(200, 130, 0)):
+    """draw TP, FP, FN on image
+
+    Args:
+        img (np.array): input image
+        image_basename (str): image basename
+        confusion_matrix (list): confusion matrix indexes
+        color (tuple, optional): [description]. Defaults to (200, 130, 0).
+
+    Returns:
+        np.array: output image
+    """
     gt_TP_indexes, pred_TP_indexes, gt_FN_indexes, pred_FP_indexes = confusion_matrix
 
     TP = len(gt_TP_indexes[image_basename])
@@ -113,6 +146,18 @@ def draw_confusion_matrix_on_image(img, image_basename, confusion_matrix, color=
     return img
 
 def draw_offset_arrow(img, start_point, end_point, point_size=3, color=(0, 0, 255)):
+    """draw offset arrow on image
+
+    Args:
+        img (np.array): input image
+        start_point (list): (x, y)
+        end_point (list): (x, y)
+        point_size (int, optional): point size. Defaults to 3.
+        color (tuple, optional): arrow color. Defaults to (0, 0, 255).
+
+    Returns:
+        np.array: output image
+    """
     start_point = tuple([int(_) for _ in start_point])
     end_point = tuple([int(_) for _ in end_point])
 

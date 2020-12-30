@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   evaluation.py
+@Time    :   2020/12/30 18:46:27
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   codes for evaluation (F1 score)
+'''
+
+
 import os
 import cv2
 import numpy as np

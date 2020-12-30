@@ -6,6 +6,14 @@ import bstool
 
 
 def mask2wireframe(masks):
+    """convert masks to wireframes
+
+    Args:
+        masks (list): list of masks
+
+    Returns:
+        list: junctions, edges (positive and negative)
+    """
     ret_junctions = []              # N * 2
     ret_edges_positive = []         # M * 4
     ret_edges_negative = []         # K * 4
@@ -32,6 +40,14 @@ def mask2wireframe(masks):
     return ret_junctions, ret_edges_positive, ret_edges_negative
 
 def mask2lines(mask):
+    """convert to mask with polygon format to line
+
+    Args:
+        mask (polygon): input mask
+
+    Returns:
+        list: converted lines
+    """
     mask_point_num = len(mask) // 2
     mask_junctions = [mask[i:i + 2] for i in range(0, len(mask), 2)]
     point_combinnations = list(itertools.combinations(range(0, mask_point_num, 1), 2))
@@ -44,6 +60,15 @@ def mask2lines(mask):
     return lines
 
 def line_angle(line, mode='atan'):
+    """calculate the line angle
+
+    Args:
+        line (list): (x1, y1) -> (x2, y2)
+        mode (str, optional): mode of convertion. Defaults to 'atan'.
+
+    Returns:
+        float: angle of line
+    """
     x1, y1, x2, y2 = line
 
     if mode == 'atan':
@@ -64,6 +89,15 @@ def line_angle(line, mode='atan'):
     return angle
 
 def line2thetaobb(line, angle_mode='atan'):
+    """convert the line to thetaobb
+
+    Args:
+        line (list): (x1, y1) -> (x2, y2)
+        angle_mode (str, optional): mode of convertion. Defaults to 'atan'.
+
+    Returns:
+        list: thetaobb
+    """
     x1, y1, x2, y2 = line
     cx, cy = (x1 + x2) / 2.0, (y1 + y2) / 2.0
     w = 2
@@ -75,6 +109,15 @@ def line2thetaobb(line, angle_mode='atan'):
     return thetaobb
 
 def line2pointobb(line, angle_mode='atan'):
+    """convert the line to pointobb
+
+    Args:
+        line (list): (x1, y1) -> (x2, y2)
+        angle_mode (str, optional): mode of convertion. Defaults to 'atan'.
+
+    Returns:
+        list: pointobb
+    """
     x1, y1, x2, y2 = line
     pointobb = [x1, y1, x1, y1, x2, y2, x2, y2]
 

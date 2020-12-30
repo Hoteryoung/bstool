@@ -1,4 +1,16 @@
 
+# -*- encoding: utf-8 -*-
+'''
+@File    :   draw_gt_dalian.py
+@Time    :   2020/12/19 23:07:16
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   可视化 shapefile 格式的 dalian gt 数据
+'''
+
+
 import os
 import bstool
 import numpy as np

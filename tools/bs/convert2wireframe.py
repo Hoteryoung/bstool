@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   convert2wireframe.py
+@Time    :   2020/12/19 23:01:30
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   将过渡格式转换成 wireframe 格式，用于训练线段检测模型或者线框解析模型
+'''
+
+
 import os
 import numpy as np
 import mmcv

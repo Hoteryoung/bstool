@@ -1,3 +1,14 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   bs2coco_oriented_line.py
+@Time    :   2020/12/19 22:49:22
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   使用 mask 的边缘线段，生成 oriented line (旋转线段)，并转换成 COCO 格式，用于训练边缘线段检测模型，核心是 __bs_json2oriented_lines() 函数
+'''
+
 import os
 import cv2
 import json
@@ -54,6 +65,14 @@ class BS2COCO(bstool.Convert2COCO):
         return coco_annotations
 
     def __bs_json2oriented_lines(self, objects):
+        """convert the mask to oriented line 
+
+        Args:
+            objects (list): list of object structure
+
+        Returns:
+            list: converted oriented lines
+        """
         converted_objects = []
         for object_struct in objects:
             segmentation = object_struct['segmentation']
@@ -160,6 +179,7 @@ if __name__ == "__main__":
         if with_height_sample:
             anno_name.append("height_sampled")
         
+        # the annotation file, it is the same with normal coco format converter
         imgpath = f'./data/{core_dataset_name}/{release_version}/{city}/images'
         annopath = f'./data/{core_dataset_name}/{release_version}/{city}/labels'
         save_path = f'./data/{core_dataset_name}/{release_version}/coco/annotations'

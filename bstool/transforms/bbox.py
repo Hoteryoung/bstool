@@ -122,6 +122,16 @@ def get_corners(bboxes):
     return corners
 
 def bboxes_rotate(bboxes, img_shape, rotate_angle):
+    """rotate the bounding boxes
+
+    Args:
+        bboxes (np.array): input bboxes
+        img_shape (tuple): the image shape the bbox located
+        rotate_angle (float): rotation angle
+
+    Returns:
+        np.array: rotated bboxes
+    """
     if isinstance(bboxes, list):
         bboxes = np.array(bboxes)
     assert bboxes.shape[-1] % 4 == 0

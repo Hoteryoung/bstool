@@ -149,6 +149,14 @@ def merge_results(results, anno_file, iou_threshold=0.1, score_threshold=0.05, n
     return ret
 
 def pkl2csv_roof(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
+    """pkl file to csv file with only roof data
+
+    Args:
+        pkl_file (str): file of pkl
+        anno_file (str): file of annotation
+        csv_prefix (str): prefix of csv file
+        score_threshold (float, optional): threshold of score. Defaults to 0.05.
+    """
     results = mmcv.load(pkl_file)
     
     if len(results) == 0:
@@ -220,6 +228,14 @@ def pkl2csv_roof(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
     csv_dataset.to_csv(csv_file, index=False)
 
 def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05):
+    """pkl file to csv file (with roof and footprint)
+
+    Args:
+        pkl_file (str): file of pkl
+        anno_file (str): file of annotation
+        csv_prefix (str): prefix of csv file
+        score_threshold (float, optional): threshold of score. Defaults to 0.05.
+    """
     if isinstance(pkl_file, str):
         results = mmcv.load(pkl_file)
     else:
@@ -336,6 +352,15 @@ def pkl2csv_roof_footprint(pkl_file, anno_file, csv_prefix, score_threshold=0.05
     csv_dataset_footprint.to_csv(csv_file_footprint, index=False)
 
 def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_threshold=0.4, min_area=100):
+    """merge the results in csv file
+
+    Args:
+        input_csv_file (str): csv file of input 
+        output_csv_file (str): csv file of output
+        iou_threshold (float, optional): threshold of iou. Defaults to 0.1.
+        score_threshold (float, optional): threshold of score. Defaults to 0.4.
+        min_area (int, optional): threshold of min_area. Defaults to 100.
+    """
     csv_df = pandas.read_csv(input_csv_file)
     image_name_list = list(set(csv_df.ImageId.unique()))
     
@@ -398,6 +423,15 @@ def merge_csv_results(input_csv_file, output_csv_file, iou_threshold=0.1, score_
     csv_dataset.to_csv(output_csv_file, index=False)
 
 def merge_masks_on_subimage(results_with_coordinate, iou_threshold=0.1):
+    """merge the masks on multiple subimages to original image
+
+    Args:
+        results_with_coordinate (dict): results with coordinate
+        iou_threshold (float, optional): threshold of iou. Defaults to 0.1.
+
+    Returns:
+        list: merged masks and scores
+    """
     masks_with_coordinate, scores_with_coordinate = results_with_coordinate
     subimage_coordinates = list(masks_with_coordinate.keys())
 
@@ -428,6 +462,15 @@ def merge_masks_on_subimage(results_with_coordinate, iou_threshold=0.1):
     return np.array(masks_merged)[keep].tolist(), np.array(scores_merged)[keep].tolist()
 
 def merge_csv_results_with_height(input_csv_file, output_csv_file, iou_threshold=0.1, score_threshold=0.4, min_area=100):
+    """merge csv results with height data
+
+    Args:
+        results_with_coordinate (dict): results with coordinate
+        iou_threshold (float, optional): threshold of iou. Defaults to 0.1.
+
+    Returns:
+        list: merged masks and scores
+    """
     csv_df = pandas.read_csv(input_csv_file)
     image_name_list = list(set(csv_df.ImageId.unique()))
     
@@ -498,6 +541,15 @@ def merge_csv_results_with_height(input_csv_file, output_csv_file, iou_threshold
     csv_dataset.to_csv(output_csv_file, index=False)
 
 def merge_masks_on_subimage_with_height(results_with_coordinate, iou_threshold=0.1):
+    """merge the masks on multiple subimages to original image (with height data)
+
+    Args:
+        results_with_coordinate (dict): results with coordinate
+        iou_threshold (float, optional): threshold of iou. Defaults to 0.1.
+
+    Returns:
+        list: merged masks and scores
+    """
     masks_with_coordinate, scores_with_coordinate, heights_with_coordinate = results_with_coordinate
     subimage_coordinates = list(masks_with_coordinate.keys())
 

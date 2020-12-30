@@ -278,6 +278,8 @@ def urban3d_json_parse(json_file):
 
 
 class COCOParse():
+    """parse coco format file by COCO API
+    """
     def __init__(self, anno_file, classes=['']):
         self.anno_info = dict()
         self.coco =  COCO(anno_file)
@@ -296,6 +298,8 @@ class COCOParse():
 
 
 class BSPklParser():
+    """parse the pkl file (result file)
+    """
     def __init__(self, 
                  anno_file, 
                  pkl_file, 
@@ -323,16 +327,19 @@ class BSPklParser():
             if self.with_height:
                 raise(RuntimeError('not support with_offset={}, with_height={}'.format(self.with_offset, self.with_height)))
         
+        # load pkl file
         if isinstance(pkl_file, str):
             results = mmcv.load(pkl_file)
         else:
             results = pkl_file
-            
+        
+        # load coco annotation file
         coco = COCO(anno_file)
         img_ids = coco.get_img_ids()
 
         self.objects = dict()
         self.building_with_coord = defaultdict(dict)
+        # convert the result information to the dict format
         for idx, img_id in tqdm.tqdm(enumerate(img_ids)):
             info = coco.load_imgs([img_id])[0]
             img_name = bstool.get_basename(info['file_name'])
@@ -559,6 +566,17 @@ class BSPklParser():
         return keep
 
     def _convert_items(self, result):
+        """convert the result to dict format
+
+        Args:
+            result (list): detection result
+
+        Raises:
+            NotImplementedError: [description]
+
+        Returns:
+            dict: result with dict format
+        """
         buildings = []
         if self.with_offset and not self.with_height:
             det, seg, offset = result
@@ -587,7 +605,8 @@ class BSPklParser():
             score = bboxes[i][4]
             if score < self.score_threshold:
                 continue
-
+            
+            # convert the original segmentation result to polygon format
             if isinstance(segms[i]['counts'], bytes):
                 segms[i]['counts'] = segms[i]['counts'].decode()
             mask = maskUtils.decode(segms[i]).astype(np.bool)
@@ -625,6 +644,7 @@ class BSPklParser():
             if roof_polygon.area < self.min_area:
                 continue
             
+            # convert the roof polygon to footprint polygon
             if self.offset_model == 'footprint2roof':
                 transform_matrix = [1, 0, 0, 1,  -1.0 * offset[0], -1.0 * offset[1]]
             elif self.offset_model == 'roof2footprint':
@@ -659,6 +679,11 @@ class BSPklParser():
                 return []
 
 class BSPklParser_Only_Offset(BSPklParser):
+    """parse the results which have only offset information
+
+    Args:
+        BSPklParser (class): original pkl parse class
+    """
     def _convert_items(self, result):
         buildings = []
         det, offset = result
@@ -712,6 +737,11 @@ class BSPklParser_Only_Offset(BSPklParser):
         return buildings
 
 class BSPklParser_Without_Offset(BSPklParser):
+    """parse the result which without offset information
+
+    Args:
+        BSPklParser (class): original pkl parse class
+    """
     def _convert_items(self, result):
         buildings = []
         det, seg = result
@@ -812,6 +842,8 @@ class BSPklParser_Without_Offset(BSPklParser):
         return merged_objects
 
 class CSVParse():
+    """parse csv file by pandas, save the data of csv file to dict
+    """
     def __init__(self, csv_file, min_area=10, check_valid=True):
         csv_df = pandas.read_csv(csv_file)
         self.image_name_list = list(set(csv_df.ImageId.unique()))

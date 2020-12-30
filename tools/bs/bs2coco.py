@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   bs2coco.py
+@Time    :   2020/12/19 23:00:13
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   C()Copyright 2017-2020
+@Desc    :   将过渡格式转换成 COCO 格式的代码，每个城市分开转换
+'''
+
+
 import os
 import cv2
 import json

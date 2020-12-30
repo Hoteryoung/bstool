@@ -303,6 +303,15 @@ def chang_mask_coordinate(masks, coordinate):
     return converted_masks
 
 def clip_boundary_polygon(polygons, image_size=(1024, 1024)):
+    """clip the polygons to image boundary
+
+    Args:
+        polygons (list): list of polygons
+        image_size (tuple, optional): the size of image. Defaults to (1024, 1024).
+
+    Returns:
+        list: list of polygons
+    """
     h, w = image_size
     image_boundary = Polygon([(0, 0), (w-1, 0), (w-1, h-1), (0, h-1), (0, 0)])
 
@@ -344,6 +353,15 @@ def clean_polygon(polygons):
     return polygons_
 
 def roof2footprint(roof_polygons, properties):
+    """convert roof to polygon by properties
+
+    Args:
+        roof_polygons (list): list of roof polygons
+        properties (list): list of property
+
+    Returns:
+        list: list of footprint polygons
+    """
     footprint_polygons = []
     for idx, (roof_polygon, single_property) in enumerate(zip(roof_polygons, properties)):
         if roof_polygon.geom_type == 'MultiPolygon':
@@ -419,6 +437,19 @@ def footprint2roof_single(footprint_polygon, offset, offset_model='roof2footprin
     return roof_polygon
 
 def mask_flip(masks, transform_flag='h', image_size=(1024, 1024)):
+    """flip the mask
+
+    Args:
+        masks (list): list of mask
+        transform_flag (str, optional): flag of flip direction. Defaults to 'h'.
+        image_size (tuple, optional): size of image. Defaults to (1024, 1024).
+
+    Raises:
+        NotImplementedError: [description]
+
+    Returns:
+        list: list of masks
+    """
     img_height, img_width = image_size
     results = []
     for mask in masks:

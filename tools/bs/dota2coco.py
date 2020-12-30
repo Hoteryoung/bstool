@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   dota2coco.py
+@Time    :   2020/12/19 23:05:33
+@Author  :   Jinwang Wang
+@Version :   1.0
+@Contact :   jwwangchn@163.com
+@License :   (C)Copyright 2017-2020
+@Desc    :   生成 DOTA 数据的 COCO 格式数据
+'''
+
+
 import argparse
 
 import os
