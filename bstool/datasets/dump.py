@@ -16,7 +16,7 @@ import pandas
 
 import bstool
 
-def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, height=None):
+def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, heights=None):
     """dump roof, footprint, and offset to json file. This function is used in the inference stage
 
     Args:
@@ -26,7 +26,7 @@ def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, heig
         json_file (str): json file name
     """
     annos = []
-    for roof_polygon, footprint_polygon, offset in zip(roof_polygons, footprint_polygons, offsets):
+    for idx, (roof_polygon, footprint_polygon, offset) in enumerate(zip(roof_polygons, footprint_polygons, offsets)):
         offset = [float(_) for _ in offset]
         object_struct = dict()
         if roof_polygon.geom_type == 'MultiPolygon':
@@ -38,7 +38,7 @@ def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, heig
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
                     object_struct['offset'] = offset
                     if height is not None:
-                        object_struct['height'] = height
+                        object_struct['height'] = heights[idx]
                     
                     annos.append(object_struct)
         elif roof_polygon.geom_type == 'Polygon':
@@ -46,7 +46,7 @@ def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, heig
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
             object_struct['offset'] = offset
             if height is not None:
-                object_struct['height'] = height
+                object_struct['height'] = heights[idx]
 
             annos.append(object_struct)
         else:
