@@ -37,7 +37,7 @@ def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, heig
                     object_struct['roof'] = bstool.polygon2mask(roof_polygon_)
                     object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
                     object_struct['offset'] = offset
-                    if height is not None:
+                    if heights is not None:
                         object_struct['height'] = heights[idx]
                     
                     annos.append(object_struct)
@@ -45,7 +45,7 @@ def bs_vis_json_dump(roof_polygons, footprint_polygons, offsets, json_file, heig
             object_struct['roof'] = bstool.polygon2mask(roof_polygon)
             object_struct['footprint'] = bstool.polygon2mask(footprint_polygon)
             object_struct['offset'] = offset
-            if height is not None:
+            if heights is not None:
                 object_struct['height'] = heights[idx]
 
             annos.append(object_struct)
