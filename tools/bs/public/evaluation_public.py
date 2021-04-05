@@ -77,6 +77,10 @@ ALL_MODELS = [
             'bc_v100.01.27_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn_12epoch',
             'bc_v100.01.28_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn_12epoch',
             'bc_v100.01.29_offset_rcnn_r50_2x_public_20201028_lr_0.02_96epoch',
+            'bc_v100.01.30_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_image_rotation_1x',
+            'bc_v100.01.31_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_12epoch_no_rotation',
+            'bc_v100.01.32_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn_12epoch_no_rotation',
+            'bc_v100.01.33_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn_12epoch_no_rotation',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
@@ -188,7 +192,7 @@ if __name__ == '__main__':
     with_only_pred = True
 
     # with_offset = True -> evaluate the LOVE and S2LOVE models, with_offset = False -> evaluate the Mask R-CNN baseline
-    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version:
+    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version or 'bc_v100.01.31' in args.version or 'bc_v100.01.32' in args.version or 'bc_v100.01.33' in args.version:
         with_offset = False
     else:
         with_offset = True

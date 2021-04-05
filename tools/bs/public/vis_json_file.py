@@ -41,8 +41,8 @@ if __name__ == '__main__':
         roof_polygons = [bstool.roof2footprint_single(footprint_polygon, offset, 'roof2footprint') for footprint_polygon, offset in zip(footprint_polygons, offsets)]
         roof_masks = [bstool.polygon2mask(roof_polygon) for roof_polygon in roof_polygons]
         
-        # img_show = bstool.draw_masks_boundary(img.copy(), roof_masks, color=(75, 25, 230), thickness=3)
+        img_show = bstool.draw_masks_boundary(img.copy(), roof_masks, color=(75, 25, 230), thickness=3)
         # bstool.show_image(img_show)
         # masks = [obj['roof_mask'] for obj in objects]
         # fusion = bstool.show_masks_on_image(rgb_file, roof_masks, win_name='roof mask', show=False)
-        # cv2.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), img_show)
+        cv2.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), img_show)

@@ -53,7 +53,7 @@ if __name__ == '__main__':
         roof_masks = [bstool.polygon2mask(roof_polygon) for roof_polygon in roof_polygons]
         
         img_show = bstool.draw_masks_boundary(img.copy(), roof_masks)
-        # bstool.show_image(img_show)
+        bstool.show_image(img_show)
         # masks = [obj['roof_mask'] for obj in objects]
         # fusion = bstool.show_masks_on_image(rgb_file, roof_masks, win_name='roof mask', show=False)
-        cv2.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), img_show)
+        # cv2.imwrite(os.path.join(vis_dir, file_name + '_roof.png'), img_show)
