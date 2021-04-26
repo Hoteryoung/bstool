@@ -100,6 +100,7 @@ ALL_MODELS = [
             'bc_v100.02.13_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_share_conv_and_fc',
             'bc_v100.02.14_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_no_share_conv_fc',
             'bc_v100.02.16_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_48_epoch',
+            'bc_v100.02.17_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_without_image_rotation',
             'bc_v100.03.01_semi_offset_rcnn_r50_2x_public_20201028_arg_pretrain',
             'bc_v100.03.02_semi_offset_rcnn_r50_2x_public_20201028_real_semi',
             'bc_v100.03.03_semi_offset_rcnn_r50_2x_public_20201028_real_semi_resume',
