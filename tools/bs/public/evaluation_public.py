@@ -154,6 +154,9 @@ ALL_MODELS = [
             'bc_v100.03.54_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_without_rotation_lw_16.0',
             'bc_v100.03.55_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_without_rotation_retraining',
             'bc_v100.03.56_semi_offset_rcnn_r50_2x_public_20201028_arg_ms_google_without_rotation_lw_4.0',
+            'bc_v100.04.01_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01',
+            'bc_v100.04.02_panet_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01',
+            'bc_v100.04.03_cascade_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01'
             ]
 
 def parse_args():
@@ -195,7 +198,7 @@ if __name__ == '__main__':
     with_only_pred = True
 
     # with_offset = True -> evaluate the LOVE and S2LOVE models, with_offset = False -> evaluate the Mask R-CNN baseline
-    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version or 'bc_v100.01.31' in args.version or 'bc_v100.01.32' in args.version or 'bc_v100.01.33' in args.version or 'v100.01.34' in args.version or 'v100.01.35' in args.version or 'v100.01.38' in args.version:
+    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version or 'bc_v100.01.31' in args.version or 'bc_v100.01.32' in args.version or 'bc_v100.01.33' in args.version or 'v100.01.34' in args.version or 'v100.01.35' in args.version or 'v100.01.38' in args.version or 'v100.04.01' in args.version or 'v100.04.02' in args.version or 'v100.04.03' in args.version:
         with_offset = False
     else:
         with_offset = True
