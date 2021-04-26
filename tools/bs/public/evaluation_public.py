@@ -194,7 +194,7 @@ if __name__ == '__main__':
     # with_vis = True -> save vis results to local when evaluating (this processing needs time and storage, default is False)
     with_vis = False
     # with_only_vis = True -> skip the evaluation
-    with_only_vis = True
+    with_only_vis = False
     # with_only_pred = True -> only draw the prediction mask in the visualization results
     with_only_pred = True
 
