@@ -83,6 +83,8 @@ ALL_MODELS = [
             'bc_v100.01.33_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn_12epoch_no_rotation',
             'bc_v100.01.34_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01',
             'bc_v100.01.35_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01_nms',
+            'bc_v100.01.36_cascade_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01_nms',
+            'bc_v100.01.37_panet_r50_1x_public_20201028_12epoch_no_rotation_0.01_nms',
             'bc_v100.01.38_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01_nms',
             'bc_v100.01.39_offset_rcnn_r50_1x_public_20201028_lr_0.02_without_image_rotation_1x',
             'bc_v100.01.40_offset_rcnn_r50_1x_public_20201028_lr_0.04_panet',
