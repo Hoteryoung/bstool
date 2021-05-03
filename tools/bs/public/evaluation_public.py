@@ -88,6 +88,7 @@ ALL_MODELS = [
             'bc_v100.01.38_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01_nms',
             'bc_v100.01.39_offset_rcnn_r50_1x_public_20201028_lr_0.02_without_image_rotation_1x',
             'bc_v100.01.40_offset_rcnn_r50_1x_public_20201028_lr_0.04_panet',
+            'bc_v100.01.41_offset_rcnn_r50_1x_public_20201028_lr_0.04_cascade_mask_rcnn',
             'bc_v100.02.01_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles',
             'bc_v100.02.02_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_decouple',
             'bc_v100.02.03_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_minarea_500',
