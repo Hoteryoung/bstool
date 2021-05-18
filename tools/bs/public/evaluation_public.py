@@ -165,7 +165,8 @@ ALL_MODELS = [
             'bc_v100.04.03_cascade_mask_rcnn_r50_1x_public_20201028_12epoch_no_rotation_0.01',
             'bc_v100.05.01_mask_rcnn_r50_pami_2x_lr0.01',
             'bc_v200.02.01_foa_1x_L1Loss_lr0.04_w32',
-            'bc_v200.02.02_foa_1x_L1Loss_lr0.04_w64'
+            'bc_v200.02.02_foa_1x_L1Loss_lr0.04_w64',
+            'bc_v200.03.01_foa_1x_lr0.04_feature_size_5'
             ]
 
 def parse_args():
