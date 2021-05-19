@@ -167,7 +167,8 @@ ALL_MODELS = [
             'bc_v200.02.01_foa_1x_L1Loss_lr0.04_w32',
             'bc_v200.02.02_foa_1x_L1Loss_lr0.04_w64',
             'bc_v200.03.01_foa_1x_lr0.04_feature_size_5',
-            'bc_v200.04.02_foa_1x_lr0.04_angle_0_180'
+            'bc_v200.04.02_foa_1x_lr0.04_angle_0_180',
+            'bc_v200.04.03_foa_1x_lr0.04_angle_0_90_180_270'
             ]
 
 def parse_args():
