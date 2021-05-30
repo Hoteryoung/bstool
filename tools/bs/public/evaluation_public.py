@@ -176,7 +176,10 @@ ALL_MODELS = [
             'bc_v200.05.05_1x_lr0.04_FOA',
             'bc_v200.05.06_1x_lr0.04_IRA_FOA',
             'bc_v200.05.07_2x_lr0.04_IRA_FOA',
-            'bc_v200.05.08_4x_lr0.04_IRA_FOA'
+            'bc_v200.05.08_4x_lr0.04_IRA_FOA',
+            'bc_v200.06.01_1x_lr0.04_FOA_no_share',
+            'bc_v200.06.02_1x_lr0.04_FOA_share_conv',
+            'bc_v200.06.03_1x_lr0.04_FOA_share_conv_fc'
             ]
 
 def parse_args():
