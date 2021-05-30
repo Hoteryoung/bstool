@@ -168,7 +168,15 @@ ALL_MODELS = [
             'bc_v200.02.02_foa_1x_L1Loss_lr0.04_w64',
             'bc_v200.03.01_foa_1x_lr0.04_feature_size_5',
             'bc_v200.04.02_foa_1x_lr0.04_angle_0_180',
-            'bc_v200.04.03_foa_1x_lr0.04_angle_0_90_180_270'
+            'bc_v200.04.03_foa_1x_lr0.04_angle_0_90_180_270',
+            'bc_v200.05.01_1x_lr0.04',
+            'bc_v200.05.02_1x_lr0.04_IRA',
+            'bc_v200.05.03_2x_lr0.04_IRA',
+            'bc_v200.05.04_4x_lr0.04_IRA',
+            'bc_v200.05.05_1x_lr0.04_FOA',
+            'bc_v200.05.06_1x_lr0.04_IRA_FOA',
+            'bc_v200.05.07_2x_lr0.04_IRA_FOA',
+            'bc_v200.05.08_4x_lr0.04_IRA_FOA'
             ]
 
 def parse_args():
