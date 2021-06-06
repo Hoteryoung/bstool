@@ -179,7 +179,11 @@ ALL_MODELS = [
             'bc_v200.05.08_4x_lr0.04_IRA_FOA',
             'bc_v200.06.01_1x_lr0.04_FOA_no_share',
             'bc_v200.06.02_1x_lr0.04_FOA_share_conv',
-            'bc_v200.06.03_1x_lr0.04_FOA_share_conv_fc'
+            'bc_v200.06.03_1x_lr0.04_FOA_share_conv_fc',
+            'bc_v100.01.42_offset_rcnn_r50_1x_public_20201028_lr_0.02_panet',
+            'bc_v100.01.43_offset_rcnn_r50_1x_public_20201028_lr_0.02_cascade_mask_rcnn',
+            'bc_v100.01.44_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn',
+            'bc_v100.01.45_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn'
             ]
 
 def parse_args():
