@@ -879,7 +879,7 @@ class Evaluation():
             gt_buildings = gt_coco_parser(ori_image_name+'.png')
             pred_buildings = pred_objects[ori_image_name]
 
-            gt_polygons = [bstool.mask2polygon(gt_building['footprint_mask']) for gt_building in gt_buildings]
+            gt_polygons = [bstool.mask2polygon(gt_building['footprint_mask']).buffer(0) for gt_building in gt_buildings]
             pred_polygons = [pred_building['polygon'] for pred_building in pred_buildings]
 
             gt_polygons_origin = gt_polygons[:]
