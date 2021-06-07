@@ -489,7 +489,7 @@ class Evaluation():
         dataset_gt_offsets = np.array(dataset_gt_offsets)
         dataset_pred_offsets = np.array(dataset_pred_offsets)
 
-        error_vectors = dataset_gt_offsets - dataset_pred_offsets
+        error_vectors = dataset_gt_offsets + dataset_pred_offsets
 
         EPE = np.sqrt(error_vectors[..., 0] ** 2 + error_vectors[..., 1] ** 2)
         gt_angle = np.arctan2(dataset_gt_offsets[..., 1], dataset_gt_offsets[..., 0])
