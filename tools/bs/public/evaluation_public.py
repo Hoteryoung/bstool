@@ -184,7 +184,7 @@ ALL_MODELS = [
             'bc_v100.01.43_offset_rcnn_r50_1x_public_20201028_lr_0.02_cascade_mask_rcnn',
             'bc_v100.01.44_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn',
             'bc_v100.01.45_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn',
-            'bc_v100.01.46_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline shanghai_xian_public'
+            'bc_v100.01.46_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline'
             ]
 
 def parse_args():
