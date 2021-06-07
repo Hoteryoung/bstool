@@ -53,6 +53,7 @@ class Evaluation():
                  with_only_offset=False,
                  offset_model='footprint2roof',
                  save_merged_csv=True):
+        self.anno_file = anno_file
         self.gt_roof_csv_file = gt_roof_csv_file
         self.gt_footprint_csv_file = gt_footprint_csv_file
         self.roof_csv_file = roof_csv_file
@@ -476,7 +477,7 @@ class Evaluation():
         return dist
 
     def offset_error_vector(self, title='demo', show_polar=False):
-        objects = self.get_confusion_matrix_indexes(mask_type='footprint')
+        objects = self.get_confusion_matrix_indexes_json_gt(mask_type='footprint')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []
         for ori_image_name in self.ori_image_name_list:
@@ -489,7 +490,7 @@ class Evaluation():
         dataset_gt_offsets = np.array(dataset_gt_offsets)
         dataset_pred_offsets = np.array(dataset_pred_offsets)
 
-        error_vectors = dataset_gt_offsets + dataset_pred_offsets
+        error_vectors = dataset_gt_offsets - dataset_pred_offsets
 
         EPE = np.sqrt(error_vectors[..., 0] ** 2 + error_vectors[..., 1] ** 2)
         gt_angle = np.arctan2(dataset_gt_offsets[..., 1], dataset_gt_offsets[..., 0])
@@ -853,6 +854,88 @@ class Evaluation():
             buildings['pred_polygons_matched'] = np.array(pred_polygons_origin)[pred_TP_indexes].tolist()
 
             buildings['height_angle'] = height_angle
+
+            objects[ori_image_name] = buildings
+
+        return objects
+    
+    def get_confusion_matrix_indexes_json_gt(self, mask_type='footprint'):
+        if mask_type == 'footprint':
+            gt_coco_parser = bstool.COCOParse(self.anno_file)
+            pred_csv_parser = bstool.CSVParse(self.rootprint_csv_file)
+        else:
+            raise(NotImplementedError)
+
+        self.ori_image_name_list = pred_csv_parser.image_name_list
+
+        # gt_objects = gt_csv_parser.objects
+        pred_objects = pred_csv_parser.objects
+
+        objects = dict()
+
+        for ori_image_name in self.ori_image_name_list:
+            buildings = dict()
+            
+            gt_buildings = gt_coco_parser(ori_image_name+'.png')
+            pred_buildings = pred_objects[ori_image_name]
+
+            gt_polygons = [bstool.mask2polygon(gt_building['footprint_mask']) for gt_building in gt_buildings]
+            pred_polygons = [pred_building['polygon'] for pred_building in pred_buildings]
+
+            gt_polygons_origin = gt_polygons[:]
+            pred_polygons_origin = pred_polygons[:]
+            
+            if len(gt_polygons) == 0 or len(pred_polygons) == 0:
+                print(f"Skip this image: {ori_image_name}, because length gt_polygons or length pred_polygons is zero")
+                continue
+
+            gt_offsets = [gt_building['offset'] for gt_building in gt_buildings]
+            pred_offsets = [pred_building['offset'] for pred_building in pred_buildings]
+
+            gt_polygons = geopandas.GeoSeries(gt_polygons)
+            pred_polygons = geopandas.GeoSeries(pred_polygons)
+
+            gt_df = geopandas.GeoDataFrame({'geometry': gt_polygons, 'gt_df':range(len(gt_polygons))})
+            pred_df = geopandas.GeoDataFrame({'geometry': pred_polygons, 'pred_df':range(len(pred_polygons))})
+
+            gt_df = gt_df.loc[~gt_df.geometry.is_empty]
+            pred_df = pred_df.loc[~pred_df.geometry.is_empty]
+
+            res_intersection = geopandas.overlay(gt_df, pred_df, how='intersection')
+
+            iou = np.zeros((len(pred_polygons), len(gt_polygons)))
+            for idx, row in res_intersection.iterrows():
+                gt_idx = row.gt_df
+                pred_idx = row.pred_df
+
+                inter = row.geometry.area
+                union = pred_polygons[pred_idx].area + gt_polygons[gt_idx].area
+
+                iou[pred_idx, gt_idx] = inter / (union - inter + 1.0)
+
+            iou_indexes = np.argwhere(iou >= 0.5)
+
+            gt_TP_indexes = list(iou_indexes[:, 1])
+            pred_TP_indexes = list(iou_indexes[:, 0])
+
+            gt_FN_indexes = list(set(range(len(gt_polygons))) - set(gt_TP_indexes))
+            pred_FP_indexes = list(set(range(len(pred_polygons))) - set(pred_TP_indexes))
+
+            buildings['gt_iou'] = np.max(iou, axis=0)
+
+            buildings['gt_TP_indexes'] = gt_TP_indexes
+            buildings['pred_TP_indexes'] = pred_TP_indexes
+            buildings['gt_FN_indexes'] = gt_FN_indexes
+            buildings['pred_FP_indexes'] = pred_FP_indexes
+
+            buildings['gt_offsets'] = np.array(gt_offsets)[gt_TP_indexes].tolist()
+            buildings['pred_offsets'] = np.array(pred_offsets)[pred_TP_indexes].tolist()
+
+            buildings['gt_polygons'] = gt_polygons
+            buildings['pred_polygons'] = pred_polygons
+
+            buildings['gt_polygons_matched'] = np.array(gt_polygons_origin)[gt_TP_indexes].tolist()
+            buildings['pred_polygons_matched'] = np.array(pred_polygons_origin)[pred_TP_indexes].tolist()
 
             objects[ori_image_name] = buildings
 
