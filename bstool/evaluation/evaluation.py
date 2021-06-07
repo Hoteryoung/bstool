@@ -476,7 +476,7 @@ class Evaluation():
         return dist
 
     def offset_error_vector(self, title='demo', show_polar=False):
-        objects = self.get_confusion_matrix_indexes(mask_type='roof')
+        objects = self.get_confusion_matrix_indexes(mask_type='footprint')
 
         dataset_gt_offsets, dataset_pred_offsets = [], []
         for ori_image_name in self.ori_image_name_list:
