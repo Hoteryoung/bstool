@@ -183,7 +183,8 @@ ALL_MODELS = [
             'bc_v100.01.42_offset_rcnn_r50_1x_public_20201028_lr_0.02_panet',
             'bc_v100.01.43_offset_rcnn_r50_1x_public_20201028_lr_0.02_cascade_mask_rcnn',
             'bc_v100.01.44_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn',
-            'bc_v100.01.45_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn'
+            'bc_v100.01.45_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn',
+            'bc_v100.01.46_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline shanghai_xian_public'
             ]
 
 def parse_args():
@@ -225,7 +226,7 @@ if __name__ == '__main__':
     with_only_pred = True
 
     # with_offset = True -> evaluate the LOVE and S2LOVE models, with_offset = False -> evaluate the Mask R-CNN baseline
-    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version or 'bc_v100.01.31' in args.version or 'bc_v100.01.32' in args.version or 'bc_v100.01.33' in args.version or 'v100.01.34' in args.version or 'v100.01.35' in args.version or 'v100.01.38' in args.version or 'v100.04.01' in args.version or 'v100.04.02' in args.version or 'v100.04.03' in args.version or 'v100.01.36' in args.version or 'v100.01.37' in args.version or 'v100.05.01' in args.version or 'v100.01.44' in args.version or 'v100.01.45' in args.version:
+    if 'bc_v100.01.08' in args.version or 'bc_v100.01.09' in args.version or 'bc_v100.01.10' in args.version or 'bc_v100.01.11' in args.version or 'bc_v100.01.12' in args.version or 'bc_v100.01.13' in args.version or 'bc_v100.01.14' in args.version or 'bc_v100.01.15' in args.version or 'bc_v100.03.10' in args.version or 'bc_v100.01.19' in args.version or 'bc_v100.01.20' in args.version or 'bc_v100.01.21' in args.version or 'bc_v100.01.23' in args.version or 'bc_v100.01.26' in args.version or 'bc_v100.01.27' in args.version or 'bc_v100.01.28' in args.version or 'bc_v100.01.31' in args.version or 'bc_v100.01.32' in args.version or 'bc_v100.01.33' in args.version or 'v100.01.34' in args.version or 'v100.01.35' in args.version or 'v100.01.38' in args.version or 'v100.04.01' in args.version or 'v100.04.02' in args.version or 'v100.04.03' in args.version or 'v100.01.36' in args.version or 'v100.01.37' in args.version or 'v100.05.01' in args.version or 'v100.01.44' in args.version or 'v100.01.45' in args.version or 'v100.01.46' in args.version:
         with_offset = False
     else:
         with_offset = True
