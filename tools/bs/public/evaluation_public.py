@@ -316,6 +316,8 @@ if __name__ == '__main__':
                 if evaluation.dump_result:
                     # calculate the F1 score
                     segmentation_eval_results = evaluation.segmentation()
+                    epe_results = evaluation.offset_error_vector()
+                    print("Offset EPE!!!!!!!!!!!: ", epe_results)
                     meta_info = dict(summary_file=summary_file,
                                     model=model,
                                     anno_file=anno_file,
