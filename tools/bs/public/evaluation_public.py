@@ -185,7 +185,8 @@ ALL_MODELS = [
             'bc_v100.01.44_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_cascade_mask_rcnn',
             'bc_v100.01.45_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline_pafpn',
             'bc_v100.01.46_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_mask_baseline',
-            'bc_v100.01.47_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_hrnet_baseline'
+            'bc_v100.01.47_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_hrnet_baseline',
+            'bc_v100.01.48_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_image_rotation_roof_bbox'
             ]
 
 def parse_args():
