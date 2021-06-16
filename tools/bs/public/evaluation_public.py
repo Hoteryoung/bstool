@@ -188,7 +188,8 @@ ALL_MODELS = [
             'bc_v100.01.47_offset_rcnn_r50_2x_public_20201028_building_bbox_footprint_hrnet_baseline',
             'bc_v100.01.48_offset_rcnn_r50_2x_public_20201028_lr_0.02_without_image_rotation_roof_bbox',
             'bc_v100.02.18_offset_rcnn_r50_2x_public_20201028_rotate_offset_4_angles_without_image_rotation_roof',
-            'bc_v100.02.19_offset_rcnn_r50_2x_public_20201028_rotate_offset_2_angles_without_rotation_0_90'
+            'bc_v100.02.19_offset_rcnn_r50_2x_public_20201028_rotate_offset_2_angles_without_rotation_0_90',
+            'bc_v100.02.20_offset_rcnn_r50_2x_public_20201028_rotate_offset_3_angles_without_rotation_0_90_180'
             ]
 
 def parse_args():
