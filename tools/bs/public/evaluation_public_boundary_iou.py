@@ -171,8 +171,8 @@ class CSV2Json():
     def __init__(self, ann_file, csv_file, json_prefix):
         self.json_prefix = json_prefix
         self.coco = COCO(ann_file)
-        self.cat_ids = self.coco.get_cat_ids(cat_names=('building',))
-        self.img_ids = self.coco.get_img_ids()
+        self.cat_ids = self.coco.getCatIds(cat_names=('building',))
+        self.img_ids = self.coco.getImgIds()
 
         self.results = self._parse_results(csv_file)
 
@@ -194,7 +194,7 @@ class CSV2Json():
         segm_json_results = []
         for idx in range(len(self.img_ids)):
             img_id = self.img_ids[idx]
-            info = self.coco.load_imgs([img_id])[0]
+            info = self.coco.loadImgs([img_id])[0]
             image_name = bstool.get_basename(info['file_name'])
             bboxes, masks, scores = results[image_name]
 
