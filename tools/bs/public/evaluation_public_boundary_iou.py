@@ -23,7 +23,7 @@ import pandas
 
 
 ALL_MODELS = ALL_MODELS = [
-            'bc_000.01.01_map_net',
+            'bc_v000.01.01_map_net',
             'bc_v100.01.01_offset_rcnn_r50_1x_public_20201027_baseline',
             'bc_v100.01.02_offset_rcnn_r50_1x_public_20201027_lr0.01',
             'bc_v100.01.03_offset_rcnn_r50_1x_public_20201028_lr_0.02',
