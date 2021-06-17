@@ -171,7 +171,7 @@ class CSV2Json():
     def __init__(self, ann_file, csv_file, json_prefix):
         self.json_prefix = json_prefix
         self.coco = COCO(ann_file)
-        self.cat_ids = self.coco.getCatIds(cat_names=('building',))
+        self.cat_ids = self.coco.getCatIds(catNms=('building',))
         self.img_ids = self.coco.getImgIds()
 
         self.results = self._parse_results(csv_file)
