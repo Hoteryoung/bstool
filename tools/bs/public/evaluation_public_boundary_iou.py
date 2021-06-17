@@ -13,8 +13,8 @@
 import bstool
 import csv
 import argparse
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+from boundary_iou.coco_instance_api.coco import COCO
+from boundary_iou.coco_instance_api.cocoeval import COCOeval
 import pycocotools.mask as maskUtils
 from terminaltables import AsciiTable
 import numpy as np
@@ -239,7 +239,7 @@ class CSV2Json():
         return results
 
     def evaluation(self, 
-                   metric=['bbox', 'segm'],
+                   metric=['boundary'],
                    classwise=False,
                    proposal_nums=(100, 300, 1000),
                    iou_thrs=np.arange(0.5, 0.96, 0.05)):
