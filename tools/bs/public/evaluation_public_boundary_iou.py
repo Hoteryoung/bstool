@@ -265,7 +265,7 @@ class CSV2Json():
                 break
 
             iou_type = 'bbox' if metric == 'proposal' else metric
-            cocoEval = COCOeval(cocoGt, cocoDt, iou_type)
+            cocoEval = COCOeval(cocoGt, cocoDt, iouType="boundary")
             cocoEval.params.catIds = self.cat_ids
             cocoEval.params.imgIds = self.img_ids
 
