@@ -244,7 +244,7 @@ class CSV2Json():
                    proposal_nums=(100, 300, 1000),
                    iou_thrs=np.arange(0.5, 0.96, 0.05)):
         metrics = metric if isinstance(metric, list) else [metric]
-        allowed_metrics = ['bbox', 'segm']
+        allowed_metrics = ['bbox', 'segm', 'boundary']
         for metric in metrics:
             if metric not in allowed_metrics:
                 raise KeyError(f'metric {metric} is not supported')
