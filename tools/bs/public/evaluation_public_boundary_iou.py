@@ -239,7 +239,7 @@ class CSV2Json():
         return results
 
     def evaluation(self, 
-                   metric=['boundary'],
+                   metric=['bbox', 'segm'],
                    classwise=False,
                    proposal_nums=(100, 300, 1000),
                    iou_thrs=np.arange(0.5, 0.96, 0.05)):
