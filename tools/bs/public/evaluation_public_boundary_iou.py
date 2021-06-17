@@ -333,7 +333,7 @@ def parse_args():
     parser.add_argument(
         '--city',
         type=str,
-        default='', 
+        default='shanghai_xian_public', 
         help='dataset for evaluation')
 
     args = parser.parse_args()
