@@ -267,7 +267,7 @@ class CSV2Json():
                 break
 
             iou_type = 'bbox' if metric == 'proposal' else metric
-            cocoEval = COCOeval(cocoGt, cocoDt, iouType="boundary")
+            cocoEval = COCOeval(cocoGt, cocoDt, iouType="boundary", mask_type='roof_mask')
             cocoEval.params.catIds = self.cat_ids
             cocoEval.params.imgIds = self.img_ids
 
