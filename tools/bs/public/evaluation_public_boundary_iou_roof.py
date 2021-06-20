@@ -267,7 +267,7 @@ class CSV2Json():
                 break
 
             iou_type = 'bbox' if metric == 'proposal' else metric
-            cocoEval = COCOeval(cocoGt, cocoDt, iouType="boundary", mask_type='roof_mask')
+            cocoEval = COCOeval(cocoGt, cocoDt, iouType="boundary")
             cocoEval.params.catIds = self.cat_ids
             cocoEval.params.imgIds = self.img_ids
 
@@ -366,7 +366,7 @@ if __name__ == '__main__':
             elif city == 'shanghai_public':
                 anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_shanghai_fine_minarea_500.json'
             elif city == 'shanghai_xian_public':
-                anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_shanghai_xian_minarea_500.json'
+                anno_file = f'./data/buildchange/public/20201028/coco/annotations/buildchange_public_20201028_val_shanghai_xian_minarea_500_boundary_iou.json'
                 image_dir = f'./data/buildchange/public/20201028/shanghai_xian/images'
             else:
                 raise NotImplementedError("do not support city: ", city)
