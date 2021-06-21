@@ -993,7 +993,7 @@ class Evaluation():
                         if with_image:
                             color = colors['pred_TP'][::-1]
                         else:
-                            color = (255, 0, 0)
+                            color = (0, 0, 255)
 
                     if pred_polygon.geom_type != 'Polygon':
                         continue
