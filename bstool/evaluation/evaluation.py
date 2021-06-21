@@ -941,7 +941,7 @@ class Evaluation():
 
         return objects
 
-    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint'], with_iou=False, with_gt=True, with_only_pred=False):
+    def visualization_boundary(self, image_dir, vis_dir, mask_types=['roof', 'footprint'], with_iou=False, with_gt=True, with_only_pred=False, with_image=True):
         colors = {'gt_TP':   (0, 255, 0),
                 'pred_TP': (255, 255, 0),
                 'FP':      (0, 255, 255),
@@ -956,7 +956,10 @@ class Evaluation():
                 output_file = os.path.join(vis_dir, mask_type, image_name)
                 bstool.mkdir_or_exist(os.path.join(vis_dir, mask_type))
 
-                img = cv2.imread(image_file)
+                if with_image:
+                    img = cv2.imread(image_file)
+                else:
+                    img = bstool.generate_image(1024, 1024, color=(255, 255, 255))
 
                 if image_basename not in objects:
                     continue
@@ -987,7 +990,10 @@ class Evaluation():
                         else:
                             color = colors['FP'][::-1]
                     else:
-                        color = colors['pred_TP'][::-1]
+                        if with_image:
+                            color = colors['pred_TP'][::-1]
+                        else:
+                            color = (255, 0, 0)
 
                     if pred_polygon.geom_type != 'Polygon':
                         continue
