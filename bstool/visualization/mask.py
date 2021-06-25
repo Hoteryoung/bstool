@@ -123,7 +123,7 @@ def show_coco_mask(coco, image_file, anns, output_file=None):
     else:
         plt.show()
 
-def draw_masks_boundary(img, masks, color=(0, 0, 255), thickness=3):
+def draw_masks_boundary(img, masks, color=(0, 0, 255), thickness=2, is_fill=False):
     """draw boundary of masks
 
     Args:
@@ -136,11 +136,11 @@ def draw_masks_boundary(img, masks, color=(0, 0, 255), thickness=3):
         np.array: image with mask boundary
     """
     for mask in masks:
-        img = draw_mask_boundary(img, mask, color=color, thickness=thickness)
+        img = draw_mask_boundary(img, mask, color=color, thickness=thickness, is_fill=is_fill)
 
     return img
 
-def draw_mask_boundary(img, mask, color=(0, 0, 255), thickness=2):
+def draw_mask_boundary(img, mask, color=(0, 0, 255), thickness=2, is_fill=False):
     """draw boundary of masks
 
     Args:
@@ -153,7 +153,14 @@ def draw_mask_boundary(img, mask, color=(0, 0, 255), thickness=2):
         np.array: image with mask boundary
     """
     mask = np.array(mask).reshape((-1, 1, 2))
-    img = cv2.polylines(img, [mask], True, color, thickness=thickness, lineType=cv2.LINE_AA)
+    if is_fill:
+        img = cv2.polylines(img, [mask], True, color, thickness=thickness, lineType=cv2.LINE_AA)
+        img_ori = img.copy()
+        cv2.fillPoly(img, [mask], color)
+        alpha = 0.15
+        cv2.addWeighted(img, alpha, img_ori, 1 - alpha, 0, img)
+    else:
+        img = cv2.polylines(img, [mask], True, color, thickness=thickness, lineType=cv2.LINE_AA)
 
     return img
 
