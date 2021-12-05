@@ -109,7 +109,7 @@ class EvaluationParameters:
         self.gt_footprint_csv_file = f'{self.dataset_root}/shanghai_xian_v3_merge_val_footprint_crop1024_gt_minarea500.csv'
 
         # detection result files
-        self.mmdetection_pkl_file = f'{self.pred_result_root}/{model}/{model}_coco_results.pkl'
+        self.mmdetection_pkl_file = f'{self.pred_result_root}/{model}/{model}_{city}_coco_results.pkl'
         self.csv_info = 'merged' if self.save_merged_csv else 'splitted'
         self.pred_roof_csv_file = f'{self.pred_result_root}/{model}/{model}_roof_{self.csv_info}.csv'
         self.pred_rootprint_csv_file = f'{self.pred_result_root}/{model}/{model}_footprint_{self.csv_info}.csv'
