@@ -133,7 +133,7 @@ if __name__ == '__main__':
     # baseline (mask rcnn) or LOFT
     eval_parameters.with_offset =  False if get_model_shortname(args.model) in eval_parameters.baseline_models else True
     
-    print(f"========== {model} ========== {city} ==========")
+    print(f"========== {args.model} ========== {args.city} ==========")
 
     # not used
     output_dir = f'./data/buildchange/statistic/{model}/{city}'
