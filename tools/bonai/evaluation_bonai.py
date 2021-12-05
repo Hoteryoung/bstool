@@ -131,6 +131,7 @@ if __name__ == '__main__':
     args = parse_args()
 
     eval_parameters = EvaluationParameters(city = args.city, model = args.model)
+    eval_parameters.post_processing()
     # baseline (mask rcnn) or LOFT
     eval_parameters.with_offset =  False if get_model_shortname(args.model) in eval_parameters.baseline_models else True
     
