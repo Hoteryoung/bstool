@@ -98,6 +98,7 @@ class EvaluationParameters:
         self.model = model
         self.score_threshold = 0.4
         self.dataset_root = "../mmdetv2-bc/data/BONAI"
+        self.csv_groundtruth_root = "../mmdetv2-bc/data/BONAI/csv"
         self.pred_result_root = "../mmdetv2-bc/results/bonai"
 
         # dataset file
@@ -105,8 +106,8 @@ class EvaluationParameters:
         self.test_image_dir = f'{self.dataset_root}/test/images'
 
         # csv ground truth files
-        self.gt_roof_csv_file = f'{self.dataset_root}/shanghai_xian_v3_merge_val_roof_crop1024_gt_minarea500.csv'
-        self.gt_footprint_csv_file = f'{self.dataset_root}/shanghai_xian_v3_merge_val_footprint_crop1024_gt_minarea500.csv'
+        self.gt_roof_csv_file = f'{self.csv_groundtruth_root}/shanghai_xian_v3_merge_val_roof_crop1024_gt_minarea500.csv'
+        self.gt_footprint_csv_file = f'{self.csv_groundtruth_root}/shanghai_xian_v3_merge_val_footprint_crop1024_gt_minarea500.csv'
 
         # detection result files
         self.mmdetection_pkl_file = f'{self.pred_result_root}/{model}/{model}_{city}_coco_results.pkl'
