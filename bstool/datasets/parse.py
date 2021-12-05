@@ -629,7 +629,7 @@ class BSPklParser():
                     if polygon_.geom_type == 'MultiPolygon':
                         continue
                     else:
-                        if polygon_ is None:
+                        if polygon_.exterior is None:
                             continue
                         else:
                             mask = bstool.polygon2mask(polygon_)
