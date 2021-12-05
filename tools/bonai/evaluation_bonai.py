@@ -136,7 +136,7 @@ if __name__ == '__main__':
     print(f"========== {args.model} ========== {args.city} ==========")
 
     # not used
-    output_dir = f'./data/buildchange/statistic/{model}/{city}'
+    output_dir = f'./data/buildchange/statistic/{args.model}/{args.city}'
     bstool.mkdir_or_exist(output_dir)
 
     evaluation = bstool.Evaluation(model = eval_parameters.model,
