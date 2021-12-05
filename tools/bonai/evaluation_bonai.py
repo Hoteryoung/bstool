@@ -125,7 +125,7 @@ class EvaluationParameters:
     def post_processing(self):
         bstool.mkdir_or_exist(self.vis_boundary_dir)
         bstool.mkdir_or_exist(self.vis_offset_dir)
-        bstool.mkdir_or_exist(f'{self.dataset_root}/summary/{model}')
+        bstool.mkdir_or_exist(f'{self.dataset_root}/summary/{self.model}')
         
 if __name__ == '__main__':
     args = parse_args()
