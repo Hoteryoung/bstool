@@ -91,7 +91,7 @@ class EvaluationParameters:
         self.save_merged_csv = False
 
         # baseline models
-        self.baseline_models = ['bonai_v001.02.02']
+        self.baseline_models = ['bonai_v001.02.02', 'bonai_v001.03.01']
 
         # basic info
         self.city = city
