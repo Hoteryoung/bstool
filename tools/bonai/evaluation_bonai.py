@@ -113,7 +113,7 @@ class EvaluationParameters:
         self.mmdetection_pkl_file = f'{self.pred_result_root}/{model}/{model}_{city}_coco_results.pkl'
         self.csv_info = 'merged' if self.save_merged_csv else 'splitted'
         self.pred_roof_csv_file = f'{self.pred_result_root}/{model}/{model}_roof_{self.csv_info}.csv'
-        self.pred_rootprint_csv_file = f'{self.pred_result_root}/{model}/{model}_footprint_{self.csv_info}.csv'
+        self.pred_footprint_csv_file = f'{self.pred_result_root}/{model}/{model}_footprint_{self.csv_info}.csv'
 
         # vis
         self.vis_boundary_dir = f'{self.dataset_root}/vis/{model}/boundary' + ("_pred" if self.with_only_pred else "")
@@ -147,7 +147,7 @@ if __name__ == '__main__':
                                     gt_roof_csv_file = eval_parameters.gt_roof_csv_file,
                                     gt_footprint_csv_file = eval_parameters.gt_footprint_csv_file,
                                     roof_csv_file = eval_parameters.pred_roof_csv_file,
-                                    rootprint_csv_file = eval_parameters.pred_rootprint_csv_file,
+                                    rootprint_csv_file = eval_parameters.pred_footprint_csv_file,
                                     iou_threshold = 0.1,
                                     score_threshold = eval_parameters.score_threshold,
                                     output_dir = output_dir,
