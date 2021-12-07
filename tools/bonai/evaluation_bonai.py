@@ -46,14 +46,6 @@ def write_results2csv(results, meta_info=None):
 
         csv_writer.writerow([''])
 
-# Save the FULL CONFIG NAME of models which need to be evaluated, you can use the short name (bc_vXXX.XX.XX) to filter the model
-ALL_MODELS = [
-            'bonai_v001.01.01_loft_foa',
-            'bonai_v001.01.02_loft_foa_single_gpu',
-            'bonai_v001.02.01_loft_foa_r18',
-            'bonai_v001.02.02_mask_rcnn_r18'
-            ]
-
 def parse_args():
     parser = argparse.ArgumentParser(
         description='MMDet eval on semantic segmentation')
@@ -91,8 +83,7 @@ class EvaluationParameters:
         self.save_merged_csv = False
 
         # baseline models
-        self.baseline_models = ['bonai_v001.02.02', 'bonai_v001.03.01',
-                'bonai_v001.03.02', 'bonai_v001.03.03'],
+        self.baseline_models = ['bonai_v001.02.02', 'bonai_v001.03.01', 'bonai_v001.03.02', 'bonai_v001.03.03']
 
         # basic info
         self.city = city

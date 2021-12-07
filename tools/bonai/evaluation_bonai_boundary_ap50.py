@@ -382,7 +382,6 @@ if __name__ == '__main__':
                         'bonai_v001.03.01_mask_rcnn_single_gpu',
                         'bonai_v001.03.02_mask_rcnn_from_scratch',
                         'bonai_v001.03.03_mask_rcnn_four_gpus']
-    
     predefined_cities = []
 
     predefined_models = predefined_models if len(predefined_models) > 0 else [args.model]
