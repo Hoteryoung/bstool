@@ -92,7 +92,7 @@ class EvaluationParameters:
 
         # baseline models
         self.baseline_models = ['bonai_v001.02.02', 'bonai_v001.03.01',
-                'bonai_v001.03.02']
+                'bonai_v001.03.02', 'bonai_v001.03.03'],
 
         # basic info
         self.city = city
