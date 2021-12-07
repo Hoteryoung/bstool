@@ -382,22 +382,22 @@ if __name__ == '__main__':
                         'bonai_v001.03.01_mask_rcnn_single_gpu',
                         'bonai_v001.03.02_mask_rcnn_from_scratch',
                         'bonai_v001.03.03_mask_rcnn_four_gpus']
-    predefined_cities = []
 
-    predefined_models = predefined_models if len(predefined_models) > 0 else [args.model]
-    predefined_cities = predefined_cities if len(predefined_cities) > 0 else [args.city]
+    
+
+
+    predefined_models = predefined_models if args.model is "" else [args.model]
 
     for model in predefined_models:
-        for city in predefined_cities:
-            eval_parameters = EvaluationParameters(city = city, model = model)
+        eval_parameters = EvaluationParameters(city = args.city, model = model)
 
-            print(f"\n========== {eval_parameters.model} ========== {eval_parameters.city} ==========")
-            
-            csv2json_core = CSV2Json(ann_file=eval_parameters.anno_file, 
-                                    csv_file=eval_parameters.pred_footprint_csv_file, 
-                                    json_prefix=eval_parameters.footprint_json_prefix)
-            
-            eval_results = csv2json_core.evaluation()
+        print(f"\n========== {eval_parameters.model} ========== {eval_parameters.city} ==========")
+        
+        csv2json_core = CSV2Json(ann_file=eval_parameters.anno_file, 
+                                csv_file=eval_parameters.pred_footprint_csv_file, 
+                                json_prefix=eval_parameters.footprint_json_prefix)
+        
+        eval_results = csv2json_core.evaluation()
 
-            print(eval_results, type(eval_results))
-            pandas.DataFrame([eval_results]).to_csv(eval_parameters.summary_file)
+        print(eval_results, type(eval_results))
+        pandas.DataFrame([eval_results]).to_csv(eval_parameters.summary_file)
