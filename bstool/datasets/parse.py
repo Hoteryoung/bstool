@@ -766,7 +766,7 @@ class BSPklParser_Without_Offset(BSPklParser):
             contours = cv2.findContours(gray.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             contours = contours[0] if len(contours) == 2 else contours[1]
             
-            if contours != []:
+            if contours != [] and len(contours) > 0:
                 cnt = max(contours, key = cv2.contourArea)
                 if cv2.contourArea(cnt) < 5:
                     continue
